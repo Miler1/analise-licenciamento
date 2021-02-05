@@ -10,332 +10,334 @@ import models.tramitacao.AcaoTramitacao;
 import models.Analisavel;
 import play.Logger;
 import play.jobs.On;
+import play.jobs.OnApplicationStart;
 import utils.ListUtil;
 
 import java.util.*;
 
 @On("cron.processamentoCaracterizacoesEmAndamento")
+@OnApplicationStart
 public class ProcessamentoCaracterizacaoEmAndamento extends GenericJob {
 
-	private List<Caracterizacao> caracterizacoesProcessadas;
+    private List<Caracterizacao> caracterizacoesProcessadas;
 
-	@Override
-	public void executar() {
+    @Override
+    public void executar() {
 
-		Logger.info("[INICIO-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [INICIO-JOB]");
+        Logger.info("[INICIO-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [INICIO-JOB]");
 
-		LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
+        LicenciamentoWebService licenciamentoWS = new LicenciamentoWebService();
 
-		// Licenças com status EM_ANALISE
-		List<Caracterizacao> caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
+        // Licenças com status EM_ANALISE
+        List<Caracterizacao> caracterizacoes = licenciamentoWS.getCaracterizacoesEmAndamento();
 
-		UsuarioAnalise.atualizaUsuariosAnalise();
-		caracterizacoesProcessadas = new ArrayList<>();
+        UsuarioAnalise.atualizaUsuariosAnalise();
+        caracterizacoesProcessadas = new ArrayList<>();
 
-		caracterizacoes.forEach(this::processarCaracterizacao);
+        caracterizacoes.forEach(this::processarCaracterizacao);
 
-		if(!caracterizacoesProcessadas.isEmpty()) {
-			licenciamentoWS.adicionarCaracterizacoesEmAnalise(ListUtil.getIdsAsArray(caracterizacoesProcessadas));
-		}
+        if (!caracterizacoesProcessadas.isEmpty()) {
+            licenciamentoWS.adicionarCaracterizacoesEmAnalise(ListUtil.getIdsAsArray(caracterizacoesProcessadas));
+        }
 
-		Logger.info("[FIM-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [FIM-JOB]");
+        Logger.info("[FIM-JOB] ::ProcessamentoCaracterizacaoEmAndamento:: [FIM-JOB]");
 
-	}
+    }
 
-	private Long coalesce(Long ...ids){
-		return Arrays.stream(ids).filter(Objects::nonNull).findFirst().orElse(null);
-	}
+    private Long coalesce(Long... ids) {
+        return Arrays.stream(ids).filter(Objects::nonNull).findFirst().orElse(null);
+    }
 
-	private Long coalesce(Caracterizacao caracterizacao){
-		return coalesce(caracterizacao.idCaracterizacaoOrigem, caracterizacao.id);
-	}
-	
-	private void processarCaracterizacao(Caracterizacao caracterizacao) {
+    private Long coalesce(Caracterizacao caracterizacao) {
+        return coalesce(caracterizacao.idCaracterizacaoOrigem, caracterizacao.id);
+    }
 
-		try {
-			Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
+    private void processarCaracterizacao(Caracterizacao caracterizacao) {
 
-			Boolean renovacao = caracterizacao.isRenovacao();
-			Boolean retificacao = caracterizacao.isRetificacao();
-			Processo processoAnterior = null;
-			Analise analiseAntiga = null;
+        try {
+            Logger.info("ProcessamentoCaracterizacaoEmAndamento:: Processando " + caracterizacao.numero);
 
-			if (renovacao || retificacao) {
+            Boolean renovacao = caracterizacao.isRenovacao();
+            Boolean retificacao = caracterizacao.isRetificacao();
+            Processo processoAnterior = null;
+            Analise analiseAntiga = null;
 
-				// Carrega processo anterior
-				Caracterizacao anterior = Caracterizacao.findById(coalesce(caracterizacao));
-				processoAnterior = Processo.findLastByNumber(anterior.numero);
-				analiseAntiga = processoAnterior.analise;
-			}
+            if (renovacao || retificacao) {
 
-			Processo processo = criarNovoProcesso(caracterizacao, processoAnterior, renovacao, retificacao);
-			Analise analise = criarNovaAnalise(processo);
+                // Carrega processo anterior
+                Caracterizacao anterior = Caracterizacao.findById(coalesce(caracterizacao));
+                processoAnterior = Processo.findLastByNumber(anterior.numero);
+                analiseAntiga = processoAnterior.analise;
+            }
 
-			if (caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)) {
+            Processo processo = criarNovoProcesso(caracterizacao, processoAnterior, renovacao, retificacao);
+            Analise analise = criarNovaAnalise(processo);
 
-				Analisavel analisavel = analiseAntiga.getAnalisavel();
+            if (caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)) {
 
-				analisavel.getNotificacoes().stream().filter(n -> n.dataConclusao == null).forEach(notificacao -> {
-					notificacao.dataConclusao = new Date();
-					notificacao._save();
-				});
+                Analisavel analisavel = analiseAntiga.getAnalisavel();
 
-				if (analisavel.getTipoAnalise().equals(TipoAnalise.GEO)) {
+                analisavel.getNotificacoes().stream().filter(n -> n.dataConclusao == null).forEach(notificacao -> {
+                    notificacao.dataConclusao = new Date();
+                    notificacao._save();
+                });
 
-					AnaliseGeo analiseGeoAnterior = AnaliseGeo.findById(analise.processo.processoAnterior.analise.analiseGeo.id);
-					criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo(), analiseGeoAnterior);
-					processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_GEO.id);
+                if (analisavel.getTipoAnalise().equals(TipoAnalise.GEO)) {
 
-				} else if (analisavel.getTipoAnalise().equals(TipoAnalise.TECNICA)) {
+                    AnaliseGeo analiseGeoAnterior = AnaliseGeo.findById(analise.processo.processoAnterior.analise.analiseGeo.id);
+                    criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo(), analiseGeoAnterior);
+                    processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_GEO.id);
 
-					Boolean retificacaoComGeo = analiseAntiga.getAnaliseTecnica().notificacoes.get(0).retificacaoSolicitacaoComGeo;
+                } else if (analisavel.getTipoAnalise().equals(TipoAnalise.TECNICA)) {
 
-					if (retificacao && retificacaoComGeo != null && retificacaoComGeo) {
+                    Boolean retificacaoComGeo = analiseAntiga.getAnaliseTecnica().notificacoes.get(0).retificacaoSolicitacaoComGeo;
 
-						AnaliseGeo analiseGeoAnterior = AnaliseGeo.findUltimaByAnalise(analise);
-						criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo());
+                    if (retificacao && retificacaoComGeo != null && retificacaoComGeo) {
 
-					} else {
+                        AnaliseGeo analiseGeoAnterior = AnaliseGeo.findUltimaByAnalise(analise);
+                        criaAnaliseGeo(analise, analiseGeoAnterior.getAnalistaGeo());
 
-						analise.analisesGeo = AnaliseGeo.findAllByAnalise(analiseAntiga);
-						analise._save();
+                    } else {
 
-						AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findById(analise.processo.processoAnterior.analise.analiseTecnica.id);
-						criaAnaliseTecnica(analise, analiseTecnicaAnterior.analistaTecnico, analiseTecnicaAnterior);
-					}
+                        analise.analisesGeo = AnaliseGeo.findAllByAnalise(analiseAntiga);
+                        analise._save();
 
-					processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_TECNICA.id);
-				}
+                        AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findById(analise.processo.processoAnterior.analise.analiseTecnica.id);
+                        criaAnaliseTecnica(analise, analiseTecnicaAnterior.analistaTecnico, analiseTecnicaAnterior);
+                    }
 
-				processo._save();
+                    processo.origemNotificacao = OrigemNotificacao.findById(OrigemNotificacaoEnum.ANALISE_TECNICA.id);
+                }
 
-		} else {
+                processo._save();
 
-			criaAnaliseGeo(analise);
+            } else {
 
-		}
+                criaAnaliseGeo(analise);
 
-			processo.save();
+            }
 
-		// Arquiva o processo anterior
-		if (retificacao) {
+            processo.save();
 
-			processoAnterior.tramitacao.tramitar(processoAnterior, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
+            // Arquiva o processo anterior
+            if (retificacao) {
 
-		}
+                processoAnterior.tramitacao.tramitar(processoAnterior, AcaoTramitacao.ARQUIVAR_PROTOCOLO);
 
-			if (caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)) {
+            }
 
-				Analisavel analisavel = analiseAntiga.getAnalisavel();
+            if (caracterizacao.status.id.equals(StatusCaracterizacao.NOTIFICACAO_ATENDIDA)) {
 
-				if (analisavel.getTipoAnalise().equals(TipoAnalise.TECNICA)) {
+                Analisavel analisavel = analiseAntiga.getAnalisavel();
 
-					Boolean retificacaoComGeo = analiseAntiga.getAnaliseTecnica().notificacoes.get(0).retificacaoSolicitacaoComGeo;
+                if (analisavel.getTipoAnalise().equals(TipoAnalise.TECNICA)) {
 
-					if (retificacao && (retificacaoComGeo == null || !retificacaoComGeo)) {
+                    Boolean retificacaoComGeo = analiseAntiga.getAnaliseTecnica().notificacoes.get(0).retificacaoSolicitacaoComGeo;
 
-						AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findById(analise.processo.processoAnterior.analise.analiseTecnica.id);
-						processo.tramitacao.tramitar(processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA_POR_VOLTA_DE_NOTIFICACAO, null, analiseTecnicaAnterior.analistaTecnico.usuario);
+                    if (retificacao && (retificacaoComGeo == null || !retificacaoComGeo)) {
 
-					}
-				}
+                        AnaliseTecnica analiseTecnicaAnterior = AnaliseTecnica.findById(analise.processo.processoAnterior.analise.analiseTecnica.id);
+                        processo.tramitacao.tramitar(processo, AcaoTramitacao.INICIAR_ANALISE_TECNICA_POR_VOLTA_DE_NOTIFICACAO, null, analiseTecnicaAnterior.analistaTecnico.usuario);
 
-				analiseAntiga.inativar();
-			}
+                    }
+                }
 
-			caracterizacoesProcessadas.add(caracterizacao);
+                analiseAntiga.inativar();
+            }
 
-			commitTransaction();
+            caracterizacoesProcessadas.add(caracterizacao);
 
-		} catch (Exception e){
+            commitTransaction();
 
-			rollbackTransaction();
-			Logger.error(e.getMessage(), e.getStackTrace());
+        } catch (Exception e) {
 
-		}
+            rollbackTransaction();
+            Logger.error(e.getMessage(), e.getStackTrace());
 
-	}
-	
-	private Processo criarNovoProcesso(Caracterizacao caracterizacao, Processo processoAnterior, Boolean renovacao, Boolean retificacao) {
-		
-		Processo processo = new Processo();
-		processo.numero = caracterizacao.numero;
-		processo.empreendimento = caracterizacao.empreendimento;
+        }
 
-		if (processoAnterior != null) {
-			processo.dataCadastro = processoAnterior.dataCadastro;
-		} else {
-			processo.dataCadastro = new Date();
-		}
+    }
 
-		processo.caracterizacao = caracterizacao;
-		processo.processoAnterior = processoAnterior;
-		processo.renovacao = renovacao;
-		processo.retificacao = retificacao;
-		processo.ativo = true;
+    private Processo criarNovoProcesso(Caracterizacao caracterizacao, Processo processoAnterior, Boolean renovacao, Boolean retificacao) {
 
-		processo._save();
+        Processo processo = new Processo();
+        processo.numero = caracterizacao.numero;
+        processo.empreendimento = caracterizacao.empreendimento;
 
-		return processo;
-		
-	}
-	
-	private Analise criarNovaAnalise(Processo processo) {
-		
-		Analise analise = new Analise();
-		analise.processo = processo;
+        if (processoAnterior != null) {
+            processo.dataCadastro = processoAnterior.dataCadastro;
+        } else {
+            processo.dataCadastro = new Date();
+        }
 
-		if (processo.processoAnterior != null) {
-			analise.dataCadastro = processo.processoAnterior.analise.dataCadastro;
-		} else {
-			analise.dataCadastro = new Date();
-		}
+        processo.caracterizacao = caracterizacao;
+        processo.processoAnterior = processoAnterior;
+        processo.renovacao = renovacao;
+        processo.retificacao = retificacao;
+        processo.ativo = true;
 
-		analise.ativo = true;
-		analise.temNotificacaoAberta = false;
+        processo._save();
 
-		analise.save();
+        return processo;
 
-		criarNovoDiasAnalise(analise);
-		
-		return analise;
-		
-	}
+    }
 
-	private void criaAnaliseGeo(Analise analise) {
+    private Analise criarNovaAnalise(Processo processo) {
 
-		criaAnaliseGeo(analise,null);
+        Analise analise = new Analise();
+        analise.processo = processo;
 
-	}
+        if (processo.processoAnterior != null) {
+            analise.dataCadastro = processo.processoAnterior.analise.dataCadastro;
+        } else {
+            analise.dataCadastro = new Date();
+        }
 
-	private void criaAnaliseGeo(Analise analise, AnalistaGeo analistaGeo, AnaliseGeo analiseGeoAnterior) {
+        analise.ativo = true;
+        analise.temNotificacaoAberta = false;
 
-		AnaliseGeo analiseGeo = new AnaliseGeo();
-		analiseGeo.analise = analise;
-		AnalistaGeo analista = new AnalistaGeo();
+        analise.save();
 
-		if(analistaGeo == null){
+        criarNovoDiasAnalise(analise);
 
-			String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
-			analista = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
+        return analise;
 
-		} else {
+    }
 
-			analista.usuario = analistaGeo.usuario;
-			analista.analiseGeo = analiseGeo;
-			analista.dataVinculacao = new Date();
+    private void criaAnaliseGeo(Analise analise) {
 
-		}
+        criaAnaliseGeo(analise, null);
 
-		analiseGeo.analistasGeo = Collections.singletonList(analista);
-		analiseGeo.save(analiseGeoAnterior);
+    }
 
-	}
+    private void criaAnaliseGeo(Analise analise, AnalistaGeo analistaGeo, AnaliseGeo analiseGeoAnterior) {
 
-	private void criaAnaliseGeo(Analise analise, AnalistaGeo analistaGeo) {
+        AnaliseGeo analiseGeo = new AnaliseGeo();
+        analiseGeo.analise = analise;
+        AnalistaGeo analista = new AnalistaGeo();
 
-		AnaliseGeo analiseGeo = new AnaliseGeo();
-		analiseGeo.analise = analise;
-		AnalistaGeo analista = new AnalistaGeo();
+        if (analistaGeo == null) {
 
-		if(analistaGeo == null){
+            String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
+            analista = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
 
-			String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
-			analista = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
+        } else {
 
-		} else {
+            analista.usuario = analistaGeo.usuario;
+            analista.analiseGeo = analiseGeo;
+            analista.dataVinculacao = new Date();
 
-			analista.usuario = analistaGeo.usuario;
-			analista.analiseGeo = analiseGeo;
-			analista.dataVinculacao = new Date();
+        }
 
-		}
+        analiseGeo.analistasGeo = Collections.singletonList(analista);
+        analiseGeo.save(analiseGeoAnterior);
 
-		analiseGeo.analistasGeo = Collections.singletonList(analista);
-		analiseGeo.save();
-	}
+    }
 
-	private void criaAnaliseTecnica(Analise analise) {
+    private void criaAnaliseGeo(Analise analise, AnalistaGeo analistaGeo) {
 
-		criaAnaliseTecnica(analise,null);
+        AnaliseGeo analiseGeo = new AnaliseGeo();
+        analiseGeo.analise = analise;
+        AnalistaGeo analista = new AnalistaGeo();
 
-	}
+        if (analistaGeo == null) {
 
-	private void criaAnaliseTecnica(Analise analise, AnalistaTecnico analistaTecnico, AnaliseTecnica analiseTecnicaAnterior) {
+            String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
+            analista = AnalistaGeo.distribuicaoProcesso(siglaSetor, analiseGeo);
 
-		AnaliseTecnica analiseTecnica = new AnaliseTecnica();
-		analiseTecnica.analise = analise;
-		AnalistaTecnico analista = new AnalistaTecnico();
+        } else {
 
-		ParecerJuridico parecerJuridico = ParecerJuridico.getParecerJuridicoByAnaliseTecnica(analise.processo.processoAnterior.analise.analiseTecnica.id);
+            analista.usuario = analistaGeo.usuario;
+            analista.analiseGeo = analiseGeo;
+            analista.dataVinculacao = new Date();
 
-		parecerJuridico.analiseTecnica = analiseTecnica;
+        }
 
-		if(analistaTecnico == null){
+        analiseGeo.analistasGeo = Collections.singletonList(analista);
+        analiseGeo.save();
+    }
 
-			String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
-			analista = AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(siglaSetor, analise);
+    private void criaAnaliseTecnica(Analise analise) {
 
-		} else {
+        criaAnaliseTecnica(analise, null);
 
-			analista.usuario = analistaTecnico.usuario;
-			analista.analiseTecnica = analiseTecnica;
-			analista.dataVinculacao = new Date();
+    }
 
-		}
+    private void criaAnaliseTecnica(Analise analise, AnalistaTecnico analistaTecnico, AnaliseTecnica analiseTecnicaAnterior) {
 
-		analiseTecnica.analistaTecnico = analista;
-		analiseTecnica.save(analiseTecnicaAnterior);
-		parecerJuridico.save();
+        AnaliseTecnica analiseTecnica = new AnaliseTecnica();
+        analiseTecnica.analise = analise;
+        AnalistaTecnico analista = new AnalistaTecnico();
 
-	}
+        ParecerJuridico parecerJuridico = ParecerJuridico.getParecerJuridicoByAnaliseTecnica(analise.processo.processoAnterior.analise.analiseTecnica.id);
 
-	private void criaAnaliseTecnica(Analise analise, AnalistaTecnico analistaTecnico) {
+        parecerJuridico.analiseTecnica = analiseTecnica;
 
-		AnaliseTecnica analiseTecnica = new AnaliseTecnica();
-		analiseTecnica.analise = analise;
-		AnalistaTecnico analista = new AnalistaTecnico();
+        if (analistaTecnico == null) {
 
-		ParecerJuridico parecerJuridico = ParecerJuridico.getParecerJuridicoByAnaliseTecnica(analise.processo.processoAnterior.analise.analiseTecnica.id);
-
-		parecerJuridico.analiseTecnica = analiseTecnica;
-
-		if(analistaTecnico == null){
-
-			String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
+            String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
             analista = AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(siglaSetor, analise);
 
-		} else {
+        } else {
 
-			analista.usuario = analistaTecnico.usuario;
-			analista.analiseTecnica = analiseTecnica;
-			analista.dataVinculacao = new Date();
+            analista.usuario = analistaTecnico.usuario;
+            analista.analiseTecnica = analiseTecnica;
+            analista.dataVinculacao = new Date();
 
-		}
+        }
 
-		analiseTecnica.analistaTecnico = analista;
-		analiseTecnica.save();
-		parecerJuridico.save();
-	}
-	
-	private DiasAnalise criarNovoDiasAnalise(Analise analise) {
-		
-		DiasAnalise diasAnalise = new DiasAnalise(analise);
-		analise.diasAnalise = diasAnalise;
+        analiseTecnica.analistaTecnico = analista;
+        analiseTecnica.save(analiseTecnicaAnterior);
+        parecerJuridico.save();
 
-		diasAnalise.save();
-		
-		return diasAnalise;
-	}
+    }
 
-	private void inativaAnaliseAnterior(Analise analiseAnterior){
+    private void criaAnaliseTecnica(Analise analise, AnalistaTecnico analistaTecnico) {
 
-		analiseAnterior.ativo = false;
-		Processo processoAnterior = analiseAnterior.processo;
-		processoAnterior.ativo = false;
-		analiseAnterior._save();
-		processoAnterior._save();
+        AnaliseTecnica analiseTecnica = new AnaliseTecnica();
+        analiseTecnica.analise = analise;
+        AnalistaTecnico analista = new AnalistaTecnico();
 
-	}
+        ParecerJuridico parecerJuridico = ParecerJuridico.getParecerJuridicoByAnaliseTecnica(analise.processo.processoAnterior.analise.analiseTecnica.id);
+
+        parecerJuridico.analiseTecnica = analiseTecnica;
+
+        if (analistaTecnico == null) {
+
+            String siglaSetor = analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor;
+            analista = AnalistaTecnico.distribuicaoAutomaticaAnalistaTecnico(siglaSetor, analise);
+
+        } else {
+
+            analista.usuario = analistaTecnico.usuario;
+            analista.analiseTecnica = analiseTecnica;
+            analista.dataVinculacao = new Date();
+
+        }
+
+        analiseTecnica.analistaTecnico = analista;
+        analiseTecnica.save();
+        parecerJuridico.save();
+    }
+
+    private DiasAnalise criarNovoDiasAnalise(Analise analise) {
+
+        DiasAnalise diasAnalise = new DiasAnalise(analise);
+        analise.diasAnalise = diasAnalise;
+
+        diasAnalise.save();
+
+        return diasAnalise;
+    }
+
+    private void inativaAnaliseAnterior(Analise analiseAnterior) {
+
+        analiseAnterior.ativo = false;
+        Processo processoAnterior = analiseAnterior.processo;
+        processoAnterior.ativo = false;
+        analiseAnterior._save();
+        processoAnterior._save();
+
+    }
 
 }
