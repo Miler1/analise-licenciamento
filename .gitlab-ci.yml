@@ -1,4 +1,4 @@
-image: 177.105.35.81:5000/zetta-builder:latest
+image: 177.105.35.43:5000/zetta-builder:latest
 
 stages:
     - build
