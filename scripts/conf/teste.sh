@@ -1,6 +1,6 @@
 config_play_version='1.5.0'
 config_update_server_app=true
-config_server_ssh="sysadmin@ap.puma.ti.lemaf.ufla.br"
+config_server_ssh="sysadmin@177.105.35.81"
 config_server_release_folder_path="/home/sysadmin"
 config_server_app_path="/var/play/amapa/licenciamento_ambiental/analise/"
 config_server_app_stop_cmd="systemctl stop analise-licenciamento-ap.service"

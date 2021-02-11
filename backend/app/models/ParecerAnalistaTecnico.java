@@ -1,4 +1,5 @@
 package models;
+
 import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
 import br.ufla.lemaf.beans.pessoa.Endereco;
@@ -28,403 +29,467 @@ import static models.tramitacao.AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO
 @Table(schema = "analise", name = "parecer_analista_tecnico")
 public class ParecerAnalistaTecnico extends ParecerAnalista {
 
-	public static final String SEQ = "analise.parecer_analista_tecnico_id_seq";
+    public static final String SEQ = "analise.parecer_analista_tecnico_id_seq";
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
-	@SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
-	@Column(name = "id")
-	public Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
+    @SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
+    @Column(name = "id")
+    public Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "id_analise_tecnica")
-	public AnaliseTecnica analiseTecnica;
+    @ManyToOne
+    @JoinColumn(name = "id_analise_tecnica")
+    public AnaliseTecnica analiseTecnica;
 
-	@OneToOne
-	@JoinColumn(name = "id_usuario_analista_tecnico", referencedColumnName = "id")
-	public UsuarioAnalise analistaTecnico;
+    @OneToOne
+    @JoinColumn(name = "id_usuario_analista_tecnico", referencedColumnName = "id")
+    public UsuarioAnalise analistaTecnico;
 
-	@Column(name = "do_processo")
-	public String doProcesso;
+    @Column(name = "do_processo")
+    public String doProcesso;
 
-	@Column(name = "da_analise_tecnica")
-	public String daAnaliseTecnica;
+    @Column(name = "da_analise_tecnica")
+    public String daAnaliseTecnica;
 
-	@Column(name = "da_conclusao")
-	public String daConclusao;
+    @Column(name = "da_conclusao")
+    public String daConclusao;
 
-	@Column(name = "validade_permitida")
-	public Integer validadePermitida;
+    @Column(name = "validade_permitida")
+    public Integer validadePermitida;
 
-	@OneToMany(mappedBy = "parecerAnalistaTecnico")
-	public List<Condicionante> condicionantes;
+    @OneToMany(mappedBy = "parecerAnalistaTecnico")
+    public List<Condicionante> condicionantes;
 
-	@OneToMany(mappedBy = "parecerAnalistaTecnico")
-	public List<Restricao> restricoes;
+    @OneToMany(mappedBy = "parecerAnalistaTecnico")
+    public List<Restricao> restricoes;
 
-	@Column(name="finalidade_atividade")
-	public String finalidadeAtividade;
+    @Column(name = "finalidade_atividade")
+    public String finalidadeAtividade;
 
-	@OneToOne(mappedBy = "parecerAnalistaTecnico")
-	public Vistoria vistoria;
+    @OneToOne(mappedBy = "parecerAnalistaTecnico")
+    public Vistoria vistoria;
 
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(schema="analise", name="rel_documento_parecer_analista_tecnico",
-			joinColumns=@JoinColumn(name="id_parecer_analista_tecnico"),
-			inverseJoinColumns=@JoinColumn(name="id_documento"))
-	public List<Documento> documentos;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(schema = "analise", name = "rel_documento_parecer_analista_tecnico",
+            joinColumns = @JoinColumn(name = "id_parecer_analista_tecnico"),
+            inverseJoinColumns = @JoinColumn(name = "id_documento"))
+    public List<Documento> documentos;
 
-	@OneToOne
-	@JoinColumn(name = "id_documento", referencedColumnName = "id")
-	public Documento documentoParecer;
+    @OneToOne
+    @JoinColumn(name = "id_documento", referencedColumnName = "id")
+    public Documento documentoParecer;
 
-	@OneToOne
-	@JoinColumn(name = "id_documento_minuta", referencedColumnName = "id")
-	public Documento documentoMinuta;
+    @OneToOne
+    @JoinColumn(name = "id_documento_minuta", referencedColumnName = "id")
+    public Documento documentoMinuta;
 
-	private void finalizaParecerDeferido(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor) {
+    private void finalizaParecerDeferido(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor) {
 
-		if(this.condicionantes != null && !this.condicionantes.isEmpty()) {
+        if (this.condicionantes != null && !this.condicionantes.isEmpty()) {
 
-			this.condicionantes.forEach(condicionante -> {
-				condicionante.parecerAnalistaTecnico = this;
-				condicionante._save();
-			});
+            this.condicionantes.forEach(condicionante -> {
+                condicionante.parecerAnalistaTecnico = this;
+                condicionante._save();
+            });
 
-		}
+        }
 
-		if(this.restricoes != null && !this.restricoes.isEmpty()) {
+        if (this.restricoes != null && !this.restricoes.isEmpty()) {
 
-			this.restricoes.forEach(restricao -> {
-				restricao.parecerAnalistaTecnico = this;
-				restricao._save();
-			});
+            this.restricoes.forEach(restricao -> {
+                restricao.parecerAnalistaTecnico = this;
+                restricao._save();
+            });
 
-		}
+        }
 
-		Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnica);
-		gerente._save();
+        Gerente gerente = getGerenteAnaliseTecnica(usuarioExecutor);
+        gerente._save();
 
-		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
-		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+        analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
-	}
+    }
 
-	private void finalizaParecerDeferidoSolicitacaoAjuste(AnaliseTecnica analiseTecnica, ParecerAnalistaTecnico parecerAntigo, UsuarioAnalise usuarioExecutor) {
+    private void finalizaParecerDeferidoSolicitacaoAjuste(AnaliseTecnica analiseTecnica, ParecerAnalistaTecnico parecerAntigo, UsuarioAnalise usuarioExecutor) {
 
-		parecerAntigo.condicionantes = new ArrayList<>();
+        parecerAntigo.setCondicionantes(this.condicionantes);
+        parecerAntigo.setRestricoes(this.restricoes);
 
-		if(this.condicionantes != null && !this.condicionantes.isEmpty()) {
+        parecerAntigo.restricoes = new ArrayList<>();
 
-			this.condicionantes.forEach(condicionante -> {
+        Gerente gerente = getGerenteAnaliseTecnica(usuarioExecutor);
+        gerente._save();
 
-				if(condicionante.id != null) {
+        analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
-					parecerAntigo.condicionantes.add(condicionante);
+    }
 
-				} else {
+    private void finalizaParecerIndeferido(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor) {
 
-					condicionante.parecerAnalistaTecnico = this;
-					condicionante._save();
-					parecerAntigo.condicionantes.add(condicionante);
+        Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnica);
+        gerente.save();
 
-				}
-			});
+        analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
-		}
+    }
 
-		parecerAntigo.restricoes = new ArrayList<>();
+    private void finalizaParecerEmitirNotificacao(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor) throws Exception {
 
-		if(this.restricoes != null && !this.restricoes.isEmpty()) {
+        List<Notificacao> notificacoes = this.analiseTecnica.notificacoes;
 
-			this.restricoes.forEach(restricao -> {
+        notificacoes = notificacoes.stream().filter(notificacao -> notificacao.id == null).collect(Collectors.toList());
 
-				if(restricao.id != null) {
+        if (notificacoes.size() != 1) {
 
-					parecerAntigo.restricoes.add(restricao);
+            throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
 
-				} else {
+        }
 
-					restricao.parecerAnalistaTecnico = this;
-					restricao._save();
-					parecerAntigo.restricoes.add(restricao);
+        if (this.id != null) {
 
-				}
-			});
+            analiseTecnica.enviarEmailNotificacao(notificacoes.get(0), this, this.analiseTecnica.documentos);
 
-		}
+        } else {
 
-		Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnica);
-		gerente._save();
+            analiseTecnica.enviarEmailNotificacao(notificacoes.get(0), this.save(), this.analiseTecnica.documentos);
 
-		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
-		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+        }
 
-	}
+        Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analiseTecnica.analise.processo.numero);
 
-	private void finalizaParecerIndeferido(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor) {
+        analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO, usuarioExecutor, "Notificado");
+        HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
-		Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnica);
-		gerente.save();
+    }
 
-		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
-		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+    public void finalizarSolicitacaoAjuste(UsuarioAnalise usuarioExecutor) throws Exception {
 
-	}
+        ParecerAnalistaTecnico parecerAntigo = ParecerAnalistaTecnico.findById(this.id);
 
-	private void finalizaParecerEmitirNotificacao(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor) throws Exception {
+        AnaliseTecnica analiseTecnicaBanco = AnaliseTecnica.findById(parecerAntigo.analiseTecnica.id);
 
-		List<Notificacao> notificacoes = this.analiseTecnica.notificacoes;
+        validarParecer();
+        validarTipoResultadoAnalise();
 
-		notificacoes = notificacoes.stream().filter(notificacao -> notificacao.id == null).collect(Collectors.toList());
+        parecerAntigo.analistaTecnico = this.analistaTecnico = usuarioExecutor;
+        parecerAntigo.dataParecer = this.dataParecer = new Date();
+        parecerAntigo.doProcesso = this.doProcesso;
+        parecerAntigo.daAnaliseTecnica = this.daAnaliseTecnica;
+        parecerAntigo.daConclusao = this.daConclusao;
+        parecerAntigo.parecer = this.parecer;
+        parecerAntigo.validadePermitida = this.validadePermitida;
+        parecerAntigo.finalidadeAtividade = this.finalidadeAtividade;
 
-		if (notificacoes.size() != 1) {
+        if (this.documentos != null && !this.documentos.isEmpty()) {
+            parecerAntigo.documentos = parecerAntigo.updateDocumentos(this.documentos);
+        }
 
-			throw new ValidacaoException(Mensagem.ERRO_SALVAMENTO_NOTIFICACAO);
+        if (this.vistoria != null) {
 
-		}
+            parecerAntigo.vistoria.parecerAnalistaTecnico = parecerAntigo;
+            parecerAntigo.vistoria = this.vistoria.salvar();
+            analiseTecnicaBanco.vistoria = parecerAntigo.vistoria;
 
-		if(this.id != null) {
+        }
 
-			analiseTecnica.enviarEmailNotificacao(notificacoes.get(0), this, this.analiseTecnica.documentos);
+        if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
 
-		} else {
+            this.finalizaParecerDeferidoSolicitacaoAjuste(analiseTecnicaBanco, parecerAntigo, usuarioExecutor);
 
-			analiseTecnica.enviarEmailNotificacao(notificacoes.get(0), this.save(), this.analiseTecnica.documentos);
+        } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
 
-		}
+            this.finalizaParecerIndeferido(analiseTecnicaBanco, usuarioExecutor);
 
-		Analise.alterarStatusLicenca(StatusCaracterizacaoEnum.NOTIFICADO.codigo, analiseTecnica.analise.processo.numero);
+        } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.EMITIR_NOTIFICACAO)) {
 
-		analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO, usuarioExecutor, "Notificado");
-		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
+            this.finalizaParecerEmitirNotificacao(analiseTecnicaBanco, usuarioExecutor);
 
-	}
+        }
 
-	public void finalizarSolicitacaoAjuste(UsuarioAnalise usuarioExecutor) throws Exception {
+        HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id);
+        this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
+        parecerAntigo._save();
 
-		ParecerAnalistaTecnico parecerAntigo = ParecerAnalistaTecnico.findById(this.id);
+    }
 
-		AnaliseTecnica analiseTecnicaBanco = AnaliseTecnica.findById(parecerAntigo.analiseTecnica.id);
+    public void finalizar(UsuarioAnalise usuarioExecutor) throws Exception {
 
-		validarParecer();
-		validarTipoResultadoAnalise();
+        AnaliseTecnica analiseTecnicaBanco = AnaliseTecnica.findById(this.analiseTecnica.id);
 
-		parecerAntigo.analistaTecnico = this.analistaTecnico = usuarioExecutor;
-		parecerAntigo.dataParecer = this.dataParecer = new Date();
-		parecerAntigo.doProcesso = this.doProcesso;
-		parecerAntigo.daAnaliseTecnica = this.daAnaliseTecnica;
-		parecerAntigo.daConclusao = this.daConclusao;
-		parecerAntigo.parecer = this.parecer;
-		parecerAntigo.validadePermitida = this.validadePermitida;
-		parecerAntigo.finalidadeAtividade = this.finalidadeAtividade;
+        validarParecer();
+        validarTipoResultadoAnalise();
 
-		if(this.documentos != null && !this.documentos.isEmpty()) {
-			parecerAntigo.documentos = parecerAntigo.updateDocumentos(this.documentos);
-		}
+        this.analistaTecnico = usuarioExecutor;
+        this.dataParecer = new Date();
 
-		if(this.vistoria != null) {
+        if (this.documentos != null && !this.documentos.isEmpty()) {
+            this.updateDocumentos(this.documentos);
+        }
 
-			parecerAntigo.vistoria.parecerAnalistaTecnico = parecerAntigo;
-			parecerAntigo.vistoria = this.vistoria.salvar();
-			analiseTecnicaBanco.vistoria = parecerAntigo.vistoria;
+        if (this.vistoria != null) {
 
-		}
+            this.vistoria.parecerAnalistaTecnico = this;
+            this.vistoria = this.vistoria.salvar();
+            analiseTecnicaBanco.vistoria = this.vistoria;
 
-		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
+        }
 
-			this.finalizaParecerDeferidoSolicitacaoAjuste(analiseTecnicaBanco, parecerAntigo, usuarioExecutor);
+        if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
 
-		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
+            this.finalizaParecerDeferido(analiseTecnicaBanco, usuarioExecutor);
 
-			this.finalizaParecerIndeferido(analiseTecnicaBanco, usuarioExecutor);
+        } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
 
-		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.EMITIR_NOTIFICACAO)) {
+            this.finalizaParecerIndeferido(analiseTecnicaBanco, usuarioExecutor);
 
-			this.finalizaParecerEmitirNotificacao(analiseTecnicaBanco, usuarioExecutor);
+        } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.EMITIR_NOTIFICACAO)) {
 
-		}
+            this.finalizaParecerEmitirNotificacao(analiseTecnicaBanco, usuarioExecutor);
+        }
 
-		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id);
-		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
-		parecerAntigo._save();
+        HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id);
+        this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
+        this._save();
 
-	}
+    }
 
-	public void finalizar(UsuarioAnalise usuarioExecutor) throws Exception {
+    private List<Documento> updateDocumentos(List<Documento> novosDocumentos) {
 
-		AnaliseTecnica analiseTecnicaBanco = AnaliseTecnica.findById(this.analiseTecnica.id);
+        if (this.id != null) {
+            this.documentos.forEach(anexoA -> {
+                if (novosDocumentos.stream().anyMatch(anexo -> anexoA.id.equals(anexo.id))) {
+                    anexoA._delete();
+                }
+            });
+        }
 
-		validarParecer();
-		validarTipoResultadoAnalise();
+        TipoDocumento tipoAutoInfracao = TipoDocumento.findById(TipoDocumento.AUTO_INFRACAO);
+        TipoDocumento documentoNotificacao = TipoDocumento.findById(TipoDocumento.DOCUMENTO_NOTIFICACAO_TECNICA);
+        TipoDocumento tipoParecer = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_TECNICA);
 
-		this.analistaTecnico = usuarioExecutor;
-		this.dataParecer = new Date();
+        this.documentos = new ArrayList<>();
 
-		if(this.documentos != null && !this.documentos.isEmpty()) {
-			this.updateDocumentos(this.documentos);
-		}
+        for (Documento documento : novosDocumentos) {
 
-		if(this.vistoria != null) {
+            if (documento.id != null) {
 
-			this.vistoria.parecerAnalistaTecnico = this;
-			this.vistoria = this.vistoria.salvar();
-			analiseTecnicaBanco.vistoria = this.vistoria;
+                documento = Documento.findById(documento.id);
 
-		}
+            } else {
 
-		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
+                if (documento.tipo.id.equals(tipoAutoInfracao.id)) {
 
-			this.finalizaParecerDeferido(analiseTecnicaBanco, usuarioExecutor);
+                    documento.tipo = tipoAutoInfracao;
 
-		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
+                } else if (documento.tipo.id.equals(tipoParecer.id)) {
 
-			this.finalizaParecerIndeferido(analiseTecnicaBanco, usuarioExecutor);
+                    documento.tipo = tipoParecer;
 
-		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.EMITIR_NOTIFICACAO)) {
+                } else if (documento.tipo.id.equals(documentoNotificacao.id)) {
 
-			this.finalizaParecerEmitirNotificacao(analiseTecnicaBanco, usuarioExecutor);
-		}
+                    documento.tipo = documentoNotificacao;
 
-		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(analiseTecnicaBanco.analise.processo.objetoTramitavel.id);
-		this.idHistoricoTramitacao = historicoTramitacao.idHistorico;
-		this._save();
+                }
 
-	}
+                documento = documento.save();
 
-	private List<Documento> updateDocumentos(List<Documento> novosDocumentos) {
+            }
 
-		if(this.id != null) {
-			this.documentos.forEach(anexoA -> {
-				if (novosDocumentos.stream().anyMatch(anexo -> anexoA.id.equals(anexo.id))) {
-					anexoA._delete();
-				}
-			});
-		}
+            this.documentos.add(documento);
 
-		TipoDocumento tipoAutoInfracao = TipoDocumento.findById(TipoDocumento.AUTO_INFRACAO);
-		TipoDocumento documentoNotificacao = TipoDocumento.findById(TipoDocumento.DOCUMENTO_NOTIFICACAO_TECNICA);
-		TipoDocumento tipoParecer = TipoDocumento.findById(TipoDocumento.PARECER_ANALISE_TECNICA);
+        }
 
-		this.documentos = new ArrayList<>();
+        return this.documentos;
 
-		for (Documento documento : novosDocumentos) {
+    }
 
-			if(documento.id != null) {
+    private void validarParecer() {
 
-				documento = Documento.findById(documento.id);
+        if (StringUtils.isBlank(this.parecer))
+            throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
 
-			} else {
+    }
 
-				if(documento.tipo.id.equals(tipoAutoInfracao.id)) {
+    private void validarTipoResultadoAnalise() {
 
-					documento.tipo = tipoAutoInfracao;
+        if (this.tipoResultadoAnalise == null) {
+            throw new ValidacaoException(Mensagem.ANALISE_FINAL_PROCESSO_NAO_PREENCHIDA);
+        }
 
-				} else if (documento.tipo.id.equals(tipoParecer.id)) {
+        if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO) && this.parecer.equals("")) {
+            throw new ValidacaoException(Mensagem.ANALISE_DESPACHO_NAO_PREENCHIDO);
+        }
 
-					documento.tipo = tipoParecer;
+        if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO) && this.parecer.equals("")) {
+            throw new ValidacaoException(Mensagem.ANALISE_JUSTIFICATIVA_NAO_PREENCHIDA);
+        }
 
-				} else if (documento.tipo.id.equals(documentoNotificacao.id)) {
+    }
 
-					documento.tipo = documentoNotificacao;
+    public static ParecerAnalistaTecnico getUltimoParecer(List<ParecerAnalistaTecnico> pareceresAnalistatecnico) {
 
-				}
+        return pareceresAnalistatecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new);
 
-				documento = documento.save();
+    }
 
-			}
+    public static Documento gerarPDFMinuta(AnaliseTecnica analiseTecnica, ParecerAnalistaTecnico parecer) throws Exception {
 
-			this.documentos.add(documento);
+        IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
 
-		}
+        Endereco enderecoPrincipal = new Endereco();
 
-		return this.documentos;
+        br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
+        for (Endereco endereco : empreendimentoEU.enderecos) {
+            if (endereco.tipo.id == TipoEndereco.ID_PRINCIPAL) {
+                enderecoPrincipal = endereco;
+            }
+        }
 
-	}
+        final Endereco enderecoCorrespondencia = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_CORRESPONDENCIA)).findAny().orElseThrow(PortalSegurancaException::new);
 
-	private void validarParecer() {
 
-		if (StringUtils.isBlank(this.parecer))
-			throw new ValidacaoException(Mensagem.ANALISE_PARECER_NAO_PREENCHIDO);
+        TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_MINUTA);
 
-	}
+        PDFGenerator pdf = new PDFGenerator()
+                .setTemplate(tipoDocumento.getPdfTemplate())
+                .addParam("analiseTecnica", analiseTecnica)
+                .addParam("enderecoEmpreendimento", enderecoPrincipal)
+                .addParam("enderecoCorrespondencia", enderecoCorrespondencia)
+                .addParam("empreendimento", empreendimentoEU)
+                .addParam("parecer", parecer)
+                .setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 5.0D);
 
-	private void validarTipoResultadoAnalise() {
+        pdf.generate();
 
-		if (this.tipoResultadoAnalise == null) {
-			throw new ValidacaoException(Mensagem.ANALISE_FINAL_PROCESSO_NAO_PREENCHIDA);
-		}
+        return new Documento(tipoDocumento, pdf.getFile(), "minuta.pdf", parecer.analistaTecnico.pessoa.nome, new Date());
+    }
 
-		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO) && this.parecer.equals("")) {
-			throw new ValidacaoException(Mensagem.ANALISE_DESPACHO_NAO_PREENCHIDO);
-		}
+    public static ParecerAnalistaTecnico findParecerByProcesso(Processo processo) {
 
-		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO) && this.parecer.equals("")) {
-			throw new ValidacaoException(Mensagem.ANALISE_JUSTIFICATIVA_NAO_PREENCHIDA);
-		}
+        HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(processo.idObjetoTramitavel);
 
-	}
+        if (historicoTramitacao.idAcao.equals(SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE)) {
+            return ParecerAnalistaTecnico.getUltimoParecer(processo.analise.analiseTecnica.pareceresAnalistaTecnico);
+        }
 
-	public static ParecerAnalistaTecnico getUltimoParecer(List<ParecerAnalistaTecnico> pareceresAnalistatecnico) {
+        return new ParecerAnalistaTecnico();
 
-		return pareceresAnalistatecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new);
+    }
 
-	}
+    private Gerente getGerenteAnaliseTecnica(UsuarioAnalise usuarioExecutor) {
+        return Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(
+        		usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnica);
+    }
 
-	public static Documento gerarPDFMinuta(AnaliseTecnica analiseTecnica, ParecerAnalistaTecnico parecer) throws Exception {
+    private void setCondicionantes(List<Condicionante> novasCondicionantes) {
 
-		IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
+        if (this.condicionantes == null) {
+            this.condicionantes = new ArrayList<>();
+        }
 
-		Endereco enderecoPrincipal = new Endereco();
+        List<Condicionante> condicionantesExcluidas = new ArrayList<>();
 
-		br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.getCpfCnpj());
-		for (Endereco endereco : empreendimentoEU.enderecos) {
-			if (endereco.tipo.id == TipoEndereco.ID_PRINCIPAL) {
-				enderecoPrincipal = endereco;
-			}
-		}
+        if (novasCondicionantes.isEmpty()) {
+            condicionantesExcluidas.addAll(this.condicionantes);
+        }
 
-		 final Endereco enderecoCorrespondencia = empreendimentoEU.enderecos.stream().filter(endereco -> endereco.tipo.id.equals(TipoEndereco.ID_CORRESPONDENCIA)).findAny().orElseThrow(PortalSegurancaException::new);
+        if (condicionantesExcluidas.isEmpty()) {
 
+            this.condicionantes.forEach(condicionante -> {
 
-		TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_MINUTA);
+                boolean excluida = novasCondicionantes.stream().noneMatch(nc -> condicionante.id.equals(nc.id));
 
-		PDFGenerator pdf = new PDFGenerator()
-				.setTemplate(tipoDocumento.getPdfTemplate())
-				.addParam("analiseTecnica", analiseTecnica)
-				.addParam("enderecoEmpreendimento", enderecoPrincipal)
-				.addParam("enderecoCorrespondencia",enderecoCorrespondencia)
-				.addParam("empreendimento", empreendimentoEU)
-				.addParam("parecer", parecer)
-				.setPageSize(21.0D, 30.0D, 1.0D, 1.0D, 4.0D, 5.0D);
+                if (excluida) {
+                    condicionantesExcluidas.add(condicionante);
+                }
 
-		pdf.generate();
+            });
 
-		return new Documento(tipoDocumento, pdf.getFile(),"minuta.pdf", parecer.analistaTecnico.pessoa.nome, new Date());
-	}
+        }
 
-	public static ParecerAnalistaTecnico findParecerByProcesso(Processo processo) {
+        novasCondicionantes.forEach(nc -> {
 
-		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(processo.idObjetoTramitavel);
+            boolean nova = this.condicionantes.stream().noneMatch(c -> c.id.equals(nc.id));
 
-		if(historicoTramitacao.idAcao.equals(SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE)) {
+            if (nova) {
 
-			return ParecerAnalistaTecnico.getUltimoParecer(processo.analise.analiseTecnica.pareceresAnalistaTecnico);
+                nc.parecerAnalistaTecnico = this;
+                nc._save();
+                this.condicionantes.add(nc);
 
-		}
+            }
 
-		return new ParecerAnalistaTecnico();
-	
-	}
+        });
 
-	@Override
-	public List<Documento> getDocumentos() {
-		return this.documentos;
-	}
+        for (Condicionante c : condicionantesExcluidas) {
 
-	@Override
-	public List<Documento> getDocumentosParecer() {
-		return this.documentos.stream().filter(Documento::isParecerAnaliseTecnica).collect(Collectors.toList());
-	}
+            this.condicionantes.remove(c);
+            c.delete();
+
+        }
+
+    }
+
+    private void setRestricoes(List<Restricao> novasRestricoes) {
+
+        if (this.restricoes == null) {
+            this.restricoes = new ArrayList<>();
+        }
+
+        List<Restricao> restricoesExcluidas = new ArrayList<>();
+
+        if (novasRestricoes.isEmpty()) {
+            restricoesExcluidas.addAll(this.restricoes);
+        }
+
+        if (restricoesExcluidas.isEmpty()) {
+
+            this.restricoes.forEach(restricaoAntiga -> {
+
+                boolean excluida = novasRestricoes.stream().noneMatch(nc -> restricaoAntiga.id.equals(nc.id));
+
+                if (excluida) {
+                    restricoesExcluidas.add(restricaoAntiga);
+                }
+
+            });
+
+        }
+
+        novasRestricoes.forEach(nr -> {
+
+            boolean nova = this.restricoes.stream().noneMatch(c -> c.id.equals(nr.id));
+
+            if (nova) {
+
+                nr.parecerAnalistaTecnico = this;
+                nr._save();
+                this.restricoes.add(nr);
+
+            }
+
+        });
+
+        for (Restricao c : restricoesExcluidas) {
+
+            this.restricoes.remove(c);
+            c.delete();
+
+        }
+
+    }
+
+    @Override
+    public List<Documento> getDocumentos() {
+        return this.documentos;
+    }
+
+    @Override
+    public List<Documento> getDocumentosParecer() {
+        return this.documentos.stream().filter(Documento::isParecerAnaliseTecnica).collect(Collectors.toList());
+    }
 
 }
