@@ -24,8 +24,8 @@
 					"codigo": "ANALISTA_TECNICO"
 				},
 				{
-					"nome": "Gerente",
-					"codigo": "GERENTE"
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
 				},
                                 {
 					"nome": "Diretor",
@@ -42,8 +42,8 @@
 			"codigo": "ANL_VINCULAR_PROCESSO",
 			"perfis": [
 				{
-					"nome": "Gerente",
-					"codigo": "GERENTE"
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
 				}
 			]
 		},
@@ -52,8 +52,8 @@
 			"codigo": "ANL_DESVINCULAR_PROCESSO",
 			"perfis": [
 				{
-					"nome": "Gerente",
-					"codigo": "GERENTE"
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
 				},
 				{
 					"nome": "Analista CAR",
@@ -86,8 +86,8 @@
 					"codigo": "ANALISTA_TECNICO"
 				},
 				{
-					"nome": "Gerente",
-					"codigo": "GERENTE"
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
 				},
                                 {
 					"nome": "Diretor",
@@ -104,8 +104,8 @@
 			"codigo": "ANL_VALIDAR_PARECER_CAR",
 			"perfis": [
 				{
-					"nome": "Gerente",
-					"codigo": "GERENTE"
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
 				}
 			]
 		},
@@ -114,8 +114,8 @@
 			"codigo": "ANL_VALIDAR_PARECER_GEO",
 			"perfis": [
 				{
-					"nome": "Gerente",
-					"codigo": "GERENTE"
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
 				}
 			]
 		},
@@ -124,8 +124,8 @@
 			"codigo": "ANL_VALIDAR_PARECER_TECNICO",
 			"perfis": [
 				{
-					"nome": "Gerente",
-					"codigo": "GERENTE"
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
 				}
 			]
 		},
@@ -196,8 +196,8 @@
 					"codigo": "ANALISTA_TECNICO"
 				},
 				{
-					"nome": "Gerente",
-					"codigo": "GERENTE"
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
 				},
                                 {
 					"nome": "Diretor",
