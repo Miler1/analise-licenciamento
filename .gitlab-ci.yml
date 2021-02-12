@@ -42,9 +42,9 @@ deploy_dev:
         - echo "server.geradaPor=GITLAB-CI" >> /builds/amapa/analise/dist/conf/application.conf
         - echo "@include.production = ambientes/teste.conf" >> /builds/amapa/analise/dist/conf/application.conf
         - cd /builds/amapa/analise
-        - zip -r release-licenciamento-analise-ap.zip dist
-        - sshpass -p "$SSH_HOST_TESTE_SENHA" scp -v -o StrictHostKeyChecking=no release-licenciamento-analise-ap.zip $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE:/var/tmp
-        - sshpass -p "$SSH_HOST_TESTE_SENHA" ssh -tt -o StrictHostKeyChecking=no $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE 'unzip /var/tmp/release-licenciamento-analise-ap.zip -d /var/tmp; cp -rf /var/tmp/dist/* /dados/var/play/licenciamento/analise/; sudo /usr/bin/systemctl restart licenciamento-analise-ap.service; rm -rf /var/tmp/dist /var/tmp/release-licenciamento-analise-ap.zip'
+        - zip -r release-analise-licenciamento-ap.zip dist
+        - sshpass -p "$SSH_HOST_TESTE_SENHA" scp -v -o StrictHostKeyChecking=no release-analise-licenciamento-ap.zip $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE:/var/tmp
+        - sshpass -p "$SSH_HOST_TESTE_SENHA" ssh -tt -o StrictHostKeyChecking=no $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE 'unzip /var/tmp/release-analise-licenciamento-ap.zip -d /var/tmp; cp -rf /var/tmp/dist/* /var/play/amapa/licenciamento_ambiental/analise/; sudo /usr/bin/systemctl restart analise-licenciamento-ap.service; rm -rf /var/tmp/dist /var/tmp/release-analise-licenciamento-ap.zip'
 
 deploy_homologation:
     only:
@@ -70,10 +70,10 @@ deploy_homologation:
         - echo "server.geradaPor=GITLAB-CI" >> /builds/amapa/analise/dist/conf/application.conf
         - echo "@include.production = ambientes/homologacao.conf" >> /builds/amapa/analise/dist/conf/application.conf
         - cd /builds/amapa/analise
-        - zip -r release-analise-ap-homolog.zip dist
+        - zip -r release-licenciamento-analise-ap-homolog.zip dist
         - vpnc-connect /etc/vpnc/vpn-prodap
-        - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" scp -P 15012 -v -o StrictHostKeyChecking=no release-licenciamento-ap-homolog.zip $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG:/var/tmp
-        - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" ssh -p 15012 -tt -o StrictHostKeyChecking=no $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG 'unzip /var/tmp/release-analise-ap-homolog.zip -d /var/tmp; tar czvf /var/tmp/analise-ap-homolog-bkp-$(date  +%d-%m-%Y-%H.%M.%S).tgz /dados/var/play/licenciamento/analise/ ;cp -rf /var/tmp/dist/* /dados/var/play/licenciamento/analise/; sudo /usr/bin/systemctl restart analise-licenciamento.service; rm -rf /var/tmp/dist /var/tmp/release-analise-ap-homolog.zip'
+        - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" scp -P 15012 -v -o StrictHostKeyChecking=no release-licenciamento-analise-ap-homolog.zip $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG:/var/tmp
+        - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" ssh -p 15012 -tt -o StrictHostKeyChecking=no $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG 'unzip /var/tmp/release-licenciamento-analise-ap-homolog.zip -d /var/tmp; tar czvf /var/tmp/analise-ap-homolog-bkp-$(date  +%d-%m-%Y-%H.%M.%S).tgz /dados/var/play/licenciamento/analise/ ;cp -rf /var/tmp/dist/* /dados/var/play/licenciamento/analise/; sudo /usr/bin/systemctl restart licenciamento-analise.service; rm -rf /var/tmp/dist /var/tmp/release-licenciamento-analise-ap-homolog.zip'
         - vpnc-disconnect
 
 deploy_production:
