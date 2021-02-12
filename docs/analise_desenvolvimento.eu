@@ -32,8 +32,8 @@
 					"codigo": "DIRETOR"
 				},
 				{
-					"nome": "Presidente",
-					"codigo": "PRESIDENTE"
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
 				}
 			]
 		},
@@ -94,8 +94,8 @@
 					"codigo": "DIRETOR"
 				},
 				{
-					"nome": "Presidente",
-					"codigo": "PRESIDENTE"
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
 				}
 			]
 		},
@@ -204,8 +204,8 @@
 					"codigo": "DIRETOR"
 				},
 				{
-					"nome": "Presidente",
-					"codigo": "PRESIDENTE"
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
 				}
 			]
 		},
@@ -214,8 +214,8 @@
 			"codigo": "ANL_EMITIR_LICENCA",
 			"perfis": [
 				{
-					"nome": "Presidente",
-					"codigo": "PRESIDENTE"
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
 				}
 			]
 		},
@@ -224,8 +224,8 @@
 			"codigo": "ANL_SUSPENDER_LICENCA_EMITIDA",
 			"perfis": [
 				{
-					"nome": "Presidente",
-					"codigo": "PRESIDENTE"
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
 				}
 			]
 		},
@@ -234,8 +234,8 @@
 			"codigo": "ANL_CANCELAR_LICENCA_EMITIDA",
 			"perfis": [
 				{
-					"nome": "Presidente",
-					"codigo": "PRESIDENTE"
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
 				}
 			]
 		}
