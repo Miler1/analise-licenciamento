@@ -90,8 +90,8 @@ public class Suspensao extends GenericModel {
 
 			this.licenca.caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacaoEnum.SUSPENSO.id);
 
-			ParecerPresidente parecerPresidente = ParecerPresidente.getUltimoParecerPresidente(this.licenca.caracterizacao.processo.analise.pareceresPresidente);
-			parecerPresidente.enviarEmailStatusAnalise(this.licenca.caracterizacao.processo.analise);
+			ParecerSecretario parecerSecretario = ParecerSecretario.getUltimoParecerSecretario(this.licenca.caracterizacao.processo.analise.pareceresSecretario);
+			parecerSecretario.enviarEmailStatusAnalise(this.licenca.caracterizacao.processo.analise);
 
 		} catch (Exception e) {
 

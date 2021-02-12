@@ -1,6 +1,6 @@
-var AnaliseEmAndamentoPresidenteListController = function($scope, config, $location, $rootScope, processoService) {
+var AnaliseEmAndamentoSecretarioListController = function($scope, config, $location, $rootScope, processoService) {
 
-	$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO DIRETOR PRESIDENTE';
+	$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO SECRETÁRIO';
 
 	var listagem = this;
 
@@ -13,7 +13,7 @@ var AnaliseEmAndamentoPresidenteListController = function($scope, config, $locat
 	listagem.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 	listagem.processos = [];
 	listagem.condicoesEmAnalise = app.utils.CondicaoTramitacao;
-	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE;
+	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_SECRETARIO;
 	listagem.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	listagem.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	listagem.PrazoAnalise = app.utils.PrazoAnalise;
@@ -48,14 +48,14 @@ var AnaliseEmAndamentoPresidenteListController = function($scope, config, $locat
 
 		$rootScope.$broadcast('atualizarContagemProcessos');
 
-		$location.path('/analise-presidente/' + idAnalise.toString());
+		$location.path('/analise-secretario/' + idAnalise.toString());
 	}
 
 	function continuarAnaliseGeo(idAnalise) {
 
 		$rootScope.$broadcast('atualizarContagemProcessos');
 
-		$location.path('/analise-presidente/' + idAnalise.toString());
+		$location.path('/analise-secretario/' + idAnalise.toString());
 	}
 	
 	function exibirDadosProcesso(processo) {
@@ -71,4 +71,4 @@ var AnaliseEmAndamentoPresidenteListController = function($scope, config, $locat
 
 };
 
-exports.controllers.AnaliseEmAndamentoPresidenteListController = AnaliseEmAndamentoPresidenteListController;
+exports.controllers.AnaliseEmAndamentoSecretarioListController = AnaliseEmAndamentoSecretarioListController;

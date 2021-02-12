@@ -14,6 +14,6 @@ div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === analis
     ng-controller='analiseEmAndamentoDiretorListController as listagem')
     include diretorTecnico/analise-em-andamento-listagem
 
-div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === analiseEmAndamentoListagem.perfis.PRESIDENTE",
-    ng-controller='analiseEmAndamentoPresidenteListController as listagem')
-    include presidente/analise-em-andamento-listagem
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === analiseEmAndamentoListagem.perfis.SECRETARIO",
+    ng-controller='analiseEmAndamentoSecretarioListController as listagem')
+    include secretario/analise-em-andamento-listagem

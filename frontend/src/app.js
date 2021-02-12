@@ -216,13 +216,13 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			visivel: function(){
 
 				return [
-					app.utils.Perfis.PRESIDENTE,
+					app.utils.Perfis.SECRETARIO,
 					].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function() {
 
-				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE;
+				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_SECRETARIO;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
@@ -284,9 +284,9 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 					return '/analise-diretor';
 
-				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE){
+				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO){
 
-					return '/analise-presidente';
+					return '/analise-secretario';
 
 				}
 			},
@@ -295,7 +295,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 				return $location.path().indexOf('/analise-gerente') > -1 ||
 					$location.path().indexOf('/analise-diretor') > -1 ||
-					$location.path().indexOf('/analise-presidente') > -1 ||
+					$location.path().indexOf('/analise-secretario') > -1 ||
 					$location.path().indexOf('/analise-tecnica-gerente') > -1;
 
 			},
@@ -303,7 +303,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 				return [app.utils.Perfis.GERENTE,
 					app.utils.Perfis.DIRETOR,
-					app.utils.Perfis.PRESIDENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+					app.utils.Perfis.SECRETARIO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
@@ -311,8 +311,8 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 					return app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR;
-				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE)
-					return app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE;
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO)
+					return app.utils.CondicaoTramitacao.EM_ANALISE_SECRETARIO;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
@@ -363,12 +363,12 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			},
 			visivel: function(){
 
-				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE && LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken;
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO && LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken;
 			},
 
 			condicaoTramitacao: function(){
 
-				return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE;
+				return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_SECRETARIO;
 			},
             deveFiltrarPorUsuario: true
 		},
@@ -391,7 +391,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 					app.utils.Perfis.ANALISTA_TECNICO,
 					app.utils.Perfis.DIRETOR,
 					app.utils.Perfis.GERENTE,
-					app.utils.Perfis.PRESIDENTE
+					app.utils.Perfis.SECRETARIO
 				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
 			},
 			deveFiltrarPorUsuario: true
@@ -411,7 +411,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 				return [
 					app.utils.Perfis.GERENTE,
-					app.utils.Perfis.PRESIDENTE,
+					app.utils.Perfis.SECRETARIO,
 					app.utils.Perfis.DIRETOR
 				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
 			}
@@ -577,7 +577,7 @@ utils.services(licenciamento)
 	.add('questionarioService', services.QuestionarioService)
 	.add('parecerAnalistaTecnicoService', services.ParecerAnalistaTecnicoService)
 	.add('parecerDiretorTecnicoService', services.ParecerDiretorTecnicoService)
-	.add('parecerPresidenteService', services.ParecerPresidenteService);
+	.add('parecerSecretarioService', services.ParecerSecretarioService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)

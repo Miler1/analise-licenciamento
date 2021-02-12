@@ -124,10 +124,10 @@ public class UsuarioAnalise extends GenericModel  {
 				.setParameter("id_diretor", diretor.usuario.id).first();
 	}
 
-	public static UsuarioAnalise findByPresidente(Presidente presidente) {
+	public static UsuarioAnalise findBySecretario(Secretario secretario) {
 
-		return UsuarioAnalise.find("id = :id_presidente")
-				.setParameter("id_presidente", presidente.usuario.id).first();
+		return UsuarioAnalise.find("id = :id_secretario")
+				.setParameter("id_secretario", secretario.usuario.id).first();
 	}
 
 	public static UsuarioAnalise findByGerente(Gerente gerente) {

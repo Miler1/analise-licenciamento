@@ -3,8 +3,6 @@ package jobs;
 
 import models.*;
 import models.licenciamento.Caracterizacao;
-import models.licenciamento.Licenca;
-import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
 import play.Logger;
 import play.jobs.On;
@@ -94,16 +92,16 @@ public class ReenvioEmailJob extends GenericJob {
 
 					break;
 
-				case NOTIFICACAO_PRESIDENTE:
+				case NOTIFICACAO_SECRETARIO:
 
-					ParecerPresidente parecerPresidente = ParecerPresidente.findById(reenvioEmail.idItensEmail);
+					ParecerSecretario parecerSecretario = ParecerSecretario.findById(reenvioEmail.idItensEmail);
 
-					EmailNotificacaoStatusAnalise emailNotificacaoStatusAnalise = new EmailNotificacaoStatusAnalise(parecerPresidente.analise,parecerPresidente, emailsDestinatarios);
+					EmailNotificacaoStatusAnalise emailNotificacaoStatusAnalise = new EmailNotificacaoStatusAnalise(parecerSecretario.analise, parecerSecretario, emailsDestinatarios);
 					emailNotificacaoStatusAnalise.enviar();
 
 					break;
 
-				case NOTIFICACAO_PRESIDENTE_DISPENSA:
+				case NOTIFICACAO_SECRETARIO_DISPENSA:
 
 					Caracterizacao caracterizacao = Caracterizacao.findById(reenvioEmail.idItensEmail);
 

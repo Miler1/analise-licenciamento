@@ -46,11 +46,11 @@ div
 											| Ações &nbsp;
 											span.caret
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
-											li(ng-if="consultarLicencas.statusCaracterizacao.SUSPENSO !== licenca.statusCaracterizacao && consultarLicencas.statusCaracterizacao.CANCELADO !== licenca.statusCaracterizacao && consultarLicencas.usuarioLogadoCodigoPerfil === consultarLicencas.perfis.PRESIDENTE && consultarLicencas.isDispensaVisivel(licenca)")
+											li(ng-if="consultarLicencas.statusCaracterizacao.SUSPENSO !== licenca.statusCaracterizacao && consultarLicencas.statusCaracterizacao.CANCELADO !== licenca.statusCaracterizacao && consultarLicencas.usuarioLogadoCodigoPerfil === consultarLicencas.perfis.SECRETARIO && consultarLicencas.isDispensaVisivel(licenca)")
 												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, true)")
 													i.glyphicon.glyphicon-minus-sign
 													span Suspender licença
-											li(ng-if="consultarLicencas.statusCaracterizacao.SUSPENSO !== licenca.statusCaracterizacao && consultarLicencas.statusCaracterizacao.CANCELADO !== licenca.statusCaracterizacao && consultarLicencas.usuarioLogadoCodigoPerfil === consultarLicencas.perfis.PRESIDENTE && consultarLicencas.isDispensaVisivel(licenca)")
+											li(ng-if="consultarLicencas.statusCaracterizacao.SUSPENSO !== licenca.statusCaracterizacao && consultarLicencas.statusCaracterizacao.CANCELADO !== licenca.statusCaracterizacao && consultarLicencas.usuarioLogadoCodigoPerfil === consultarLicencas.perfis.SECRETARIO && consultarLicencas.isDispensaVisivel(licenca)")
 												a(ng-click="consultarLicencas.recuperarInfoLicenca(licenca, false)")
 													i.glyphicon.glyphicon-ban-circle
 													span Cancelar licença

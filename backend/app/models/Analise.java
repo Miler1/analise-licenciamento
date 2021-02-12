@@ -72,7 +72,7 @@ public class Analise extends GenericModel {
 
 	@OneToMany(mappedBy = "analise")
 	@Fetch(FetchMode.SUBSELECT)
-	public List<ParecerPresidente> pareceresPresidente;
+	public List<ParecerSecretario> pareceresSecretario;
 	
 	public Analise save() {
 		
@@ -314,7 +314,7 @@ public class Analise extends GenericModel {
 		this._save();
 	}
 
-	public void iniciarAnalisePresidente(UsuarioAnalise usuarioExecutor) {
+	public void iniciarAnaliseSecretario(UsuarioAnalise usuarioExecutor) {
 
 		if (this.dataCadastro == null) {
 
@@ -327,7 +327,7 @@ public class Analise extends GenericModel {
 
 		}
 
-		this.processo.tramitacao.tramitar(this.processo, AcaoTramitacao.INICIAR_ANALISE_PRESIDENTE, usuarioExecutor);
+		this.processo.tramitacao.tramitar(this.processo, AcaoTramitacao.INICIAR_ANALISE_SECRETARIO, usuarioExecutor);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.processo.idObjetoTramitavel), usuarioExecutor);
 
 	}

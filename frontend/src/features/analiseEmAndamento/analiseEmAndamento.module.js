@@ -37,13 +37,13 @@ analiseEmAndamento.config(['$routeProvider', function($routeProvider){
 			controller: controllers.AnaliseEmAndamentoListagemController,
 			controllerAs: 'analiseEmAndamentoListagem'
 		})
-		.when('/analise-presidente', {
+		.when('/analise-secretario', {
 			templateUrl: 'features/analiseEmAndamento/listagem/analise-em-andamento-listagem.html',
 			controller: controllers.AnaliseEmAndamentoListagemController,
 			controllerAs: 'analiseEmAndamentoListagem'
 		})
-		.when('/analise-presidente/:idAnalise', {
-			templateUrl: 'features/analiseEmAndamento/validacao/validacao-analise-presidente.html',
+		.when('/analise-secretario/:idAnalise', {
+			templateUrl: 'features/analiseEmAndamento/validacao/validacao-analise-secretario.html',
 			controller: controllers.AnaliseEmAndamentoListagemController,
 			controllerAs: 'analiseEmAndamentoListagem'
 		})
@@ -65,11 +65,11 @@ analiseEmAndamento.config(['$routeProvider', function($routeProvider){
 
 analiseEmAndamento
 	.controller('analiseEmAndamentoDiretorListController', controllers.AnaliseEmAndamentoDiretorListController)
-	.controller('analiseEmAndamentoPresidenteListController', controllers.AnaliseEmAndamentoPresidenteListController)
+	.controller('analiseEmAndamentoSecretarioListController', controllers.AnaliseEmAndamentoSecretarioListController)
 	.controller('analiseEmAndamentoTecnicaListController', controllers.AnaliseEmAndamentoTecnicaListController)
 	.controller('analiseEmAndamentoGeoListController', controllers.AnaliseEmAndamentoGeoListController)
 	.controller('analiseEmAndamentoGerenteListController', controllers.AnaliseEmAndamentoGerenteListController)
 	.controller('validacaoAnaliseGeoGerenteController', controllers.ValidacaoAnaliseGeoGerenteController)
 	.controller('validacaoAnaliseDiretorController', controllers.ValidacaoAnaliseDiretorController)
-	.controller('validacaoAnalisePresidenteController', controllers.ValidacaoAnalisePresidenteController)
+	.controller('validacaoAnaliseSecretarioController', controllers.ValidacaoAnaliseSecretarioController)
 	.controller('validacaoAnaliseTecnicaGerenteController', controllers.ValidacaoAnaliseTecnicaGerenteController);

@@ -4,7 +4,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 											   $anchorScroll,processoService, documentoService,
 											   empreendimentoService, notificacaoService,
 											   documentoLicenciamentoService, analiseGeoService, parecerDiretorTecnicoService,
-											   parecerAnalistaGeoService, parecerGerenteService,parecerPresidenteService,
+											   parecerAnalistaGeoService, parecerGerenteService,parecerSecretarioService,
 											   tiposSobreposicaoService,parecerAnalistaTecnicoService) {
 
 	var modalCtrl = this;
@@ -37,7 +37,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.parecer = {};
 	modalCtrl.pareceres = {};
 	modalCtrl.pareceresDiretor = {};
-	modalCtrl.pareceresPresidente ={};
+	modalCtrl.pareceresSecretario ={};
 	modalCtrl.pareceresTecnicos = {};
 	modalCtrl.documentos = [];
 	modalCtrl.processosAnteriores = [];
@@ -80,7 +80,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			
 		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE || 
 				modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.DIRETOR ||
-				modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.PRESIDENTE) {
+				modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.SECRETARIO) {
 
 			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
 
@@ -94,7 +94,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 			}
 			
 			modalCtrl.pareceresDiretor = modalCtrl.dadosProcesso.analise.pareceresDiretorTecnico;
-			modalCtrl.pareceresPresidente = modalCtrl.dadosProcesso.analise.pareceresPresidente;
+			modalCtrl.pareceresSecretario = modalCtrl.dadosProcesso.analise.pareceresSecretario;
 
 		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.ANALISTA_TECNICO) {
 
@@ -366,7 +366,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		if (modalCtrl.perfis.ANALISTA_GEO === modalCtrl.usuarioLogadoCodigoPerfil ||
 			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil ||
 			modalCtrl.perfis.DIRETOR === modalCtrl.usuarioLogadoCodigoPerfil ||
-			modalCtrl.perfis.PRESIDENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
+			modalCtrl.perfis.SECRETARIO === modalCtrl.usuarioLogadoCodigoPerfil) {
 
 			return true;
 
@@ -381,7 +381,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		if (modalCtrl.perfis.ANALISTA_TECNICO === modalCtrl.usuarioLogadoCodigoPerfil ||
 			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil ||
 			modalCtrl.perfis.DIRETOR === modalCtrl.usuarioLogadoCodigoPerfil ||
-			modalCtrl.perfis.PRESIDENTE === modalCtrl.usuarioLogadoCodigoPerfil) {
+			modalCtrl.perfis.SECRETARIO === modalCtrl.usuarioLogadoCodigoPerfil) {
 
 			return true;
 
@@ -833,7 +833,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		}else if(historico.idAcao === modalCtrl.acaoTramitacao.APROVAR_SOLICITACAO_LICENCA ||
 			historico.idAcao === modalCtrl.acaoTramitacao.NEGAR_SOLICITACAO_LICENCA ){
 		
-			parecerPresidenteService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+			parecerSecretarioService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
 				.then(function(response){
 					abrirModal(response.data, idProcesso);
 				});

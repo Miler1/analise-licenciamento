@@ -76,7 +76,7 @@ public class Condicoes extends InternalController {
 							Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA
 					))
 					.fetch();
-		}else if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.PRESIDENTE)) {
+		}else if(user.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.SECRETARIO)) {
 
 			condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
 					.setParameter("idsCondicoes", Arrays.asList(Condicao.NOTIFICADO_PELO_ANALISTA_GEO,

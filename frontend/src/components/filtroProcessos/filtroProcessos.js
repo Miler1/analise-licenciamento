@@ -94,15 +94,15 @@ var FiltroProcessos = {
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR;
 			
-			} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE) {
+			} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO) {
 				
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
-				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE;
+				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_SECRETARIO;
 			
-			} else if(emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE) {
+			} else if(emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO) {
 				
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
-				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE;
+				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_SECRETARIO;
 			
 			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_TECNICA_FINALIZADA') {
 
@@ -111,7 +111,7 @@ var FiltroProcessos = {
 				analiseTecnicaFinalizada = true;
 				ctrl.filtro.idCondicaoTramitacao = null;
 			
-			} else if(!caixaEntrada && !emAnalise && [app.utils.Perfis.GERENTE,app.utils.Perfis.DIRETOR, app.utils.Perfis.PRESIDENTE].includes($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo)) {
+			} else if(!caixaEntrada && !emAnalise && [app.utils.Perfis.GERENTE,app.utils.Perfis.DIRETOR, app.utils.Perfis.SECRETARIO].includes($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo)) {
 				
 				ctrl.filtro.listaIdCondicaoTramitacao = null;
 				ctrl.filtro.filtrarPorUsuario = false;
@@ -218,7 +218,7 @@ var FiltroProcessos = {
 			ctrl.filtro.isAnaliseGeoOpcional = !!ctrl.isAnaliseGeoOpcional;
 			ctrl.filtro.isGerente = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.GERENTE;
 			ctrl.filtro.isDiretor = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.DIRETOR;
-			ctrl.filtro.isPresidente = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.PRESIDENTE;
+			ctrl.filtro.isSecretario = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.SECRETARIO;
 			ctrl.filtro.isConsultarProcessos = !!ctrl.consultarProcessos;
 		}
 
@@ -328,7 +328,7 @@ var FiltroProcessos = {
 						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO ||
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ||
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR ||
-							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE) {
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO) {
 
 							ctrl.condicoes.push({
 
@@ -466,8 +466,8 @@ var FiltroProcessos = {
 				app.utils.CondicaoTramitacao.AGUARDANDO_RESPOSTA_JURIDICO,
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA,
 				app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR,
-				app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE,
-				app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE
+				app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_SECRETARIO,
+				app.utils.CondicaoTramitacao.EM_ANALISE_SECRETARIO
 			];
 		}
 
@@ -479,8 +479,8 @@ var FiltroProcessos = {
 				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE,
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA,
 				app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR,
-				app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE,
-				app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE
+				app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_SECRETARIO,
+				app.utils.CondicaoTramitacao.EM_ANALISE_SECRETARIO
 			];
 
 		}

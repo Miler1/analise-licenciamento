@@ -1,20 +1,20 @@
 include ../../../layout/components/paginacao
 
 div
-	filtro-processos(paginacao="cxEntPresidente.paginacao",
-		disabled-fields="cxEntPresidente.disabledFields",
-		atualizar-lista="cxEntPresidente.atualizarListaProcessos",
-		atualizar-paginacao="cxEntPresidente.atualizarPaginacao",
-		condicao-tramitacao="cxEntPresidente.condicaoTramitacao",
+	filtro-processos(paginacao="cxEntSecretario.paginacao",
+		disabled-fields="cxEntSecretario.disabledFields",
+		atualizar-lista="cxEntSecretario.atualizarListaProcessos",
+		atualizar-paginacao="cxEntSecretario.atualizarPaginacao",
+		condicao-tramitacao="cxEntSecretario.condicaoTramitacao",
 		pesquisar-ao-inicializar="true",
-		is-presidente="true")
+		is-secretario="true")
 
 	h4 Lista de protocolos
 
 	hr
 	.row
 		.col-md-12
-			div(ng-if="cxEntPresidente.processos && cxEntPresidente.processos.length > 0")
+			div(ng-if="cxEntSecretario.processos && cxEntSecretario.processos.length > 0")
 				table.table.table-striped.table-condensed.no-margin
 					thead
 						tr
@@ -27,15 +27,15 @@ div
 							th.col-md-2.text-center Prazo análise
 							th.col-md-1.text-center Ações
 					tbody
-						tr(ng-repeat="processo in cxEntPresidente.processos")
+						tr(ng-repeat="processo in cxEntSecretario.processos")
 							td
 							td(ng-attr-title="{{processo.numero}}").text-center {{ processo.numero }}
 							td.text-center {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
 							td.text-center {{processo.denominacaoEmpreendimento}}
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td.text-center {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntPresidente.dateUtil.verificaPrazoMinimoData(cxEntPresidente.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntPresidente.PrazoAnalise.ANALISE), cxEntPresidente.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
-								| {{ cxEntPresidente.dateUtil.getContaDiasRestantesData(cxEntPresidente.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntPresidente.PrazoAnalise.ANALISE)) }}
+							td(ng-class="{'error-message': cxEntSecretario.dateUtil.verificaPrazoMinimoData(cxEntSecretario.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntSecretario.PrazoAnalise.ANALISE), cxEntSecretario.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
+								| {{ cxEntSecretario.dateUtil.getContaDiasRestantesData(cxEntSecretario.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntSecretario.PrazoAnalise.ANALISE)) }}
 
 							td
 								span.pull-right
@@ -47,16 +47,16 @@ div
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
 
-												a(ng-click="cxEntPresidente.iniciarAnalisePresidente(processo.idAnalise)")
+												a(ng-click="cxEntSecretario.iniciarAnaliseSecretario(processo.idAnalise)")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise
 											li
-												a(ng-click="cxEntPresidente.visualizarProcesso(processo)")
+												a(ng-click="cxEntSecretario.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
 
-				+paginacao('cxEntPresidente.paginacao', 'cxEntPresidente.onPaginaAlterada')
+				+paginacao('cxEntSecretario.paginacao', 'cxEntSecretario.onPaginaAlterada')
 
-		.row(ng-show="!cxEntPresidente.processos || cxEntPresidente.processos.length == 0")
+		.row(ng-show="!cxEntSecretario.processos || cxEntSecretario.processos.length == 0")
 			.col-md-12
 				p.empty-result Não existem dados a serem exibidos.

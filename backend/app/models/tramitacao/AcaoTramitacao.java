@@ -63,7 +63,7 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long VALIDAR_DEFERIMENTO_GEO_PELO_GERENTE = 53l;
 	public static final Long VALIDAR_INDEFERIMENTO_GEO_PELO_GERENTE = 54l;
 	public static final Long SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE = 55l;
-	public static final Long SOLICITAR_AJUSTES_ANALISE_GEO_PRESIDENTE = 56l;
+	public static final Long SOLICITAR_AJUSTES_ANALISE_GEO_SECRETARIO = 56l;
 	public static final Long RESOLVER_NOTIFICACAO_GEO = 57l;
 	public static final Long INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO = 58l;
 	public static final Long SOLICITAR_DESVINCULO_ANALISE_GEO = 59l;
@@ -83,7 +83,7 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long INICIAR_ANALISE_TECNICA_POR_VOLTA_DE_NOTIFICACAO = 73L;
 	public static final Long VALIDAR_ANALISE_PELO_DIRETOR = 74L;
 	public static final Long INVALIDAR_ANALISE_PELO_DIRETOR = 75L;
-	public static final Long INICIAR_ANALISE_PRESIDENTE = 76l;
+	public static final Long INICIAR_ANALISE_SECRETARIO = 76l;
 	public static final Long APROVAR_SOLICITACAO_LICENCA = 78l;
 	public static final Long NEGAR_SOLICITACAO_LICENCA = 79l;
 

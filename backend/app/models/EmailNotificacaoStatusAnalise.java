@@ -1,34 +1,25 @@
 package models;
 
 import exceptions.AppException;
-import br.ufla.lemaf.beans.Empreendimento;
 import br.ufla.lemaf.beans.pessoa.Endereco;
 import br.ufla.lemaf.beans.pessoa.Municipio;
 import br.ufla.lemaf.enums.TipoEndereco;
-import models.licenciamento.Caracterizacao;
-import models.licenciamento.TipoAnalise;
 import notifiers.Emails;
-import org.apache.commons.lang.StringUtils;
 import services.IntegracaoEntradaUnicaService;
 
-import javax.mail.util.ByteArrayDataSource;
-import java.io.File;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class EmailNotificacaoStatusAnalise extends EmailNotificacao {
 
     private Analise analise;
-    private ParecerPresidente parecerPresidente;
+    private ParecerSecretario parecerSecretario;
 
-    public EmailNotificacaoStatusAnalise(Analise analise, ParecerPresidente parecerPresidente, List<String> emailsDestinatarios) throws Exception {
+    public EmailNotificacaoStatusAnalise(Analise analise, ParecerSecretario parecerSecretario, List<String> emailsDestinatarios) throws Exception {
 
         super(emailsDestinatarios);
         this.analise = analise;
-        this.parecerPresidente = parecerPresidente;
+        this.parecerSecretario = parecerSecretario;
 
     }
 
@@ -49,7 +40,7 @@ public class EmailNotificacaoStatusAnalise extends EmailNotificacao {
                 }
             }
 
-            if(!Emails.notificarRequerenteStatusAnalise(this.emailsDestinatarios, analise, parecerPresidente).get()) {
+            if(!Emails.notificarRequerenteStatusAnalise(this.emailsDestinatarios, analise, parecerSecretario).get()) {
 
                 throw new AppException();
 
@@ -57,7 +48,7 @@ public class EmailNotificacaoStatusAnalise extends EmailNotificacao {
 
         } catch (InterruptedException | ExecutionException | AppException e) {
 
-            ReenvioEmail reenvioEmail = new ReenvioEmail(parecerPresidente.id, ReenvioEmail.TipoEmail.NOTIFICACAO_PRESIDENTE, e.getMessage(), this.emailsDestinatarios);
+            ReenvioEmail reenvioEmail = new ReenvioEmail(parecerSecretario.id, ReenvioEmail.TipoEmail.NOTIFICACAO_SECRETARIO, e.getMessage(), this.emailsDestinatarios);
             reenvioEmail.save();
 
             e.printStackTrace();

@@ -3,8 +3,6 @@ package models;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.db.jpa.GenericModel;
-import utils.Configuracoes;
-import utils.DateUtil;
 
 import javax.persistence.*;
 import java.util.*;
@@ -51,17 +49,17 @@ public class ParecerDiretorTecnico extends GenericModel {
 
     public void finalizar(Analise analise, UsuarioAnalise diretor) {
 
-        Presidente presidente = Presidente.distribuicaoAutomaticaPresidente(analise);
-        presidente.save();
+        Secretario secretario = Secretario.distribuicaoAutomaticaSecretario(analise);
+        secretario.save();
 
         if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_APROVADA)) {
 
-            analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_ANALISE_PELO_DIRETOR, getUsuarioSessao(), UsuarioAnalise.findByPresidente(presidente));
+            analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.VALIDAR_ANALISE_PELO_DIRETOR, getUsuarioSessao(), UsuarioAnalise.findBySecretario(secretario));
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel), getUsuarioSessao());
 
         } else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.ANALISE_NAO_APROVADA)) {
 
-            analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.INVALIDAR_ANALISE_PELO_DIRETOR, getUsuarioSessao(), UsuarioAnalise.findByPresidente(presidente));
+            analise.processo.tramitacao.tramitar(analise.processo, AcaoTramitacao.INVALIDAR_ANALISE_PELO_DIRETOR, getUsuarioSessao(), UsuarioAnalise.findBySecretario(secretario));
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analise.processo.idObjetoTramitavel), getUsuarioSessao());
 
         }

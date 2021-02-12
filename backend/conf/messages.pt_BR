@@ -108,7 +108,7 @@ ANALISE_SEM_PARECER_VALIDACAO=O parecer da validação não foi informado.
 # Analise tecnica
 #
 ANALISE_DIRETOR_INICIADA_SUCESSO=Análise diretor iniciada com sucesso.
-ANALISE_PRESIDENTE_INICIADA_SUCESSO=Análise presidente iniciada com sucesso.
+ANALISE_PRESIDENTE_INICIADA_SUCESSO=Análise secretario iniciada com sucesso.
 ANALISE_TECNICA_INICIADA_SUCESSO=Análise técnica iniciada.
 ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO=A validade da licença está maior que o máximo permitido.
 ANALISE_TECNICA_CONDICIONANTE_PRAZO_MAIOR_PERMITIDO=A validade da condicionante está maior que o máximo permitido.

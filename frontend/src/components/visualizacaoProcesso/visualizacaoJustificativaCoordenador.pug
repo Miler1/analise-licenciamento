@@ -118,28 +118,28 @@ div(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresDiretor
 						label Despacho:
 						p.i(ng-bind-html="parecerDiretor.parecer")
 
-div(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente.length > 0 ) || ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente.length > 0 )")
-	label.titulo(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente.length > 0 ) || ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente.length > 0 )")
-	div.info-sem-dados-para-exibir(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente.length === 0 ) && ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresPresidente.length === 0 )") 
+div(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario.length > 0 ) || ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario.length > 0 )")
+	label.titulo(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario.length > 0 ) || ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario !== null && modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario.length > 0 )")
+	div.info-sem-dados-para-exibir(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario.length === 0 ) && ( modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario === null || modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecretario.length === 0 )")
 		i Não há análises para este protocolo
-	.panel-group(id="accordion-{{parecerPresidente.id}}", ng-if = "modalVisualizacaoProcessoCtrl.pareceresPresidente", ng-repeat="parecerPresidente in modalVisualizacaoProcessoCtrl.pareceresPresidente")
+	.panel-group(id="accordion-{{parecerSecretario.id}}", ng-if = "modalVisualizacaoProcessoCtrl.pareceresSecretario", ng-repeat="parecerSecretario in modalVisualizacaoProcessoCtrl.pareceresSecretario")
 		div
 			.panel.panel-default.panel-analise
-				a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-presidente-{{parecerPresidente.id}}', aria-expanded='false', data-target='#dados-presidente-{{parecerPresidente.id}}', ng-init = 'modalVisualizacaoProcessoCtrl.openedAccordionPresidente = false', ng-click = 'modalVisualizacaoProcessoCtrl.openedAccordionPresidente = !modalVisualizacaoProcessoCtrl.openedAccordionPresidente')
+				a(href='javascript:;', data-toggle='collapse', data-parent='#accordion-secretario-{{parecerSecretario.id}}', aria-expanded='false', data-target='#dados-secretario-{{parecerSecretario.id}}', ng-init = 'modalVisualizacaoProcessoCtrl.openedAccordionSecretario = false', ng-click = 'modalVisualizacaoProcessoCtrl.openedAccordionSecretario = !modalVisualizacaoProcessoCtrl.openedAccordionSecretario')
 					.panel.panel-default
 						.panel-heading
 							h4.panel-title
-								| PRESIDENTE: {{ parecerPresidente.usuario.pessoa.nome }}
-								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionPresidente, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionPresidente}")
+								| SECRETARIO: {{ parecerSecretario.usuario.pessoa.nome }}
+								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionSecretario, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionSecretario}")
 				
-				div.collapse(ng-class="{in: parecerPresidente.id}", id="dados-presidente-{{parecerPresidente.id}}")
+				div.collapse(ng-class="{in: parecerSecretario.id}", id="dados-secretario-{{parecerSecretario.id}}")
 					.panel-body
 
 						label Data do parecer:
-						p {{ parecerPresidente.dataParecer }}
+						p {{ parecerSecretario.dataParecer }}
 
 						label Situação:
-						p {{ parecerPresidente.tipoResultadoAnalise.nome }}
+						p {{ parecerSecretario.tipoResultadoAnalise.nome }}
 
 						label Despacho:
-						p.i(ng-bind-html="parecerPresidente.parecer")
+						p.i(ng-bind-html="parecerSecretario.parecer")

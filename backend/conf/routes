@@ -12,15 +12,15 @@ GET     /jobs/callByClassName/{className}                   Jobs.callByClassName
 GET     /jobs/callAll                                       Jobs.callAll
 
 # Processo
-POST	/processos									        Processos.listWithFilter
-POST	/processos/count							        Processos.countWithFilter
-GET		/processos/{id}/completo					        Processos.getInfoProcesso
-GET		/processos/{idProcessoAnterior}/processosAnteriores	Processos.getProcessosAnteriores
-GET		/processos/{idProcesso}						        Processos.findById
-GET 	/processos/{idProcesso}/analiseJuridica		        Processos.findAnaliseJuridica
-GET     /processos/numero/{numProcesso}/completo            Processos.findByNumProcesso
-GET		/processos/baixarShapefile//{idProcesso}	        Processos.baixarShapefile
-GET		/processos/baixarShapefileAtividades//{idProcesso}	Processos.baixarShapefileAtividades
+POST	/processos									            Processos.listWithFilter
+POST	/processos/count							            Processos.countWithFilter
+GET		/processos/{id}/completo					            Processos.getInfoProcesso
+GET		/processos/{idProcessoAnterior}/processosAnteriores	    Processos.getProcessosAnteriores
+GET		/processos/{idProcesso}						            Processos.findById
+GET 	/processos/{idProcesso}/analiseJuridica		            Processos.findAnaliseJuridica
+GET     /processos/numero/{numProcesso}/completo                Processos.findByNumProcesso
+GET		/processos/baixarShapefile//{idProcesso}	            Processos.baixarShapefile
+GET		/processos/baixarShapefileAtividades//{idProcesso}	    Processos.baixarShapefileAtividades
 
 #Questionario
 GET     /questionario/{idProcesso}                  Questionarios.findQuestionario
@@ -36,59 +36,59 @@ GET     /imovel/{id}/completo                       Imoveis.getImovelById
 
 # Analise
 
-GET		/analises/{id}									Analises.findById
-POST    /analises/iniciar/{idAnalise}                   Analises.iniciar
-POST    /analises/iniciarAnalisePresidente/{idAnalise}                   Analises.iniciarAnalisePresidente
+GET		/analises/{id}									    Analises.findById
+POST    /analises/iniciar/{idAnalise}                       Analises.iniciar
+POST    /analises/iniciarAnaliseSecretario/{idAnalise}      Analises.iniciarAnaliseSecretario
 
 # Analise juridica
 
-GET		/analisesJuridicas/parecer									AnalisesJuridicas.findByNumeroProcesso
-POST	/analisesJuridicas/iniciar 									AnalisesJuridicas.iniciar
-POST	/analisesJuridicas											AnalisesJuridicas.alterar
-POST	/analisesJuridicas/concluir									AnalisesJuridicas.concluir
-POST	/analisesJuridicas/validarParecer							AnalisesJuridicas.validarParecer
-GET		/analisesJuridicas/{idAnaliseJuridica}						AnalisesJuridicas.findById
-GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados AnalisesJuridicas.findDocumentosAnalisados
-POST	/analisesJuridicas/validarParecerAprovador					AnalisesJuridicas.validarParecerAprovador
-POST    /analisesJuridicas/downloadPDFParecer                       AnalisesJuridicas.downloadPDFParecer
-POST    /analisesJuridicas/downloadPDFNotificacao                   AnalisesJuridicas.downloadPDFNotificacao
+GET		/analisesJuridicas/parecer									    AnalisesJuridicas.findByNumeroProcesso
+POST	/analisesJuridicas/iniciar 									    AnalisesJuridicas.iniciar
+POST	/analisesJuridicas											    AnalisesJuridicas.alterar
+POST	/analisesJuridicas/concluir									    AnalisesJuridicas.concluir
+POST	/analisesJuridicas/validarParecer							    AnalisesJuridicas.validarParecer
+GET		/analisesJuridicas/{idAnaliseJuridica}						    AnalisesJuridicas.findById
+GET		/analisesJuridicas/{idAnaliseJuridica}/documentosAnalisados     AnalisesJuridicas.findDocumentosAnalisados
+POST	/analisesJuridicas/validarParecerAprovador					    AnalisesJuridicas.validarParecerAprovador
+POST    /analisesJuridicas/downloadPDFParecer                           AnalisesJuridicas.downloadPDFParecer
+POST    /analisesJuridicas/downloadPDFNotificacao                       AnalisesJuridicas.downloadPDFNotificacao
 
 # Analise tecnica
 
-GET		/analisesTecnicas/parecer							    AnalisesTecnicas.findByNumeroProcesso
-POST	/analisesTecnicas/iniciar 							    AnalisesTecnicas.iniciar
-POST	/analisesTecnicas									    AnalisesTecnicas.alterar
-GET		/analisesTecnicas/{idAnaliseTecnica}				    AnalisesTecnicas.findById
-GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	    AnalisesTecnicas.getRestricoesGeo
-POST	/analisesTecnicas/validarParecer					    AnalisesTecnicas.validarParecer
-POST	/analisesTecnicas/validarParecerGerente				    AnalisesTecnicas.validarParecerGerente
-POST	/analisesTecnicas/validarParecerAprovador			    AnalisesTecnicas.validarParecerAprovador
-POST    /analisesTecnicas/downloadPDFParecer                    AnalisesTecnicas.downloadPDFParecer
-POST    /analisesTecnicas/downloadPDFNotificacao                AnalisesTecnicas.downloadPDFNotificacao
-POST    /analisesTecnicas/downloadPDFRelatorioTecnicoVistoria   AnalisesTecnicas.downloadPDFRelatorioTecnicoVistoria
-POST    /analisesTecnicas/downloadPDFMinuta                     AnalisesTecnicas.downloadPDFMinuta
-POST    /analisesTecnicas/iniciarAnaliseTecnicaGerente          AnalisesTecnicas.iniciarAnaliseTecnicaGerente
-GET     /analisesTecnicas/buscaAnaliseTecnicaByAnalise/{idAnalise}   AnalisesTecnicas.buscaAnaliseTecnicaByAnalise
+GET		/analisesTecnicas/parecer							                    AnalisesTecnicas.findByNumeroProcesso
+POST	/analisesTecnicas/iniciar 							                    AnalisesTecnicas.iniciar
+POST	/analisesTecnicas									                    AnalisesTecnicas.alterar
+GET		/analisesTecnicas/{idAnaliseTecnica}				                    AnalisesTecnicas.findById
+GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	                    AnalisesTecnicas.getRestricoesGeo
+POST	/analisesTecnicas/validarParecer					                    AnalisesTecnicas.validarParecer
+POST	/analisesTecnicas/validarParecerGerente				                    AnalisesTecnicas.validarParecerGerente
+POST	/analisesTecnicas/validarParecerAprovador			                    AnalisesTecnicas.validarParecerAprovador
+POST    /analisesTecnicas/downloadPDFParecer                                    AnalisesTecnicas.downloadPDFParecer
+POST    /analisesTecnicas/downloadPDFNotificacao                                AnalisesTecnicas.downloadPDFNotificacao
+POST    /analisesTecnicas/downloadPDFRelatorioTecnicoVistoria                   AnalisesTecnicas.downloadPDFRelatorioTecnicoVistoria
+POST    /analisesTecnicas/downloadPDFMinuta                                     AnalisesTecnicas.downloadPDFMinuta
+POST    /analisesTecnicas/iniciarAnaliseTecnicaGerente                          AnalisesTecnicas.iniciarAnaliseTecnicaGerente
+GET     /analisesTecnicas/buscaAnaliseTecnicaByAnalise/{idAnalise}              AnalisesTecnicas.buscaAnaliseTecnicaByAnalise
 GET		/analisesTecnicas/findAnalisesTecnicaByNumeroProcesso/{numero}			AnalisesTecnicas.findAnalisesTecnicaByNumeroProcesso
 
 # Analise GEO
 
-GET		/analisesGeo/parecer							        AnalisesGeo.findByNumeroProcesso
-POST		/analisesGeo/iniciar 							        AnalisesGeo.iniciar
-POST		/analisesGeo									        AnalisesGeo.alterar
-GET		/analisesGeo/{idAnaliseGeo}				                AnalisesGeo.findById
-GET		/analisesGeo/{idAnaliseGeo}/restricoesGeo	            AnalisesGeo.getRestricoesGeo
-POST		/analisesGeo/validarParecer					            AnalisesGeo.validarParecer
-POST		/analisesGeo/validarParecerGerente				        AnalisesGeo.validarParecerGerente
-POST		/analisesGeo/validarParecerAprovador			        AnalisesGeo.validarParecerAprovador
+GET		/analisesGeo/parecer							                    AnalisesGeo.findByNumeroProcesso
+POST	/analisesGeo/iniciar 							                    AnalisesGeo.iniciar
+POST	/analisesGeo									                    AnalisesGeo.alterar
+GET		/analisesGeo/{idAnaliseGeo}				                            AnalisesGeo.findById
+GET		/analisesGeo/{idAnaliseGeo}/restricoesGeo	                        AnalisesGeo.getRestricoesGeo
+POST	/analisesGeo/validarParecer					                        AnalisesGeo.validarParecer
+POST	/analisesGeo/validarParecerGerente				                    AnalisesGeo.validarParecerGerente
+POST	/analisesGeo/validarParecerAprovador			                    AnalisesGeo.validarParecerAprovador
 GET		/analisesGeo/verificaAnexosEmpreendimento/{cpfCnpjEmpreendimento}   AnalisesGeo.verificaAnexosEmpreendimento
-POST		/analisesGeo/downloadPDFParecer                         AnalisesGeo.downloadPDFParecer
-POST		/analisesGeo/downloadPDFNotificacao                     AnalisesGeo.downloadPDFNotificacao
-POST		/analisesGeo/downloadPDFCartaImagem                     AnalisesGeo.downloadPDFCartaImagem
-POST		/analisesGeo/downloadPDFOficioOrgao/{id}                AnalisesGeo.downloadPDFOficioOrgao
-GET		/analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}       AnalisesGeo.buscaAnaliseGeoByAnalise
-POST		/analisesGeo/iniciarAnaliseGerente                      AnalisesGeo.iniciarAnaliseGerente
-GET		/analisesGeo/findAnalisesGeoByNumeroProcesso/{numero}   AnalisesGeo.findAnalisesGeoByNumeroProcesso
+POST	/analisesGeo/downloadPDFParecer                                     AnalisesGeo.downloadPDFParecer
+POST	/analisesGeo/downloadPDFNotificacao                                 AnalisesGeo.downloadPDFNotificacao
+POST	/analisesGeo/downloadPDFCartaImagem                                 AnalisesGeo.downloadPDFCartaImagem
+POST	/analisesGeo/downloadPDFOficioOrgao/{id}                            AnalisesGeo.downloadPDFOficioOrgao
+GET		/analisesGeo/buscaAnaliseGeoByAnalise/{idAnalise}                   AnalisesGeo.buscaAnaliseGeoByAnalise
+POST	/analisesGeo/iniciarAnaliseGerente                                  AnalisesGeo.iniciarAnaliseGerente
+GET		/analisesGeo/findAnalisesGeoByNumeroProcesso/{numero}               AnalisesGeo.findAnalisesGeoByNumeroProcesso
 
 # Desvínculo
 
@@ -130,14 +130,14 @@ POST    /inconsistenciaVistoria/salvar                                          
 GET     /inconsistenciaVistoria/deletar/{id}                                        InconsistenciasVistoria.deletar
 
 # Pareceres gerente
-POST    /parecer/gerente/concluirParecerGerente                                                                     PareceresGerentes.concluirParecerGerente
-GET     /parecer/gerente/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                                 PareceresGerentes.findParecerByIdHistoricoTramitacao
-GET     /parecer/gerente/justificativa/findByIdAnaliseGeo/{idAnaliseGeo}                                            PareceresGerentes.findJustificativaParecerByIdAnaliseGeo
-POST    /parecer/gerente/concluirParecerTecnicoGerente                                                              PareceresGerentes.concluirParecerTecnicoGerente
-GET     /parecer/gerente/justificativa/findByIdAnaliseTecnica/{idAnaliseTecnica}                                    PareceresGerentes.findJustificativaParecerByIdAnaliseTecnica
-GET     /parecer/gerente/findParecerTecnicoByIdHistoricoTramitacao/{idHistoricoTramitacao}                          PareceresGerentes.findParecerTecnicoByIdHistoricoTramitacao
-GET     /parecer/gerente/getUltimoParecerGerenteAnaliseTecnica/{id}                                                 PareceresGerentes.getUltimoParecerGerenteAnaliseTecnica
-GET     /parecer/gerente/getUltimoParecerGerenteAnaliseGeo/{id}                                                     PareceresGerentes.getUltimoParecerGerenteAnaliseGeo
+POST    /parecer/gerente/concluirParecerGerente                                                  PareceresGerentes.concluirParecerGerente
+GET     /parecer/gerente/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}              PareceresGerentes.findParecerByIdHistoricoTramitacao
+GET     /parecer/gerente/justificativa/findByIdAnaliseGeo/{idAnaliseGeo}                         PareceresGerentes.findJustificativaParecerByIdAnaliseGeo
+POST    /parecer/gerente/concluirParecerTecnicoGerente                                           PareceresGerentes.concluirParecerTecnicoGerente
+GET     /parecer/gerente/justificativa/findByIdAnaliseTecnica/{idAnaliseTecnica}                 PareceresGerentes.findJustificativaParecerByIdAnaliseTecnica
+GET     /parecer/gerente/findParecerTecnicoByIdHistoricoTramitacao/{idHistoricoTramitacao}       PareceresGerentes.findParecerTecnicoByIdHistoricoTramitacao
+GET     /parecer/gerente/getUltimoParecerGerenteAnaliseTecnica/{id}                              PareceresGerentes.getUltimoParecerGerenteAnaliseTecnica
+GET     /parecer/gerente/getUltimoParecerGerenteAnaliseGeo/{id}                                  PareceresGerentes.getUltimoParecerGerenteAnaliseGeo
 
 # Pareceres diretores
 
@@ -146,23 +146,23 @@ POST    /parecer/diretor/concluirParecerDiretorTecnico                          
 GET     /parecer/diretor/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}    PareceresDiretores.findParecerByIdHistoricoTramitacao
 
 # Pareceres analista geo
-POST    /parecer/presidente/concluirParecerPresidente                                  PareceresPresidente.concluirParecerPresidente
-GET     /parecer/presidente/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}    PareceresPresidente.findParecerByIdHistoricoTramitacao
+POST    /parecer/secretario/concluirParecerSecretario                                       PareceresSecretario.concluirParecerSecretario
+GET     /parecer/secretario/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}      PareceresSecretario.findParecerByIdHistoricoTramitacao
 
 # Pareceres analista geo
-POST	/parecer/analistaGeo/concluir							                                                    PareceresAnalistasGeo.concluir
-GET     /parecer/analistaGeo/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                             PareceresAnalistasGeo.findParecerByIdHistoricoTramitacao
-GET     /parecer/analistaGeo/findParecerByIdAnaliseGeo/{idAnaliseGeo}                                               PareceresAnalistasGeo.findParecerByIdAnaliseGeo
-GET		/parecer/analistaGeo                                            							                PareceresAnalistasGeo.findByNumeroProcesso
-GET     /parecer/analistaGeo/findParecerByIdProcesso/{idProcesso}                                                   PareceresAnalistasGeo.findParecerByIdProcesso
-GET     /parecer/analistaGeo/getUltimoParecerAnaliseGeo/{id}                                                        PareceresAnalistasGeo.getUltimoParecerAnaliseGeo
+POST	/parecer/analistaGeo/concluir							                            PareceresAnalistasGeo.concluir
+GET     /parecer/analistaGeo/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}     PareceresAnalistasGeo.findParecerByIdHistoricoTramitacao
+GET     /parecer/analistaGeo/findParecerByIdAnaliseGeo/{idAnaliseGeo}                       PareceresAnalistasGeo.findParecerByIdAnaliseGeo
+GET		/parecer/analistaGeo                                            					PareceresAnalistasGeo.findByNumeroProcesso
+GET     /parecer/analistaGeo/findParecerByIdProcesso/{idProcesso}                           PareceresAnalistasGeo.findParecerByIdProcesso
+GET     /parecer/analistaGeo/getUltimoParecerAnaliseGeo/{id}                                PareceresAnalistasGeo.getUltimoParecerAnaliseGeo
 
 # Pareceres analista tecnico
-POST	/parecer/analistaTecnico/concluir						                                                    PareceresAnalistasTecnico.concluir
-GET     /parecer/analistaTecnico/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}                         PareceresAnalistasTecnico.findParecerByIdHistoricoTramitacao
-GET		/parecer/analistaTecnico                                         							                PareceresAnalistasTecnico.findByNumeroProcesso
-GET     /parecer/analistaTecnico/findParecerByIdProcesso/{idProcesso}                                               PareceresAnalistasTecnico.findParecerByIdProcesso
-GET     /parecer/analistaTecnico/getUltimoParecerAnaliseTecnica/{id}                                                PareceresAnalistasTecnico.getUltimoParecerAnaliseTecnica
+POST	/parecer/analistaTecnico/concluir						                                    PareceresAnalistasTecnico.concluir
+GET     /parecer/analistaTecnico/findParecerByIdHistoricoTramitacao/{idHistoricoTramitacao}         PareceresAnalistasTecnico.findParecerByIdHistoricoTramitacao
+GET		/parecer/analistaTecnico                                         						    PareceresAnalistasTecnico.findByNumeroProcesso
+GET     /parecer/analistaTecnico/findParecerByIdProcesso/{idProcesso}                               PareceresAnalistasTecnico.findParecerByIdProcesso
+GET     /parecer/analistaTecnico/getUltimoParecerAnaliseTecnica/{id}                                PareceresAnalistasTecnico.getUltimoParecerAnaliseTecnica
 
 # Empreendimento
 POST     /empreendimento/buscaDadosGeo/{cpfCnpj}            Empreendimentos.buscaDadosGeoEmpreendimento
@@ -193,14 +193,14 @@ POST	/consultores/juridicos/vincular				Consultores.vincularAnaliseConsultorJuri
 GET		/consultores/juridicos						Consultores.getConsultoresJuridicos
 
 # Analistas
-POST	/analistas/vincular							Analistas.vincularAnaliseAnalistaTecnico
-GET     /analistas/perfil                           Analistas.getAnalistaTecnicoPerfilSetores
-GET		/analistas   		                        Analistas.getAnalistaTecnicoPerfil
-GET		/analistas/{idProcesso}			            Analistas.getAnalistaTecnico
-GET     /analistasGeo                               Analistas.getAnalistaGeoPerfil
-GET     /analistas/buscarAnalistasGeoByIdProcesso/{idProcesso}  Analistas.buscarAnalistasGeoByIdProcesso
-GET     /analistasGeo/perfil                        Analistas.getAnalistaGeoPerfilSetores
-GET     /analistasTecnico/findAllBySetor            Analistas.findAllBySetor
+POST	/analistas/vincular							                Analistas.vincularAnaliseAnalistaTecnico
+GET     /analistas/perfil                                           Analistas.getAnalistaTecnicoPerfilSetores
+GET		/analistas   		                                        Analistas.getAnalistaTecnicoPerfil
+GET		/analistas/{idProcesso}			                            Analistas.getAnalistaTecnico
+GET     /analistasGeo                                               Analistas.getAnalistaGeoPerfil
+GET     /analistas/buscarAnalistasGeoByIdProcesso/{idProcesso}      Analistas.buscarAnalistasGeoByIdProcesso
+GET     /analistasGeo/perfil                                        Analistas.getAnalistaGeoPerfilSetores
+GET     /analistasTecnico/findAllBySetor                            Analistas.findAllBySetor
 GET     /analistas/buscarAnalistasTecnicoByIdProcesso/{idProcesso}  Analistas.buscarAnalistasTecnicoByIdProcesso
 
 # Gerentes
@@ -220,12 +220,12 @@ GET     /condicoes/manejo                           Condicoes.listManejo
 GET		/tiposSobreposicao                          Sobreposicoes.list
 
 # Documentos
-GET		/documentos/{id}/download					                    Documentos.download
-GET     /external/documentos/{id}/download                              Application.downloadDocumentoAnalise
-GET		/documentos/{idAnalisetecnica}/downloadParecerTecnico	        Documentos.downloadParecerTecnico
-GET		/documentos/{idAnalisetecnica}/downloadMinutaByIdAnaliseTecnica	Documentos.downloadMinutaByIdAnaliseTecnica
-GET		/documentos/{idAnalisetecnica}/downloadRTVByIdAnaliseTecnica	Documentos.downloadRTVByIdAnaliseTecnica
-POST    /documentos/{idAnalisetecnica}/downloadNotificacaoByIdAnaliseTecnica           Documentos.downloadPDFNotificacao
+GET		/documentos/{id}/download					                                Documentos.download
+GET     /external/documentos/{id}/download                                          Application.downloadDocumentoAnalise
+GET		/documentos/{idAnalisetecnica}/downloadParecerTecnico	                    Documentos.downloadParecerTecnico
+GET		/documentos/{idAnalisetecnica}/downloadMinutaByIdAnaliseTecnica	            Documentos.downloadMinutaByIdAnaliseTecnica
+GET		/documentos/{idAnalisetecnica}/downloadRTVByIdAnaliseTecnica	            Documentos.downloadRTVByIdAnaliseTecnica
+POST    /documentos/{idAnalisetecnica}/downloadNotificacaoByIdAnaliseTecnica        Documentos.downloadPDFNotificacao
 
 # Licenças
 POST	/licencasEmitidas/pesquisaRapida			LicencasEmitidas.listWithFilter
@@ -254,7 +254,7 @@ POST    /cancelamentos/cancelarDispensa             LicencaCanceladas.cancelarDi
 GET		/tiposLicencas								TiposLicencas.list
 
 # Ignore favicon requests
-GET     /favicon.ico                            404
+GET     /favicon.ico                                404
 
 #Upload de arquivos
 POST	/upload/save								Uploads.upload
@@ -309,10 +309,10 @@ GET     /external/download/{key}                        Application.downloadTmpE
 DELETE  /delete/documento/{key}                         Documentos.deleteTmp
 
 # Documentos manejo
-POST    /upload/{idAnaliseTecnica}/imovel/manejo/{idTipoDocumento} DocumentosManejo.uploadFileImovel
-POST    /upload/{idAnaliseTecnica}/complementar     DocumentosManejo.uploadFileComplementar
-GET     /download/manejo/{id}                       DocumentosManejo.download
-DELETE  /delete/manejo/{id}                         DocumentosManejo.delete
+POST    /upload/{idAnaliseTecnica}/imovel/manejo/{idTipoDocumento}  DocumentosManejo.uploadFileImovel
+POST    /upload/{idAnaliseTecnica}/complementar                     DocumentosManejo.uploadFileComplementar
+GET     /download/manejo/{id}                                       DocumentosManejo.download
+DELETE  /delete/manejo/{id}                                         DocumentosManejo.delete
 
 # Validação e envio do shapefile
 POST    /shapefile/enviar                           ShapeFileController.enviar
