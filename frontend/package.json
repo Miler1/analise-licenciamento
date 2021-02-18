@@ -26,11 +26,5 @@
   "dependencies": {
     "arcgis-to-geojson-utils": "^1.0.3",
     "ng-file-upload": "https://registry.npmjs.org/ng-file-upload/-/ng-file-upload-12.2.13.tgz"
-  },
-  "scripts": {
-    "preinstall": "npx npm-force-resolutions"
-  },
-  "resolutions": {
-    "graceful-fs": "^4.2.4"
   }
 }
