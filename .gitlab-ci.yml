@@ -11,7 +11,7 @@ build:
         - production
     stage: build
     script:
-        - bash /n 14.6.0
+        - bash /n 8.10.0
         - cd /builds/amapa/analise/frontend
         - npm install
         - bower install --allow-root
@@ -26,7 +26,7 @@ deploy_dev:
         - rm -rf public
         - /opt/play-1.5.1/play deps --sync
         - cd /builds/amapa/analise/frontend
-        - bash /n 14.6.0
+        - bash /n 8.10.0
         - npm install
         - bower install --allow-root
         - bower update --allow-root
@@ -54,7 +54,7 @@ deploy_homologation:
         - rm -rf public
         - /opt/play-1.5.1/play deps --sync
         - cd /builds/amapa/analise/frontend
-        - bash /n 14.6.0
+        - bash /n 8.10.0
         - npm install
         - bower install --allow-root
         - bower update --allow-root
@@ -84,7 +84,7 @@ deploy_production:
         - rm -rf public
         - /opt/play-1.5.1/play deps --sync
         - cd /builds/amapa/analise/frontend
-        - bash /n 14.6.0
+        - bash /n 8.10.0
         - npm install
         - bower install --allow-root
         - bower update --allow-root
