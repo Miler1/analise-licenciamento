@@ -40,7 +40,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String DIRETOR_ALIAS = "dt";
 	private static final String ATIVIDADE_CNAE_ALIAS = "atvc";
 	private static final String TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS = "tca";
-	private static final String GERENTE_ALIAS = "gte";
+	private static final String COORDENADOR_ALIAS = "coord";
 	private static final String DIA_ANALISE_ALIAS = "da";
 	private static final String CONDICAO_ALIAS = "ca";
 	private static final String DESVINCULO_ANALISE_GEO_ALIAS = "dea";
@@ -530,10 +530,10 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder groupByPrazoAnaliseGerente() {
+	public ProcessoBuilder groupByPrazoAnaliseCoordenador() {
 
 		addObjetoTramitavelAlias();
-		addProjection(Projections.groupProperty(ANALISE_ALIAS + ".dataVencimentoPrazo").as("prazoAnaliseGerente"));
+		addProjection(Projections.groupProperty(ANALISE_ALIAS + ".dataVencimentoPrazo").as("prazoAnaliseCoordenador"));
 
 		return this;
 
@@ -811,12 +811,12 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder filtrarIdGerente(Long idUsuarioGerente) {
+	public ProcessoBuilder filtrarIdCoordenador(Long idUsuarioCoordenador) {
 
-		if (idUsuarioGerente != null) {
+		if (idUsuarioCoordenador != null) {
 
 			addObjetoTramitavelAlias();
-			addRestriction(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS + ".usuarioResponsavel.id", idUsuarioGerente));
+			addRestriction(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS + ".usuarioResponsavel.id", idUsuarioCoordenador));
 
 		}
 
@@ -837,12 +837,12 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 
 	}
 
-	public ProcessoBuilder filtrarIdPresidente(Long idUsuarioPresidente) {
+	public ProcessoBuilder filtrarIdSecretario(Long idUsuarioSecretario) {
 
-		if (idUsuarioPresidente != null) {
+		if (idUsuarioSecretario != null) {
 
 			addObjetoTramitavelAlias();
-			addRestriction(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS + ".usuarioResponsavel.id", idUsuarioPresidente));
+			addRestriction(Restrictions.eq(OBJETO_TRAMITAVEL_ALIAS + ".usuarioResponsavel.id", idUsuarioSecretario));
 
 		}
 
@@ -1068,41 +1068,41 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
-	public ProcessoBuilder filtrarPorIdUsuarioValidacaoTecnicaGerente(Long idUsuarioValidacaoGerente) {
+	public ProcessoBuilder filtrarPorIdUsuarioValidacaoTecnicaCoordenador(Long idUsuarioValidacaoCoordenador) {
 
-		if (idUsuarioValidacaoGerente != null) {
+		if (idUsuarioValidacaoCoordenador != null) {
 
 			addAnaliseTecnicaAlias(false);
-			addRestriction(Restrictions.eq(ANALISE_TECNICA_ALIAS+".usuarioValidacaoGerente.id", idUsuarioValidacaoGerente));
+			addRestriction(Restrictions.eq(ANALISE_TECNICA_ALIAS+".usuarioValidacaoCoordenador.id", idUsuarioValidacaoCoordenador));
 		}
 
 		return this;
 	}
 
-	public ProcessoBuilder filtrarPorIdUsuarioValidacaoGeoGerente(Long idUsuarioValidacaoGerente) {
+	public ProcessoBuilder filtrarPorIdUsuarioValidacaoGeoCoordenador(Long idUsuarioValidacaoCoordenador) {
 
-		if (idUsuarioValidacaoGerente != null) {
+		if (idUsuarioValidacaoCoordenador != null) {
 
 			addAnaliseGeoAlias(false);
-			addRestriction(Restrictions.eq(ANALISE_GEO_ALIAS+".usuarioValidacaoGerente.id", idUsuarioValidacaoGerente));
+			addRestriction(Restrictions.eq(ANALISE_GEO_ALIAS+".usuarioValidacaoCoordenador.id", idUsuarioValidacaoCoordenador));
 		}
 
 		return this;
 	}
 
-	public ProcessoBuilder filtrarPorIdGerente(Long idGerente) {
-		
-		if (idGerente != null) {
+	public ProcessoBuilder filtrarPorIdCoordenador(Long idCoordenador) {
 
-			addRestriction(Restrictions.eq(GERENTE_ALIAS+".usuario.id", idGerente));
+		if (idCoordenador != null) {
+
+			addRestriction(Restrictions.eq(COORDENADOR_ALIAS + ".usuario.id", idCoordenador));
 		}
 
 		return this;
 	}
 
-	public ProcessoBuilder orderByPrazoAnaliseGerente() {
+	public ProcessoBuilder orderByPrazoAnaliseCoordenador() {
 
-		addOrder(Order.asc("prazoAnaliseGerente"));
+		addOrder(Order.asc("prazoAnaliseCoordenador"));
 
 		return this;
 	}
@@ -1217,9 +1217,9 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Long idDiretor;
 		public Boolean isAnaliseGeo = false;
 		public Boolean isAnaliseGeoOpcional = false;
-		public Boolean isGerente = false;
+		public Boolean isCoordenador = false;
 		public boolean isDiretor;
-		public boolean isPresidente;
+		public boolean isSecretario;
 		public Long idAnalistaGeo;
 		public String siglaSetorGerencia;
 		public String siglaSetorCoordenadoria;

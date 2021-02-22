@@ -9,14 +9,14 @@ public class DesvinculoSerializar {
 	public static JSONSerializer list = SerializerUtil.create(
 			"id",
 			"justificativa",
-			"respostaGerente",
+			"respostaCoordenador",
 			"aprovada",
 			"dataSolicitacao",
 			"dataResposta",
 			"analiseGeo.id",
 			"analiseTecnica.id",
 			"analiseJuridica.id",
-			"gerente.id",
+			"coordenador.id",
 			"analistaGeo.id",
 			"analistaGeo.pessoa.nome");
 

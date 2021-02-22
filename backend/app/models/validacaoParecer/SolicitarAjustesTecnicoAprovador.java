@@ -35,8 +35,8 @@ public class SolicitarAjustesTecnicoAprovador extends TipoResultadoAnaliseChain<
 		/**
 		 * Quando o ajuste for do aprovador para o coordenador deve-se manter a validação do coordenador e gerente
 		 */
+		copia.setValidacaoCoordenadorTecnico(analiseTecnica);
 		copia.setValidacaoCoordenador(analiseTecnica);
-		copia.setValidacaoGerente(analiseTecnica);
 		
 		copia._save();
 		

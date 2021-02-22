@@ -1,8 +1,6 @@
 package controllers;
 
 import models.Analise;
-import models.AnaliseTecnica;
-import models.UsuarioAnalise;
 import security.Acao;
 import serializers.AnalisesSerializer;
 import utils.Mensagem;
@@ -26,15 +24,15 @@ public class Analises extends InternalController {
 
 	}
 
-	public static void iniciarAnalisePresidente(Long idAnalise) {
+	public static void iniciarAnaliseSecretario(Long idAnalise) {
 
-		verificarPermissao(Acao.INICIAR_PARECER_PRESIDENTE);
+		verificarPermissao(Acao.INICIAR_PARECER_SECRETARIO);
 
 		Analise analiseAAlterar = Analise.findById(idAnalise);
 
-		analiseAAlterar.iniciarAnalisePresidente(getUsuarioSessao());
+		analiseAAlterar.iniciarAnaliseSecretario(getUsuarioSessao());
 
-		renderMensagem(Mensagem.ANALISE_PRESIDENTE_INICIADA_SUCESSO);
+		renderMensagem(Mensagem.ANALISE_SECRETARIO_INICIADA_SUCESSO);
 
 	}
 

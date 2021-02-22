@@ -60,7 +60,7 @@ public class UsuarioAnalise extends GenericModel  {
 	@Fetch(FetchMode.SUBSELECT)
 	public List <PerfilUsuarioAnalise> perfis;
 
-	public static transient ExecutorService executorService = new ScheduledThreadPoolExecutor(Integer.valueOf(Play.configuration.getProperty("usuario.threads", "3")));
+	public static transient ExecutorService executorService = new ScheduledThreadPoolExecutor(Integer.parseInt(Play.configuration.getProperty("usuario.threads", "3")));
 
 	@Transient
 	private List<Integer> permittedActionsIds;
@@ -124,16 +124,16 @@ public class UsuarioAnalise extends GenericModel  {
 				.setParameter("id_diretor", diretor.usuario.id).first();
 	}
 
-	public static UsuarioAnalise findByPresidente(Presidente presidente) {
+	public static UsuarioAnalise findBySecretario(Secretario secretario) {
 
-		return UsuarioAnalise.find("id = :id_presidente")
-				.setParameter("id_presidente", presidente.usuario.id).first();
+		return UsuarioAnalise.find("id = :id_secretario")
+				.setParameter("id_secretario", secretario.usuario.id).first();
 	}
 
-	public static UsuarioAnalise findByGerente(Gerente gerente) {
+	public static UsuarioAnalise findByCoordenador(Coordenador coordenador) {
 
-		return UsuarioAnalise.find("id = :id_gerente")
-				.setParameter("id_gerente", gerente.usuario.id).first();
+		return UsuarioAnalise.find("id = :id_coordenador")
+				.setParameter("id_coordenador", coordenador.usuario.id).first();
 	}
 
 	public static UsuarioAnalise findByAnalistaTecnico(AnalistaTecnico analistaTecnico) {

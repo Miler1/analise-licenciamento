@@ -12,14 +12,14 @@ div.modal-body
     div.area-modal
         label.label-modal.obrigatorio Descrição da inconsistência:
         br
-        textarea.textarea-modal(ng-class="{'error': modalCtrl.errors.analiseTecnica.descricao === true}", ng-disabled="modalCtrl.isGerente === true", ng-model="modalCtrl.descricaoInconsistencia")
+        textarea.textarea-modal(ng-class="{'error': modalCtrl.errors.analiseTecnica.descricao === true}", ng-disabled="modalCtrl.isCoordenador === true", ng-model="modalCtrl.descricaoInconsistencia")
 
     div.area-modal
         label.label-modal.obrigatorio Tipo da inconsistência:
         br
-        textarea.textarea-modal(ng-class="{'error': modalCtrl.errors.analiseTecnica.tipo === true}", ng-disabled="modalCtrl.isGerente === true", ng-model="modalCtrl.tipoInconsistencia")
+        textarea.textarea-modal(ng-class="{'error': modalCtrl.errors.analiseTecnica.tipo === true}", ng-disabled="modalCtrl.isCoordenador === true", ng-model="modalCtrl.tipoInconsistencia")
 
-    div.button-upload-modal.btn.btn-default(ng-if="modalCtrl.isGerente === false",style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="modalCtrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
+    div.button-upload-modal.btn.btn-default(ng-if="modalCtrl.isCoordenador === false",style=" margin-bottom:5px;",type="file", name="arquivo", ngf-select="modalCtrl.upload($file, $invalidFile)", ngf-accept="'application/pdf,image/*'", ngf-pattern="'application/pdf,image/*'", ngf-max-size="{{modalCtrl.TAMANHO_MAXIMO_ARQUIVO_MB}}MB")
         i.glyphicon.glyphicon-open.glyphicon--with-right-margin
         | Anexar arquivo na inconsistência
     br
@@ -40,7 +40,7 @@ div.modal-body
                     a.d-inline.margin-right-xs(style='cursor: pointer;', title="Visualizar anexo", ng-click="modalCtrl.baixarDocumentoInconsistencia(anexo)")
                         i.glyphicon.glyphicon-eye-open
 
-                    a.d-inline.margin-right-xs(ng-if="modalCtrl.isGerente === false",style='cursor: pointer;')
+                    a.d-inline.margin-right-xs(ng-if="modalCtrl.isCoordenador === false",style='cursor: pointer;')
                         i.glyphicon.glyphicon-trash(title='Remover anexo',
                                                     ng-bootbox-title='Confirmação',
                                                     ng-bootbox-confirm='Deseja realmente remover este anexo ?',
@@ -48,14 +48,14 @@ div.modal-body
 
 div.modal-footer
 
-    button.btn.btn-default.pull-left(ng-if="modalCtrl.isGerente === false",ng-click="modalCtrl.fechar()")
+    button.btn.btn-default.pull-left(ng-if="modalCtrl.isCoordenador === false",ng-click="modalCtrl.fechar()")
         i.glyphicon.glyphicon-arrow-left
         | &nbsp;Cancelar
 
-    button.btn.btn-default.pull-right(ng-if="modalCtrl.isGerente === true",ng-click="modalCtrl.fechar()")
+    button.btn.btn-default.pull-right(ng-if="modalCtrl.isCoordenador === true",ng-click="modalCtrl.fechar()")
         i.glyphicon.glyphicon-remove
         | &nbsp;Fechar
     
-    button.btn.btn-success.pull-right(ng-if="modalCtrl.isGerente === false", ng-click="modalCtrl.concluir()")
+    button.btn.btn-success.pull-right(ng-if="modalCtrl.isCoordenador === false", ng-click="modalCtrl.concluir()")
         i.glyphicon.glyphicon-arrow-right
         | &nbsp;Confirmar

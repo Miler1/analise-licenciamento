@@ -33,9 +33,9 @@ public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTe
 		AnaliseTecnica copia = analiseTecnica.gerarCopia(false);
 		
 		/**
-		 * Quando o ajuste for do coordenador para o gerente deve-se manter a validação do gerente
+		 * Quando o ajuste for do coordenador para o coordenador deve-se manter a validação do coordenador
 		 */
-		copia.setValidacaoGerente(analiseTecnica);
+		copia.setValidacaoCoordenador(analiseTecnica);
 		
 		copia._save();
 		
@@ -53,9 +53,9 @@ public class SolicitarAjustesTecnico extends TipoResultadoAnaliseChain<AnaliseTe
 		copia.pareceresTecnicosRestricoes.clear();		
 		copia.updatePareceresTecnicosRestricoes(pareceresTecnicosRestricoesSalvar);
 		
-		if (copia.hasGerentes()){
+		if (copia.hasCoordenadores()){
 			
-			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR_PARA_GERENTE, usuarioExecutor);
+			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR_PARA_COORDENADOR, usuarioExecutor);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 		} else {
 			

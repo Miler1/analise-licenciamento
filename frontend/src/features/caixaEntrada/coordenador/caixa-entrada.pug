@@ -1,0 +1,89 @@
+include ../../../layout/components/paginacao
+
+div
+	filtro-processos(paginacao="cxEntCoordenador.paginacao",
+		disabled-fields="cxEntCoordenador.disabledFields",
+		atualizar-lista="cxEntCoordenador.atualizarListaProcessos",
+		atualizar-paginacao="cxEntCoordenador.atualizarPaginacao",
+		condicao-tramitacao="cxEntCoordenador.condicaoTramitacao",
+		pesquisar-ao-inicializar="true",
+		is-coordenador="true")
+
+	h4 Lista de protocolos
+
+	hr
+	.row
+		.col-md-12
+			div(ng-if="cxEntCoordenador.processos && cxEntCoordenador.processos.length > 0")
+				table.table.table-striped.table-condensed.no-margin
+					thead
+						tr
+							th
+							th.col-md-1 Protocolo
+							th.col-md-2 CPF/CNPJ
+							th.col-md-3 Empreendimento
+							th.col-md-2 Município
+							th.col-md-1 Licença
+							th.col-md-1 Prazo análise
+							th.col-md-1 Prazo análise GEO
+							th.col-md-1 Prazo análise técnica
+							th.col-md-1.text-right Ações
+					tbody
+						tr(ng-repeat="processo in cxEntCoordenador.processos")
+							td
+								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntCoordenador.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === cxEntCoordenador.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
+								span(ng-class="{'icone-analise-geo': processo.idCondicaoTramitacao === cxEntCoordenador.legendas.AGUARDANDO_VALIDACAO_GEO_PELO_COORDENADOR }")
+								span(ng-class="{'icone-analise-tecnica': processo.idCondicaoTramitacao === cxEntCoordenador.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR }")
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero }}
+							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
+							td.break-word {{processo.denominacaoEmpreendimento}}
+							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
+							td {{processo.licencas}}
+							td(ng-class="{'error-message': cxEntCoordenador.dateUtil.verificaPrazoMinimoData(cxEntCoordenador.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntCoordenador.PrazoAnalise.ANALISE), cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
+								| {{ cxEntCoordenador.dateUtil.getContaDiasRestantesData(cxEntCoordenador.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntCoordenador.PrazoAnalise.ANALISE)) }}
+
+							td(ng-class="{'error-message': processo.diasAnaliseGeo > cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE_GEO}")
+								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
+
+							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+								| {{ processo.dataConclusaoAnaliseTecnica ? 'Concluída' : cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
+							td
+								span.pull-right
+
+									.dropdown.action-table
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+											| Ações &nbsp;
+											span.caret
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+											li
+
+												a(ng-click="cxEntCoordenador.verificarStatusGeo(processo) ? '' : cxEntCoordenador.iniciarAnaliseCoordenador(processo.idAnalise, processo.idAnaliseGeo, null)",
+														ng-class="{'disable-acoes': cxEntCoordenador.verificarStatusGeo(processo)}")
+													i.glyphicon.glyphicon-ok-circle
+													span Validar análise geo
+											li
+												a(ng-click="cxEntCoordenador.verificarStatusTecnico(processo) ? '' : cxEntCoordenador.iniciarAnaliseCoordenador(processo.idAnalise, null, processo.idAnaliseTecnica)",
+														ng-class="{'disable-acoes': cxEntCoordenador.verificarStatusTecnico(processo)}")
+													i.glyphicon.glyphicon-ok-circle
+													span Validar análise técnica
+											li
+
+												a(ng-click="cxEntCoordenador.verificarSolicitacaoDesvinculo(processo) ? cxEntCoordenador.atenderSolicitacaoDesvinculo(processo) : ''",
+														ng-class="{'disable-acoes': !cxEntCoordenador.verificarSolicitacaoDesvinculo(processo)}")
+													i.glyphicon.glyphicon-sort
+													span Atender solicitação de desvínculo
+											li
+
+												a(ng-click="cxEntCoordenador.visualizarProcesso(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar protocolo
+				.legenda
+					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda-margin Solicitação Desvínculo Pendente
+					span.col-md-4.icone-analise-geo.legenda-margin Análise Geo
+					span.col-md-4.icone-analise-tecnica.legenda-margin(style="margin-bottom:23px") Análise Técnica
+
+				+paginacao('cxEntCoordenador.paginacao', 'cxEntCoordenador.onPaginaAlterada')
+
+		.row(ng-show="!cxEntCoordenador.processos || cxEntCoordenador.processos.length == 0")
+			.col-md-12
+				p.empty-result Não existem dados a serem exibidos.

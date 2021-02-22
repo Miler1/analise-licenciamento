@@ -7,11 +7,8 @@ import br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.StatusCaracterizacaoEnum;
 import models.pdf.PDFGenerator;
 import models.tramitacao.AcaoTramitacao;
-import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
-import play.db.jpa.GenericModel;
-import play.libs.Crypto;
 import services.IntegracaoEntradaUnicaService;
 import utils.Mensagem;
 
@@ -23,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static models.tramitacao.AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE;
+import static models.tramitacao.AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR;
 
 @Entity
 @Table(schema = "analise", name = "parecer_analista_tecnico")
@@ -103,10 +100,10 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 
         }
 
-        Gerente gerente = getGerenteAnaliseTecnica(usuarioExecutor);
-        gerente._save();
+        Coordenador coordenador = getCoordenadorAnaliseTecnica(usuarioExecutor);
+        coordenador._save();
 
-        analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
+        analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor, UsuarioAnalise.findByCoordenador(coordenador));
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
     }
@@ -118,20 +115,20 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 
         parecerAntigo.restricoes = new ArrayList<>();
 
-        Gerente gerente = getGerenteAnaliseTecnica(usuarioExecutor);
-        gerente._save();
+        Coordenador coordenador = getCoordenadorAnaliseTecnica(usuarioExecutor);
+        coordenador._save();
 
-        analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
+        analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor, UsuarioAnalise.findByCoordenador(coordenador));
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
     }
 
     private void finalizaParecerIndeferido(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioExecutor) {
 
-        Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnica);
-        gerente.save();
+        Coordenador coordenador = Coordenador.distribuicaoAutomaticaCoordenadorAnaliseTecnica(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnica);
+        coordenador.save();
 
-        analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
+        analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR, usuarioExecutor, UsuarioAnalise.findByCoordenador(coordenador));
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
     }
@@ -371,7 +368,7 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 
         HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(processo.idObjetoTramitavel);
 
-        if (historicoTramitacao.idAcao.equals(SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE)) {
+        if (historicoTramitacao.idAcao.equals(SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR)) {
             return ParecerAnalistaTecnico.getUltimoParecer(processo.analise.analiseTecnica.pareceresAnalistaTecnico);
         }
 
@@ -379,8 +376,8 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
 
     }
 
-    private Gerente getGerenteAnaliseTecnica(UsuarioAnalise usuarioExecutor) {
-        return Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(
+    private Coordenador getCoordenadorAnaliseTecnica(UsuarioAnalise usuarioExecutor) {
+        return Coordenador.distribuicaoAutomaticaCoordenadorAnaliseTecnica(
         		usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseTecnica);
     }
 

@@ -10,7 +10,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                                                  $location,
                                                  $timeout,
                                                  processoService,
-                                                 parecerGerenteService,
+                                                 parecerCoordenadorService,
                                                  parecerAnalistaTecnicoService,
                                                  parecerAnalistaGeoService) {
 
@@ -20,7 +20,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
     validacaoAnaliseDiretor.titulo = 'VALIDAÇÃO TÉCNICA';   
     validacaoAnaliseDiretor.tiposResultadoAnalise = app.utils.TiposResultadoAnalise;
     validacaoAnaliseDiretor.tipoDocumento =  app.utils.TiposDocumentosAnalise;
-    validacaoAnaliseDiretor.labelParecerGerente = null;
+    validacaoAnaliseDiretor.labelParecerCoordenador = null;
     validacaoAnaliseDiretor.labelParecerAnalistaGeo = null;
     validacaoAnaliseDiretor.labelParecerAnalistaTecnico = null;
     validacaoAnaliseDiretor.possuiAutoInfracao = false;
@@ -76,25 +76,25 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
         
 	};
 
-    var getUltimoParecerGerenteTecnico = function(analiseTecnica) {
+    var getUltimoParecercoordenador = function(analiseTecnica) {
 
-        parecerGerenteService.getUltimoParecerGerenteAnaliseTecnica(analiseTecnica.id)
+        parecerCoordenadorService.getUltimoParecerCoordenadorAnaliseTecnica(analiseTecnica.id)
             .then(function(response){
 
-                validacaoAnaliseDiretor.parecerGerenteTecnico = response.data;
-                setLabelsGerenteTecnico();
+                validacaoAnaliseDiretor.parecercoordenador = response.data;
+                setLabelscoordenador();
 
         });
 
     };
 
-    var getUltimoParecerGerenteGeo = function(analiseGeo) {
+    var getUltimoParecerCoordenadorGeo = function(analiseGeo) {
 
-        parecerGerenteService.getUltimoParecerGerenteAnaliseGeo(analiseGeo.id)
+        parecerCoordenadorService.getUltimoParecerCoordenadorAnaliseGeo(analiseGeo.id)
             .then(function(response){
 
-                validacaoAnaliseDiretor.parecerGerenteGeo = response.data;
-                setLabelsGerenteGeo();
+                validacaoAnaliseDiretor.parecerCoordenadorGeo = response.data;
+                setLabelsCoordenadorGeo();
 
         });
 
@@ -114,15 +114,15 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
     };
 
-    var setLabelsGerenteGeo = function(){
+    var setLabelsCoordenadorGeo = function(){
 
-        if(validacaoAnaliseDiretor.parecerGerenteGeo.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.PARECER_VALIDADO){
+        if(validacaoAnaliseDiretor.parecerCoordenadorGeo.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.PARECER_VALIDADO){
 
-            validacaoAnaliseDiretor.labelParecerGerente = 'Despacho';
+            validacaoAnaliseDiretor.labelParecerCoordenador = 'Despacho';
 
         }else{
 
-            validacaoAnaliseDiretor.labelParecerGerente = 'Justificativa';
+            validacaoAnaliseDiretor.labelParecerCoordenador = 'Justificativa';
 
         }
 
@@ -142,15 +142,15 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
     };
 
-    var setLabelsGerenteTecnico = function(){
+    var setLabelscoordenador = function(){
 
-        if(validacaoAnaliseDiretor.parecerGerenteTecnico.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.PARECER_VALIDADO){
+        if(validacaoAnaliseDiretor.parecercoordenador.tipoResultadoAnalise.id === validacaoAnaliseDiretor.tiposResultadoAnalise.PARECER_VALIDADO){
 
-            validacaoAnaliseDiretor.labelParecerGerente = 'Despacho';
+            validacaoAnaliseDiretor.labelParecerCoordenador = 'Despacho';
 
         }else{
 
-            validacaoAnaliseDiretor.labelParecerGerente = 'Justificativa';
+            validacaoAnaliseDiretor.labelParecerCoordenador = 'Justificativa';
 
         }
         
@@ -186,7 +186,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
                 validacaoAnaliseDiretor.analiseGeo = response.data;
                 getUltimoParecerAnalistaGeo(validacaoAnaliseDiretor.analiseGeo);
-                getUltimoParecerGerenteGeo(validacaoAnaliseDiretor.analiseGeo);
+                getUltimoParecerCoordenadorGeo(validacaoAnaliseDiretor.analiseGeo);
 
 
         });     
@@ -196,7 +196,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
                 validacaoAnaliseDiretor.analiseTecnica = response.data;
                 getUltimoParecerAnalistaTecnico(validacaoAnaliseDiretor.analiseTecnica);
-                getUltimoParecerGerenteTecnico(validacaoAnaliseDiretor.analiseTecnica);
+                getUltimoParecercoordenador(validacaoAnaliseDiretor.analiseTecnica);
 
         });
         
