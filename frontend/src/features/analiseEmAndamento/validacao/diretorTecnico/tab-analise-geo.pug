@@ -64,24 +64,24 @@
                                     .col-md-12
                                         p.empty-result Não existem arquivos anexados. 
 
-            #accordion-gerente.panel-group
-                div(uib-accordion class="accordion-gerente")
-                    div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseDiretor.openedAccordionGerente")
-                        uib-accordion-heading(ng-click="validacaoAnaliseDiretor.openedAccordionGerente=!validacaoAnaliseDiretor.openedAccordionGerente")
-                            div Resultado da análise do gerente técnico
-                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseDiretor.openedAccordionGerente, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionGerente}")
+            #accordion-coordenador.panel-group
+                div(uib-accordion class="accordion-coordenador")
+                    div(uib-accordion-group class="panel-default" is-open="validacaoAnaliseDiretor.openedAccordionCoordenador")
+                        uib-accordion-heading(ng-click="validacaoAnaliseDiretor.openedAccordionCoordenador=!validacaoAnaliseDiretor.openedAccordionCoordenador")
+                            div Resultado da análise do coordenador
+                                i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseDiretor.openedAccordionCoordenador, 'glyphicon-chevron-right': !validacaoAnaliseDiretor.openedAccordionCoordenador}")
                 
-                        #dados-gerente
+                        #dados-coordenador
                             .parecer-diretor
                                 .label-analista
-                                    span.title-info Gerente Técnico: 
-                                    span {{validacaoAnaliseDiretor.parecerGerenteGeo.usuario.pessoa.nome}}
+                                    span.title-info Coordenador:
+                                    span {{validacaoAnaliseDiretor.parecerCoordenadorGeo.usuario.pessoa.nome}}
 
                                 .label-situacao
                                     span.title-info Situação: 
-                                    span {{validacaoAnaliseDiretor.parecerGerenteGeo.tipoResultadoAnalise.nome | uppercase}}
+                                    span {{validacaoAnaliseDiretor.parecerCoordenadorGeo.tipoResultadoAnalise.nome | uppercase}}
 
                                 .label-situacao
-                                    span.title-info {{validacaoAnaliseDiretor.labelParecerGerente}}: 
+                                    span.title-info {{validacaoAnaliseDiretor.labelParecerCoordenador}}:
                                     br
-                                    span(ng-bind-html=" validacaoAnaliseDiretor.parecerGerenteGeo.parecer ") 
+                                    span(ng-bind-html=" validacaoAnaliseDiretor.parecerCoordenadorGeo.parecer ")

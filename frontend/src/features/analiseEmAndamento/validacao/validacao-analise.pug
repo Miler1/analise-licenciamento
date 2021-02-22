@@ -1,3 +1,3 @@
-div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === validacaoAnalise.perfis.GERENTE",
-    ng-controller='validacaoAnaliseGeoGerenteController as validacaoAnaliseGeoGerente', ng-init="validacaoAnaliseGeoGerente.init()")
-    include gerenteTecnico/validacao-analise-geo
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === validacaoAnalise.perfis.COORDENADOR",
+    ng-controller='validacaoAnaliseGeoCoordenadorController as validacaoAnaliseGeoCoordenador', ng-init="validacaoAnaliseGeoCoordenador.init()")
+    include coordenador/validacao-analise-geo

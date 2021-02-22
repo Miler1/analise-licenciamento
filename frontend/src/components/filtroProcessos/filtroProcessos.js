@@ -11,10 +11,10 @@ var FiltroProcessos = {
 		isAnaliseTecnica: '<',
 		isAnaliseGeo: '<',
 		isAnaliseTecnicaOpcional: '<',
-		isGerente: '<',
+		isCoordenador: '<',
 		isDiretor: '<',
 		onAfterUpdate: '=',
-		isGerenteLogado: '<',
+		isCoordenadorLogado: '<',
 		pesquisarTodasGerencias: '<',
 		tipoSetor: '<',
 		filtrarPorUsuario: '<',
@@ -68,14 +68,14 @@ var FiltroProcessos = {
 				}
 			}
 
-			if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE) {
+			if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR) {
 
-				ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
+				ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_COORDENADOR;
 				ctrl.filtro.idCondicaoTramitacao = null;
 
-			} else if (emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ){
+			} else if (emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR ){
 
-				ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
+				ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.MENU_EM_ANALISE_COORDENADOR;
 				ctrl.filtro.idCondicaoTramitacao = null;
 
 			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
@@ -111,7 +111,7 @@ var FiltroProcessos = {
 				analiseTecnicaFinalizada = true;
 				ctrl.filtro.idCondicaoTramitacao = null;
 			
-			} else if(!caixaEntrada && !emAnalise && [app.utils.Perfis.GERENTE,app.utils.Perfis.DIRETOR, app.utils.Perfis.SECRETARIO].includes($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo)) {
+			} else if(!caixaEntrada && !emAnalise && [app.utils.Perfis.COORDENADOR,app.utils.Perfis.DIRETOR, app.utils.Perfis.SECRETARIO].includes($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo)) {
 				
 				ctrl.filtro.listaIdCondicaoTramitacao = null;
 				ctrl.filtro.filtrarPorUsuario = false;
@@ -193,7 +193,7 @@ var FiltroProcessos = {
 				ctrl.filtro.idUsuarioLogado = $rootScope.usuarioSessao.id;
 				ctrl.filtro.listaIdCondicaoTramitacao = ctrl.condicaoTramitacao;
 
-				if(ctrl.condicaoTramitacao.includes(app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE)){
+				if(ctrl.condicaoTramitacao.includes(app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_COORDENADOR)){
 
 					caixaEntrada = true;
 
@@ -216,7 +216,7 @@ var FiltroProcessos = {
 			ctrl.filtro.isAnaliseTecnicaOpcional = !!ctrl.isAnaliseTecnicaOpcional;
 			ctrl.filtro.isAnaliseGeo = !!ctrl.isAnaliseGeo;
 			ctrl.filtro.isAnaliseGeoOpcional = !!ctrl.isAnaliseGeoOpcional;
-			ctrl.filtro.isGerente = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.GERENTE;
+			ctrl.filtro.isCoordenador = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.COORDENADOR;
 			ctrl.filtro.isDiretor = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.DIRETOR;
 			ctrl.filtro.isSecretario = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.SECRETARIO;
 			ctrl.filtro.isConsultarProcessos = !!ctrl.consultarProcessos;
@@ -280,7 +280,7 @@ var FiltroProcessos = {
 							});
 					}
 					else{
-						analistaService.getAnalistasTecnicosByPerfil(ctrl.isGerenteLogado)
+						analistaService.getAnalistasTecnicosByPerfil(ctrl.isCoordenadorLogado)
 							.then(function(response){
 
 								ctrl.analistasTecnicos = response.data;
@@ -292,7 +292,7 @@ var FiltroProcessos = {
 					}
 				}
 
-				if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_GERENTE) && !ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_GEO)){
+				if (!ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_COORDENADOR) && !ctrl.isDisabledFields(ctrl.disabledFilterFields.ANALISTA_GEO)){
 					if(ctrl.isAnaliseTecnicaOpcional){
 						analistaService.getAnalistasGeo()
 							.then(function(response){
@@ -304,7 +304,7 @@ var FiltroProcessos = {
 							});
 					}
 					else{
-						analistaService.getAnalistasGeoByPerfil(ctrl.isGerenteLogado)
+						analistaService.getAnalistasGeoByPerfil(ctrl.isCoordenadorLogado)
 							.then(function(response){
 
 								ctrl.analistasGeo = response.data;
@@ -326,7 +326,7 @@ var FiltroProcessos = {
 						ctrl.condicoes = response.data;
 
 						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO ||
-							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ||
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR ||
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR ||
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO) {
 
@@ -340,7 +340,7 @@ var FiltroProcessos = {
 						}
 
 						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO || 
-							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE ||
+							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR ||
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
 
 							ctrl.condicoes.push({
@@ -365,7 +365,7 @@ var FiltroProcessos = {
 					 * Nível 1 corresponde aos filhos e nível 2 aos netos na hieraquia.
 					 * Neste caso, colocamos esta verificação, pois se for o aprovador
 					 * as gerências pertencentes a ele estão dois níveis abaixo. Já se
-					 * for o coordenador estará um nível abaixo.
+					 * for o coordenadorTecnico estará um nível abaixo.
 					 */
 					var nivel = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === $rootScope.perfis.APROVADOR ? 2 : 1;
 
@@ -455,14 +455,14 @@ var FiltroProcessos = {
 		function getCondicoesAnaliseGeoFinalizada() {
 			return [
 
-				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE,
-				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GERENTE,
-				app.utils.CondicaoTramitacao.EM_ANALISE_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_COORDENADOR,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_COORDENADOR,
+				app.utils.CondicaoTramitacao.EM_ANALISE_COORDENADOR,
 				app.utils.CondicaoTramitacao.AGUARDANDO_RESPOSTA_COMUNICADO,
-				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR,
 				app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA,
 				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA,
-				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE,
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_COORDENADOR,
 				app.utils.CondicaoTramitacao.AGUARDANDO_RESPOSTA_JURIDICO,
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA,
 				app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR,
@@ -475,8 +475,8 @@ var FiltroProcessos = {
 
 			return [
 
-				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE,
-				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_GERENTE,
+				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR,
+				app.utils.CondicaoTramitacao.EM_ANALISE_TECNICA_COORDENADOR,
 				app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA,
 				app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR,
 				app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_SECRETARIO,

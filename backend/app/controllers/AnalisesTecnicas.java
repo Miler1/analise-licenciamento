@@ -2,11 +2,9 @@ package controllers;
 
 import models.*;
 import models.geocalculo.Geoserver;
-import models.licenciamento.SolicitacaoGrupoDocumento;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import security.Acao;
-import serializers.AnaliseGeoSerializer;
 import serializers.AnaliseTecnicaSerializer;
 import services.IntegracaoEntradaUnicaService;
 import utils.GeoJsonUtils;
@@ -15,7 +13,6 @@ import utils.Mensagem;
 import javax.validation.ValidationException;
 import java.io.File;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -35,15 +32,15 @@ public class AnalisesTecnicas extends InternalController {
 
 	}
 
-	public static void iniciarAnaliseTecnicaGerente(AnaliseTecnica analise) {
+	public static void iniciarAnaliseTecnicaCoordenador(AnaliseTecnica analise) {
 
 		AnaliseTecnica analiseAlterar = AnaliseTecnica.findById(analise.id);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
-		analiseAlterar.iniciarAnaliseTecnicaGerente(usuarioExecutor);
+		analiseAlterar.iniciarAnaliseTecnicaCoordenador(usuarioExecutor);
 
-		renderMensagem(Mensagem.GERENTE_INICIOU_ANALISE_SUCESSO);
+		renderMensagem(Mensagem.COORDENADOR_INICIOU_ANALISE_SUCESSO);
 
 	}
 
@@ -114,7 +111,7 @@ public class AnalisesTecnicas extends InternalController {
 		renderMensagem(Mensagem.VALIDACAO_PARECER_TECNICO_CONCLUIDA_SUCESSO);
 	}
 	
-	public static void validarParecerGerente(AnaliseTecnica analise) {
+	public static void validarParecerCoordenador(AnaliseTecnica analise) {
 		
 		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO);
 		
@@ -122,7 +119,7 @@ public class AnalisesTecnicas extends InternalController {
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 		
-		analiseAValidar.validaParecerGerente(analise, usuarioExecutor);
+		analiseAValidar.validaParecerCoordenador(analise, usuarioExecutor);
 		
 		renderMensagem(Mensagem.VALIDACAO_PARECER_TECNICO_CONCLUIDA_SUCESSO);
 	}

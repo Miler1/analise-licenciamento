@@ -6,9 +6,9 @@ div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === analis
     ng-controller='analiseEmAndamentoGeoListController as listagem')
     include analistaGeo/analise-em-andamento-listagem
 
-div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === analiseEmAndamentoListagem.perfis.GERENTE",
-    ng-controller='analiseEmAndamentoGerenteListController as listagem')
-    include gerenteTecnico/analise-em-andamento-listagem
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === analiseEmAndamentoListagem.perfis.COORDENADOR",
+    ng-controller='analiseEmAndamentoCoordenadorListController as listagem')
+    include coordenador/analise-em-andamento-listagem
 
 div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === analiseEmAndamentoListagem.perfis.DIRETOR",
     ng-controller='analiseEmAndamentoDiretorListController as listagem')

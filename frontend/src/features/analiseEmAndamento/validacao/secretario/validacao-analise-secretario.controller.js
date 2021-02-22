@@ -6,7 +6,7 @@ var ValidacaoAnaliseSecretarioController = function($uibModal,
                                                  analiseTecnicaService,
 												 parecerDiretorTecnicoService,
 												 parecerSecretarioService,
-                                                 parecerGerenteService,
+                                                 parecerCoordenadorService,
                                                  parecerAnalistaTecnicoService,
                                                  parecerAnalistaGeoService,
 												 processoService,
@@ -177,17 +177,17 @@ var ValidacaoAnaliseSecretarioController = function($uibModal,
 					abrirModal(response.data, idProcesso);
 				});
 
-		}else if(historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
-                  historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
+		}else if(historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.VALIDAR_PARECER_GEO_COORDENADOR ||
+                  historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_COORDENADOR ||
 				  historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO) {
 
-				parecerGerenteService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+				parecerCoordenadorService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
 					.then(function(response){
 						abrirModal(response.data, idProcesso);
 					});
 
-		}else if(historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
-				historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
+		}else if(historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR ||
+				historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR ||
 				historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO){
 
 			parecerAnalistaTecnicoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
@@ -195,12 +195,12 @@ var ValidacaoAnaliseSecretarioController = function($uibModal,
 					abrirModal(response.data, idProcesso);
 				});
 
-        } else if(historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE ||
-				// historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE ||
+        } else if(historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR ||
+				// historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_COORDENADOR ||
 				historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO||
-                historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.VALIDAR_PARECER_TECNICO_GERENTE){
+                historico.idAcao === validacaoAnaliseSecretario.acaoTramitacao.VALIDAR_PARECER_TECNICO_COORDENADOR){
 			
-			parecerGerenteService.findParecerTecnicoByIdHistoricoTramitacao(historico.idHistorico)
+			parecerCoordenadorService.findParecerTecnicoByIdHistoricoTramitacao(historico.idHistorico)
 				.then(function(response){
 					abrirModal(response.data, idProcesso);
                 });
@@ -229,18 +229,18 @@ var ValidacaoAnaliseSecretarioController = function($uibModal,
 		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO ||
 		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO ||
 		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA || 
-		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
-		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
-		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE ||
+		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.VALIDAR_PARECER_GEO_COORDENADOR ||
+		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_COORDENADOR ||
+		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR ||
 		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO || 
 		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO||
-		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE||
+		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR||
 		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO||
            tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.VALIDAR_ANALISE_PELO_DIRETOR||
            tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INVALIDAR_ANALISE_PELO_DIRETOR|| 
-           tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.VALIDAR_PARECER_TECNICO_GERENTE|| 
-           tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_GERENTE||
-		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE;
+           tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.VALIDAR_PARECER_TECNICO_COORDENADOR|| 
+           tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_COORDENADOR||
+		   tramitacao.idAcao === validacaoAnaliseSecretario.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR;
 	};
 
 	validacaoAnaliseSecretario.openModalLicenca = function (parecerTecnico, dadosProcesso, analiseTecnica) {

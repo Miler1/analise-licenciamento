@@ -9,8 +9,8 @@ div
 		is-analise-juridica="false",
 		is-analise-tecnica="false",
 		is-analise-geo="false",
-		is-gerente="false",
-		is-gerente-logado="false",
+		is-coordenador="false",
+		is-coordenador-logado="false",
 		consultar-processos="true",
 		pesquisar-todas-gerencias="false",
 		filtrar-por-usuario="false")
@@ -75,11 +75,11 @@ div
 												a(ng-click="consultarProcesso.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
-											li(ng-if="(consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao) || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.GERENTE")
+											li(ng-if="(consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao) || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.COORDENADOR")
 												a(ng-click="consultarProcesso.downloadPDFparecer(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar parecer GEO
-											li(ng-if="(consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao) || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.GERENTE")
+											li(ng-if="(consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao) || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.COORDENADOR")
 												a(ng-click="consultarProcesso.downloadPDFCartaImagem(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar carta imagem
@@ -112,7 +112,7 @@ div
 					span.col-md-4.icone-revisao-atendida.legenda-margin Notificado
 					span.col-md-4.icone-aguardando-comunicado.legenda-margin(style="margin-bottom:23px") Aguardando resposta comunicado
 
-				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE")
+				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.COORDENADOR")
 
 					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda-margin Solicitação de Desvínculo Pendente
 					span.col-md-4.icone-solicitacao-finalizada-geo.legenda-margin Análise GEO finalizada

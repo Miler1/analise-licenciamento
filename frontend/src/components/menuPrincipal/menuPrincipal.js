@@ -70,7 +70,7 @@ var MenuPrincipal = {
 				filtro.isAnaliseJuridica = isAnaliseJuridica(codigoPerfilSelecionado);
 				filtro.isAnaliseTecnica = isAnaliseTecnica(codigoPerfilSelecionado);
 				filtro.isAnaliseGeo = isAnaliseGeo(codigoPerfilSelecionado);
-				filtro.isGerente = isGerente(codigoPerfilSelecionado);
+				filtro.isCoordenador = isCoordenador(codigoPerfilSelecionado);
 				filtro.isDiretor = isDiretor(codigoPerfilSelecionado);
 				filtro.isDiretor = isSecretario(codigoPerfilSelecionado);
 			}
@@ -104,9 +104,9 @@ var MenuPrincipal = {
 			return codigoPerfilSelecionado === app.utils.Perfis.ANALISTA_GEO;
 		}
 
-		function isGerente(codigoPerfilSelecionado) {
+		function isCoordenador(codigoPerfilSelecionado) {
 
-			return codigoPerfilSelecionado === app.utils.Perfis.GERENTE;
+			return codigoPerfilSelecionado === app.utils.Perfis.COORDENADOR;
 
 		}
 

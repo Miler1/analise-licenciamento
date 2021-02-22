@@ -22,16 +22,16 @@ section.margin-bottom-md
             div(class="alert alert-warning", ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.analiseTecnicaRevisada.parecerValidacaoAprovador")
 
 
-    div.margin-top-md(ng-if="validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos.length > 0")
-        label.not-bold.margin-right-xs(for="texto_nome_gerente_tecnico") Gerente técnico:
-        span#texto_nome_gerente_tecnico
-            strong {{validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos[0].usuario.pessoa.nome}}
+    div.margin-top-md(ng-if="validacaoAnaliseTecnica.analiseTecnica.coordenadores.length > 0")
+        label.not-bold.margin-right-xs(for="texto_nome_coordenador") Coordenador:
+        span#texto_nome_coordenador
+            strong {{validacaoAnaliseTecnica.analiseTecnica.coordenadores[0].usuario.pessoa.nome}}
 
-    fieldset.panel.panel-default(ng-if="validacaoAnaliseTecnica.analiseTecnica.gerentesTecnicos.length > 0")
+    fieldset.panel.panel-default(ng-if="validacaoAnaliseTecnica.analiseTecnica.coordenadores.length > 0")
         div.panel-body
-            p(ng-if="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente", ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente")
+            p(ng-if="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoCoordenador", ng-bind-html="validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoCoordenador")
 
-            p(ng-if="!validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoGerente") O gerente técnico não fez nenhuma consideração.
+            p(ng-if="!validacaoAnaliseTecnica.analiseTecnica.parecerValidacaoCoordenador") O coordenador não fez nenhuma consideração.
 
 
     div.margin-top-md
@@ -98,28 +98,28 @@ section.margin-bottom-md
             div
                 label.control-label.obrigatorio Revisar Parecer
             div.text-center(ng-class="{'input-radio-error': formularioValidacao.$submitted && formularioValidacao.revisar_parecer.$error.required}")
-                label.radio-inline(for="radio_gerente_tecnico")
-                    input#radio_gerente_tecnico(type="radio", name="revisar_parecer", required,
-                        ng-value="validacaoAnaliseTecnica.analistaGerente.GERENTE", 
-                        ng-change="validacaoAnaliseTecnica.getGerentesTecnicos()", 
-                        ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente") 
-                    | Gerente técnico
+                label.radio-inline(for="radio_coordenador")
+                    input#radio_coordenador(type="radio", name="revisar_parecer", required,
+                        ng-value="validacaoAnaliseTecnica.analistaCoordenador.COORDENADOR",
+                        ng-change="validacaoAnaliseTecnica.getCoordenadorByProcesso()",
+                        ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaCoordenador")
+                    | Coordenador
 
                 label.radio-inline(for="radio_analista_tecnico")
                     input#radio_analista_tecnico(type="radio", name="revisar_parecer", required,
-                        ng-value="validacaoAnaliseTecnica.analistaGerente.ANALISTA",
+                        ng-value="validacaoAnaliseTecnica.analistaCoordenador.ANALISTA",
                         ng-change="validacaoAnaliseTecnica.getAnalistasTecnicos()",
-                        ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente")
+                        ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaCoordenador")
                     | Analista técnico
             +inputErrors('formularioValidacao', 'revisar_parecer', 'required')
 
-            div(ng-if="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente")
-                label.control-label.obrigatorio {{validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaGerente === validacaoAnaliseTecnica.analistaGerente.GERENTE ? 'Gerente:' : 'Analista:'}}
+            div(ng-if="validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaCoordenador")
+                label.control-label.obrigatorio {{validacaoAnaliseTecnica.analiseTecnicaValidacao.analistaCoordenador === validacaoAnaliseTecnica.analistaCoordenador.COORDENADOR ? 'Coordenador:' : 'Analista:'}}
                 select.form-control(
                     ng-model="validacaoAnaliseTecnica.analiseTecnicaValidacao.idAnalistaTecnico",
                     name="selectConsultor",
                     required,
-                    ng-options="analista.id as analista.pessoa.nome for analista in validacaoAnaliseTecnica.analistasGerentes")
+                    ng-options="analista.id as analista.pessoa.nome for analista in validacaoAnaliseTecnica.analistaCoordenador")
 
 
             +inputErrors('formularioValidacao', 'selectConsultor', 'required')            

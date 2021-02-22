@@ -6,10 +6,10 @@ form(name="$ctrl.formulario", novalidate)
         div(ng-class="{'has-error': $ctrl.formulario.$submitted && $ctrl.formulario.tipo_parecer.$invalid}")
             label.margin-right-sm Revisão do parecer: *
             label.radio-inline(for="parecer_juridico")
-                input#parecer_juridico(type="radio", name="tipo_parecer", ng-model="$ctrl.solicitacao.tipo", ng-value="{{$ctrl.perfis.COORDENADOR_JURIDICO}}", ng-change="$ctrl.listarCoordenadores()", required)
+                input#parecer_juridico(type="radio", name="tipo_parecer", ng-model="$ctrl.solicitacao.tipo", ng-value="{{$ctrl.perfis.COORDENADOR_JURIDICO}}", ng-change="$ctrl.listarCoordenador()", required)
                 | Jurídico
             label.radio-inline(for="parecer_tecnico")
-                input#parecer_tecnico(type="radio", name="tipo_parecer", ng-model="$ctrl.solicitacao.tipo", ng-value="{{$ctrl.perfis.COORDENADOR_TECNICO}}", ng-change="$ctrl.listarCoordenadores()", required)
+                input#parecer_tecnico(type="radio", name="tipo_parecer", ng-model="$ctrl.solicitacao.tipo", ng-value="{{$ctrl.perfis.COORDENADOR_TECNICO}}", ng-change="$ctrl.listarCoordenador()", required)
                 | Técnico
             div(ng-messages='$ctrl.formulario.$submitted && $ctrl.formulario.tipo_parecer.$error')
                 p.error-message(ng-message='required') Campo obrigatório.
@@ -20,7 +20,7 @@ form(name="$ctrl.formulario", novalidate)
 
 
     .form-group(ng-if="$ctrl.solicitacao.tipo === $ctrl.perfis.COORDENADOR_TECNICO")
-        label Coordenador técnico:
+        label Coordenador:
         span.margin-left-xs {{$ctrl.analiseTecnica.usuarioValidacao.pessoa.nome}}
 
     //- .form-group(ng-class="{'has-error': $ctrl.formulario.$submitted && $ctrl.formulario.coordenadores.$invalid}")

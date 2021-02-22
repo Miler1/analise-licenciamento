@@ -22,7 +22,7 @@ analiseEmAndamento.config(['$routeProvider', function($routeProvider){
 			controller: controllers.AnaliseEmAndamentoListagemController,
 			controllerAs: 'analiseEmAndamentoListagem'
 		})
-		.when('/analise-gerente', {
+		.when('/analise-coordenadorTecnico', {
 			templateUrl: 'features/analiseEmAndamento/listagem/analise-em-andamento-listagem.html',
 			controller: controllers.AnaliseEmAndamentoListagemController,
 			controllerAs: 'analiseEmAndamentoListagem'
@@ -47,12 +47,12 @@ analiseEmAndamento.config(['$routeProvider', function($routeProvider){
 			controller: controllers.AnaliseEmAndamentoListagemController,
 			controllerAs: 'analiseEmAndamentoListagem'
 		})
-		.when('/analise-gerente/:idAnalise', {
+		.when('/analise-coordenador/:idAnalise', {
 			templateUrl: 'features/analiseEmAndamento/validacao/validacao-analise.html',
 			controller: controllers.ValidacaoAnaliseController,
 			controllerAs: 'validacaoAnalise'
 		})
-		.when('/analise-tecnica-gerente/:idAnalise', {
+		.when('/analise-tecnica-coordenador/:idAnalise', {
 			templateUrl: 'features/analiseEmAndamento/validacao/validar-analise-tecnica.html',
 			controller: controllers.ValidacaoAnaliseController,
 			controllerAs: 'validacaoAnalise'
@@ -68,8 +68,8 @@ analiseEmAndamento
 	.controller('analiseEmAndamentoSecretarioListController', controllers.AnaliseEmAndamentoSecretarioListController)
 	.controller('analiseEmAndamentoTecnicaListController', controllers.AnaliseEmAndamentoTecnicaListController)
 	.controller('analiseEmAndamentoGeoListController', controllers.AnaliseEmAndamentoGeoListController)
-	.controller('analiseEmAndamentoGerenteListController', controllers.AnaliseEmAndamentoGerenteListController)
-	.controller('validacaoAnaliseGeoGerenteController', controllers.ValidacaoAnaliseGeoGerenteController)
+	.controller('analiseEmAndamentoCoordenadorListController', controllers.AnaliseEmAndamentoCoordenadorListController)
+	.controller('validacaoAnaliseGeoCoordenadorController', controllers.ValidacaoAnaliseGeoCoordenadorController)
 	.controller('validacaoAnaliseDiretorController', controllers.ValidacaoAnaliseDiretorController)
 	.controller('validacaoAnaliseSecretarioController', controllers.ValidacaoAnaliseSecretarioController)
-	.controller('validacaoAnaliseTecnicaGerenteController', controllers.ValidacaoAnaliseTecnicaGerenteController);
+	.controller('validacaoAnaliseTecnicaCoordenadorController', controllers.ValidacaoAnaliseTecnicaCoordenadorController);

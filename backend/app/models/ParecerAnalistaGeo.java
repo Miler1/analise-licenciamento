@@ -1,16 +1,12 @@
 package models;
 
 import exceptions.ValidacaoException;
-import br.ufla.lemaf.beans.pessoa.Tipo;
 import models.licenciamento.*;
 
-import models.manejoDigital.analise.analiseShape.Sobreposicao;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.Condicao;
 import models.tramitacao.HistoricoTramitacao;
 import org.apache.commons.lang.StringUtils;
-import play.db.jpa.GenericModel;
-import utils.Configuracoes;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -23,7 +19,7 @@ import java.util.stream.Collectors;
 
 import static models.licenciamento.Caracterizacao.OrigemSobreposicao.*;
 import static models.tramitacao.Condicao.AGUARDANDO_RESPOSTA_COMUNICADO;
-import static models.tramitacao.AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE;
+import static models.tramitacao.AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_COORDENADOR;
 
 @Entity
 @Table(schema = "analise", name = "parecer_analista_geo")
@@ -138,13 +134,8 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 
 	public static boolean verificaTipoSobreposicaoComunicado(SobreposicaoCaracterizacaoAtividade sobreposicaoCaracterizacaoAtividade) {
 
-		if (sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.TERRA_INDIGENA_ZA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_FEDERAL_APA_DENTRO ||
-				sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL) {
-
-			return true;
-		}
-
-		return false;
+		return sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.TERRA_INDIGENA_ZA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_FEDERAL_APA_DENTRO ||
+				sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_ESTADUAL_PI_FORA || sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.id == TipoSobreposicao.UC_MUNICIPAL;
 	}
 
 	public void finalizar(UsuarioAnalise usuarioExecutor) throws Exception {
@@ -165,7 +156,7 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
 
-			Gerente gerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeoBanco);
+			Coordenador coordenador = Coordenador.distribuicaoAutomaticaCoordenador(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeoBanco);
 
 			if(analiseGeoBanco.analise.processo.caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)){
 
@@ -247,19 +238,19 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 
 			} else {
 
-				gerente.save();
+				coordenador.save();
 
-				analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
+				analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_COORDENADOR, usuarioExecutor, UsuarioAnalise.findByCoordenador(coordenador));
 				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 			}
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
 
-			Gerente gerente = Gerente.distribuicaoAutomaticaGerente(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeoBanco);
+			Coordenador coordenador = Coordenador.distribuicaoAutomaticaCoordenador(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeoBanco);
 
-			gerente.save();
-			analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE, usuarioExecutor, UsuarioAnalise.findByGerente(gerente));
+			coordenador.save();
+			analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_COORDENADOR, usuarioExecutor, UsuarioAnalise.findByCoordenador(coordenador));
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.EMITIR_NOTIFICACAO)) {
@@ -334,7 +325,7 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 
 		HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(processo.idObjetoTramitavel);
 
-		if(historicoTramitacao.idAcao.equals(SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE)) {
+		if(historicoTramitacao.idAcao.equals(SOLICITAR_AJUSTES_PARECER_GEO_PELO_COORDENADOR)) {
 
 			return ParecerAnalistaGeo.getUltimoParecer(processo.analise.analiseGeo.pareceresAnalistaGeo);
 

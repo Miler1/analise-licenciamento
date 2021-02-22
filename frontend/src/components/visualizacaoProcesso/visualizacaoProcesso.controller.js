@@ -4,7 +4,7 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 											   $anchorScroll,processoService, documentoService,
 											   empreendimentoService, notificacaoService,
 											   documentoLicenciamentoService, analiseGeoService, parecerDiretorTecnicoService,
-											   parecerAnalistaGeoService, parecerGerenteService,parecerSecretarioService,
+											   parecerAnalistaGeoService, parecerCoordenadorService,parecerSecretarioService,
 											   tiposSobreposicaoService,parecerAnalistaTecnicoService) {
 
 	var modalCtrl = this;
@@ -31,9 +31,9 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 	modalCtrl.dadosProjeto = null;
 	modalCtrl.TiposSobreposicao = [];
 	modalCtrl.openedAccordionGeo = false;
-	modalCtrl.openedAccordionGerente = false;
+	modalCtrl.openedAccordionCoordenador = false;
 	modalCtrl.labelAnalistaGeo = '';
-	modalCtrl.labelGerente = '';
+	modalCtrl.labelCoordenador = '';
 	modalCtrl.parecer = {};
 	modalCtrl.pareceres = {};
 	modalCtrl.pareceresDiretor = {};
@@ -69,27 +69,27 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
 
-			modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo.forEach(function(parecerGerente) {
+			modalCtrl.dadosProcesso.analise.analiseGeo.pareceresCoordenadorAnaliseGeo.forEach(function(parecerCoordenador) {
 
-				if(parecerGerente.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
+				if(parecerCoordenador.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
 
-					modalCtrl.pareceres = modalCtrl.pareceres.concat(parecerGerente);
+					modalCtrl.pareceres = modalCtrl.pareceres.concat(parecerCoordenador);
 				}
 
 			});
 			
-		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.GERENTE || 
+		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.COORDENADOR ||
 				modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.DIRETOR ||
 				modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.SECRETARIO) {
 
 			modalCtrl.pareceres = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo;
 
-			modalCtrl.pareceres = modalCtrl.pareceres.concat(modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo);
+			modalCtrl.pareceres = modalCtrl.pareceres.concat(modalCtrl.dadosProcesso.analise.analiseGeo.pareceresCoordenadorAnaliseGeo);
 
 			if (modalCtrl.dadosProcesso.analise.analiseTecnica !== null) {
 
 				modalCtrl.pareceresTecnicos = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
-				modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.concat(modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica);
+				modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.concat(modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresCoordenadorAnaliseTecnica);
 
 			}
 			
@@ -99,11 +99,11 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		} else if(modalCtrl.usuarioLogadoCodigoPerfil === modalCtrl.perfis.ANALISTA_TECNICO) {
 
 			modalCtrl.pareceresTecnicos = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico;
-			modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica.forEach(function(parecerGerente) {
+			modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresCoordenadorAnaliseTecnica.forEach(function(parecerCoordenador) {
 
-				if(parecerGerente.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
+				if(parecerCoordenador.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
 
-					modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.concat(parecerGerente);
+					modalCtrl.pareceresTecnicos = modalCtrl.pareceresTecnicos.concat(parecerCoordenador);
 				}
 
 			});
@@ -209,9 +209,9 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		if (processo.analise.analiseTecnica !== null) {
 			
 			modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresAnalistaTecnico.concat(processo.analise.analiseTecnica.pareceresAnalistaTecnico);
-			processo.analise.analiseTecnica.pareceresGerenteAnaliseTecnica.forEach(function(parecerGerente) {
+			processo.analise.analiseTecnica.pareceresCoordenadorAnaliseTecnica.forEach(function(parecerCoordenador) {
 
-				modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresGerenteAnaliseTecnica.concat(parecerGerente);
+				modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresCoordenadorAnaliseTecnica = modalCtrl.dadosProcesso.analise.analiseTecnica.pareceresCoordenadorAnaliseTecnica.concat(parecerCoordenador);
 
 			}); 
 
@@ -220,9 +220,9 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		if (processo.analise.analiseGeo !== null && processo.analise.analiseTecnica === null) {
 
 			modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresAnalistaGeo.concat(processo.analise.analiseGeo.pareceresAnalistaGeo);
-			processo.analise.analiseGeo.pareceresGerenteAnaliseGeo.forEach(function(parecerGerente) {
+			processo.analise.analiseGeo.pareceresCoordenadorAnaliseGeo.forEach(function(parecerCoordenador) {
 
-				modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresGerenteAnaliseGeo.concat(parecerGerente);
+				modalCtrl.dadosProcesso.analise.analiseGeo.pareceresCoordenadorAnaliseGeo = modalCtrl.dadosProcesso.analise.analiseGeo.pareceresCoordenadorAnaliseGeo.concat(parecerCoordenador);
 
 			}); 
 		
@@ -335,73 +335,49 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 
 	modalCtrl.condicoesAnalistas = function(parecer) {
 
-		if (parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES &&
+		return parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES &&
 			parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO &&
-			parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
-
-			return true;
-
-		}
-
-		return false;
+			parecer.tipoResultadoAnalise.id !== modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO;
 
 	};
 
-	modalCtrl.condicoesGerentes = function(parecer) {
+	modalCtrl.condicoesCoordenador = function(parecer) {
 
-		if (parecer.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES ||
+		return parecer.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES ||
 			parecer.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO ||
-			parecer.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
-
-			return true;
-
-		}
-
-		return false;
+			parecer.tipoResultadoAnalise.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO;
 
 	};
 
 	modalCtrl.verificaLoginAnaliseGeo = function() {
 
-		if (modalCtrl.perfis.ANALISTA_GEO === modalCtrl.usuarioLogadoCodigoPerfil ||
-			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil ||
+		return modalCtrl.perfis.ANALISTA_GEO === modalCtrl.usuarioLogadoCodigoPerfil ||
+			modalCtrl.perfis.COORDENADOR === modalCtrl.usuarioLogadoCodigoPerfil ||
 			modalCtrl.perfis.DIRETOR === modalCtrl.usuarioLogadoCodigoPerfil ||
-			modalCtrl.perfis.SECRETARIO === modalCtrl.usuarioLogadoCodigoPerfil) {
-
-			return true;
-
-		}
-
-		return false;
+			modalCtrl.perfis.SECRETARIO === modalCtrl.usuarioLogadoCodigoPerfil;
 
 	};
 
 	modalCtrl.verificaLoginAnaliseTecnica = function() {
 
-		if (modalCtrl.perfis.ANALISTA_TECNICO === modalCtrl.usuarioLogadoCodigoPerfil ||
-			modalCtrl.perfis.GERENTE === modalCtrl.usuarioLogadoCodigoPerfil ||
+		return modalCtrl.perfis.ANALISTA_TECNICO === modalCtrl.usuarioLogadoCodigoPerfil ||
+			modalCtrl.perfis.COORDENADOR === modalCtrl.usuarioLogadoCodigoPerfil ||
 			modalCtrl.perfis.DIRETOR === modalCtrl.usuarioLogadoCodigoPerfil ||
-			modalCtrl.perfis.SECRETARIO === modalCtrl.usuarioLogadoCodigoPerfil) {
-
-			return true;
-
-		}
-
-		return false;
+			modalCtrl.perfis.SECRETARIO === modalCtrl.usuarioLogadoCodigoPerfil;
 
 	};
 	
-	modalCtrl.setLabelGerente = function(tipoResultadoAnaliseGerente) {
+	modalCtrl.setLabelCoordenador = function(tipoResultadoAnaliseCoordenador) {
 
-		if(tipoResultadoAnaliseGerente.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
+		if(tipoResultadoAnaliseCoordenador.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_VALIDADO) {
 
 			return 'Despacho';
 
-		} else if(tipoResultadoAnaliseGerente.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
+		} else if(tipoResultadoAnaliseCoordenador.id === modalCtrl.tiposResultadoAnaliseUtils.SOLICITAR_AJUSTES) {
 
 			return 'Observações';
 
-		} else if(tipoResultadoAnaliseGerente.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO) {
+		} else if(tipoResultadoAnaliseCoordenador.id === modalCtrl.tiposResultadoAnaliseUtils.PARECER_NAO_VALIDADO) {
 
 			return 'Justificativa';
 
@@ -795,17 +771,17 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 					abrirModal(response.data, idProcesso);
 				});
 
-		}else if(historico.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
-				  historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
+		}else if(historico.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_COORDENADOR ||
+				  historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_COORDENADOR ||
 				  historico.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO) {
 
-				parecerGerenteService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
+				parecerCoordenadorService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
 					.then(function(response){
 						abrirModal(response.data, idProcesso);
 					});
 
-		}else if(historico.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
-				historico.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
+		}else if(historico.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR ||
+				historico.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR ||
 				historico.idAcao === modalCtrl.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO){
 
 			parecerAnalistaTecnicoService.findParecerByIdHistoricoTramitacao(historico.idHistorico)
@@ -813,11 +789,11 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 					abrirModal(response.data, idProcesso);
 				});
 
-		} else if(historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE ||
-				historico.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_TECNICO_GERENTE || 
+		} else if(historico.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR ||
+				historico.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_TECNICO_COORDENADOR || 
 				historico.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_TECNICO_ENCAMINHANDO_TECNICO){
 			
-			parecerGerenteService.findParecerTecnicoByIdHistoricoTramitacao(historico.idHistorico)
+			parecerCoordenadorService.findParecerTecnicoByIdHistoricoTramitacao(historico.idHistorico)
 				.then(function(response){
 					abrirModal(response.data, idProcesso);
 				});
@@ -856,14 +832,14 @@ var VisualizacaoProcessoController = function ($location, $injector, desvinculoS
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_GERENTE ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_GEO_COORDENADOR ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_COORDENADOR ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_PARECER_GEO_ENCAMINHANDO_GEO ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE ||
-		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_TECNICO_GERENTE ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR ||
+		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_PARECER_TECNICO_COORDENADOR ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.VALIDAR_ANALISE_PELO_DIRETOR ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.INVALIDAR_ANALISE_PELO_DIRETOR ||
 		   tramitacao.idAcao === modalCtrl.acaoTramitacao.APROVAR_SOLICITACAO_LICENCA || 

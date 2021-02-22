@@ -1,0 +1,60 @@
+#conclusao
+    label.obrigatorio Análise final do protocolo:
+        div.pull-left.col-md-10.posicao-principal
+            form.pull-left.posicao-conteudo(ng-class="{'error': validacaoAnaliseTecnicaCoordenador.errors.resultadoAnalise === true}")
+                label.opDla.radio-inline.posicao-primeiroItem-coordenador
+                    input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseTecnicaCoordenador.analiseTecnica.tipoResultadoValidacaoCoordenador.id', value="{{validacaoAnaliseTecnicaCoordenador.TiposResultadoAnalise.PARECER_VALIDADO}}")
+                    | Parecer APROVADO
+                label.opDla.radio-inline(style="margin-left:90px;")
+                    input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseTecnicaCoordenador.analiseTecnica.tipoResultadoValidacaoCoordenador.id', value="{{validacaoAnaliseTecnicaCoordenador.TiposResultadoAnalise.SOLICITAR_AJUSTES}}")
+                    | Solicitar AJUSTES
+                label.opDla.radio-inline(style="margin-left:90px;")
+                    input(type='radio', name='analiseFinalRadio', ng-model='validacaoAnaliseTecnicaCoordenador.analiseTecnica.tipoResultadoValidacaoCoordenador.id', value="{{validacaoAnaliseTecnicaCoordenador.TiposResultadoAnalise.PARECER_NAO_VALIDADO}}", ng-click="validacaoAnaliseTecnicaCoordenador.buscarAnalistasTecnicoByIdProcesso()")
+                    | Parecer NÃO APROVADO
+    hr
+    div(ng-show="validacaoAnaliseTecnicaCoordenador.analiseTecnica.tipoResultadoValidacaoCoordenador.id === validacaoAnaliseTecnicaCoordenador.TiposResultadoAnalise.PARECER_VALIDADO.toString()")
+        label.obrigatorio(style="font-size:13px") Despacho:
+        br
+        div(ng-class="{'error-summernote': validacaoAnaliseTecnicaCoordenador.errors.despacho === true}")
+            summernote.form-control(id="conclusao",
+                        on-paste="snPaste(evt)",
+                        name="conclusao",
+                        lang="pt-BR",
+                        height="200",
+                        ng-model="validacaoAnaliseTecnicaCoordenador.analiseTecnica.parecerValidacaoCoordenador",
+                        config="optionsText",
+                        class="editable",
+                        contenteditable="true")
+    div(ng-show="validacaoAnaliseTecnicaCoordenador.analiseTecnica.tipoResultadoValidacaoCoordenador.id === validacaoAnaliseTecnicaCoordenador.TiposResultadoAnalise.SOLICITAR_AJUSTES.toString()")
+        label.obrigatorio(style="font-size:13px") Observações:
+        br
+        div(ng-class="{'error-summernote': validacaoAnaliseTecnicaCoordenador.errors.despacho === true}")
+            summernote.form-control(id="conclusao",
+                        on-paste="snPaste(evt)",
+                        name="conclusao"
+                        lang="pt-BR",
+                        height="200",
+                        ng-model="validacaoAnaliseTecnicaCoordenador.analiseTecnica.parecerValidacaoCoordenador",
+                        config="optionsText",
+                        class="editable",
+                        contenteditable="true")
+    div(ng-show="validacaoAnaliseTecnicaCoordenador.analiseTecnica.tipoResultadoValidacaoCoordenador.id === validacaoAnaliseTecnicaCoordenador.TiposResultadoAnalise.PARECER_NAO_VALIDADO.toString()")
+
+        label.obrigatorio(style="font-size:13px") Justificativa:
+        br
+        div(ng-class="{'error-summernote': validacaoAnaliseTecnicaCoordenador.errors.despacho === true}")
+            summernote.form-control(id="conclusao",
+                        on-paste="snPaste(evt)",
+                        name="conclusao",
+                        lang="pt-BR",
+                        height="200",
+                        ng-model="validacaoAnaliseTecnicaCoordenador.analiseTecnica.parecerValidacaoCoordenador",
+                        config="optionsText",
+                        class="editable",
+                        contenteditable="true")
+
+
+        label.label-selecao-analista.obrigatorio Selecionar analista:
+        select.form-control(ng-model="validacaoAnaliseTecnicaCoordenador.analistaTecnicoDestino.id",ng-class="{'error-summernote': validacaoAnaliseTecnicaCoordenador.errors.analistas === true}", name="selectAnalista", style="margin-bottom:30px;"
+                                ng-options="analistaTecnico.id as analistaTecnico.pessoa.nome for analistaTecnico in validacaoAnaliseTecnicaCoordenador.analistasTecnicos | orderBy:'pessoa.nome' track by analistaTecnico.id")
+                option(value="") Selecione o analista            

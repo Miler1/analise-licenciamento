@@ -46,9 +46,9 @@ public class SolicitarAjustesGeo extends TipoResultadoAnaliseChain<AnaliseGeo> {
         copia.pareceresGeoRestricoes.clear();
         copia.updatePareceresGeoRestricoes(pareceresGeoRestricoesSalvar);
 
-        if (copia.hasGerentes()){
+        if (copia.hasCoordenadores()){
 
-            analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE, usuarioExecutor);
+            analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_COORDENADOR, usuarioExecutor);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), usuarioExecutor);
         }
     }

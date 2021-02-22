@@ -4,7 +4,7 @@ var Perfis = {
 	ANALISTA_GEO: "ANALISTA_GEO",
 	ANALISTA_TECNICO: "ANALISTA_TECNICO",
 	DIRETOR: "DIRETOR",
-	GERENTE: "GERENTE",
+	COORDENADOR: "COORDENADOR",
 	SECRETARIO: "SECRETARIO",
 
 	//TODO SQUAD2 - Remover estes perfis após finalização do novo fluxo

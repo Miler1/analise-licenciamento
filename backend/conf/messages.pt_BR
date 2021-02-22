@@ -49,7 +49,7 @@ ANALISTA_JUSTIFICATIVA_COORDENADOR_OBRIGATORIA=Para vinculação de um analista 
 DESVINCULO_SOLICITADO_COM_SUCESSO=Seu desvínculo foi solicitado com sucesso!
 DESVINCULO_RESPONDIDO_COM_SUCESSO=O desvínculo foi respondido com sucesso!
 NENHUM_ANALISTA_ENCONTRADO=Não existe nenhum analista geo para vincular automaticamente o protocolo com número %s no setor %s.
-NENHUM_GERENTE_ENCONTRADO=Não existe nenhum gerente para ser vinculado.
+NENHUM_COORDENADOR_ENCONTRADO=Não existe nenhum coordenador para ser vinculado.
 NENHUM_DIRETOR_ENCONTRADO=Não existe nenhum diretor para ser vinculado.
 #
 # Inconsistencia
@@ -60,11 +60,11 @@ CAMPOS_OBRIGATORIOS= Verifique os campos obrigatórios!
 CLONAR_PARECER_COM_INCONSISTENCIA=Não é possível clonar este parecer. O protocolo possui inconsistência cadastrada.
 PARECER_NAO_ENCONTRADO=Não foi encontrado um parecer para esse número de protocolo.
 #
-# Gerentes
+# Coordenadores
 #
-GERENTE_DIFERENTE_DE_GERENTE_TECNICO=O gerente informado não tem perfil de gerente técnico.
-GERENTE_VINCULADO_SUCESSO=Gerente vinculado com sucesso.
-GERENTE_INICIOU_ANALISE_SUCESSO=Gerente iniciou a Análise com sucesso.
+COORDENADOR_DIFERENTE_DE_COORDENADOR_TECNICO=O coordenador informado não tem perfil de coordenador técnico.
+COORDENADOR_VINCULADO_SUCESSO=Coordenador vinculado com sucesso.
+COORDENADOR_INICIOU_ANALISE_SUCESSO=Coordenador iniciou a Análise com sucesso.
 
 #
 # Upload
@@ -114,7 +114,7 @@ ANALISE_TECNICA_VALIDADE_LICENCA_MAIOR_PERMITIDO=A validade da licença está ma
 ANALISE_TECNICA_CONDICIONANTE_PRAZO_MAIOR_PERMITIDO=A validade da condicionante está maior que o máximo permitido.
 ANALISE_TECNICA_LICENCA_SEM_VALIDACAO=Os títulos não foram todos validados.
 ANALISE_TECNICA_USUARIO_SEM_SETOR=Para a análise técnica o usuário logado precisa ter um setor.
-ANALISE_TECNICA_GERENTE_ANALISTA_NAO_INFORMADO=O gerente ou analista técnico não foi informado.
+ANALISE_TECNICA_COORDENADOR_ANALISTA_NAO_INFORMADO=O coordenador ou analista técnico não foi informado.
 ERRO_NENHUMA_LICENCA_EMITIDA=Para o status Deferido, ao menos uma licença deve ser emitida.
 
 #

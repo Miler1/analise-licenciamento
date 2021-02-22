@@ -29,7 +29,7 @@ public class SolicitarAjustesGeoAprovador extends TipoResultadoAnaliseChain<Anal
         AnaliseGeo copia = analiseGeo.gerarCopia(false);
 
         /**
-         * Quando o ajuste for do aprovador para o coordenador deve-se manter a validação do coordenador e gerente
+         * Quando o ajuste for do aprovador para o coordenador deve-se manter a validação do coordenador e coordenador
          */
         copia.setValidacaoCoordenador(analiseGeo);
 
