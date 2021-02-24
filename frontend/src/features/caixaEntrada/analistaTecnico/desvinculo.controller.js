@@ -7,7 +7,7 @@ var DesvinculoAnaliseTecnicaController = function ($uibModalInstance,idAnaliseTe
         desvinculoService.buscarDesvinculoPeloProcessoTecnico(idProcesso)
         .then(function(response){
 
-            desvinculoController.justificativa = response.data.respostaGerente;
+            desvinculoController.justificativa = response.data.respostaCoordenador;
             desvinculoController.respondido = true;
             $('#justificativa').prop('disabled', true);
             

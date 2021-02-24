@@ -36,16 +36,16 @@ var AnalistaService = function(request, config) {
 			.get(config.BASE_URL() + "analistas/" + idProcesso);
 	};
 
-    this.getAnalistasTecnicosByPerfil = function(isGerenteLogado) {
+    this.getAnalistasTecnicosByPerfil = function(isCoordenadorLogado) {
 
 		return request
-			.get(config.BASE_URL() + "analistas/perfil?isGerente=" + isGerenteLogado);
+			.get(config.BASE_URL() + "analistas/perfil?isCoordenador=" + isCoordenadorLogado);
 	};
 
-	this.getAnalistasGeoByPerfil = function(isGerenteLogado) {
+	this.getAnalistasGeoByPerfil = function(isCoordenadorLogado) {
 
 		return request
-			.get(config.BASE_URL() + "analistasGeo/perfil?isGerente=" + isGerenteLogado);
+			.get(config.BASE_URL() + "analistasGeo/perfil?isCoordenador=" + isCoordenadorLogado);
 	};
 
     this.vincularAnaliseAnalistaTecnico = function(idAnalista, justificativaCoordenador, idsProcessos) {

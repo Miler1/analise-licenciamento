@@ -1,14 +1,11 @@
 package controllers;
 
 import builders.LicencaEmitidaBuilder.FiltroLicenca;
-import exceptions.AppException;
-import models.Documento;
 import models.licenciamento.DispensaLicenciamento;
 import models.licenciamento.DocumentoLicenciamento;
 import models.licenciamento.Licenca;
 import models.licenciamento.LicencaEmitida;
 import security.Acao;
-import utils.Mensagem;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +21,7 @@ public class LicencasEmitidas extends InternalController {
 	public static void listWithFilter(FiltroLicenca filtro){
 		
 		verificarPermissao(Acao.CONSULTAR_LICENCAS_EMITIDAS);
-		
+
 		List licencasList = LicencaEmitida.listWithFilter(filtro);
 		
 		renderJSON(licencasList);
@@ -48,9 +45,9 @@ public class LicencasEmitidas extends InternalController {
 	public static void listWithFilters(FiltroLicenca filtro){
 		
 		verificarPermissao(Acao.CONSULTAR_LICENCAS_EMITIDAS);
-		
+
 		List licencasList = LicencaEmitida.listWithFilters(filtro);
-		
+
 		renderJSON(licencasList);
 	}
 	

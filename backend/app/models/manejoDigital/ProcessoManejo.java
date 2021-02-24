@@ -207,15 +207,13 @@ public class ProcessoManejo extends GenericModel implements InterfaceTramitavel 
 
     private static ProcessoManejoBuilder commonFilterProcesso(ProcessoManejoBuilder.FiltroProcessoManejo filtro) {
 
-        ProcessoManejoBuilder processoBuilder = new ProcessoManejoBuilder()
+        return new ProcessoManejoBuilder()
                 .filtrarPorNumeroProcesso(filtro.numeroProcesso)
                 .filtrarPorIdMunicipio(filtro.idMunicipioEmpreendimento)
                 .filtrarPorCpfCnpjEmpreendimento(filtro.cpfCnpjEmpreendimento)
                 .filtrarPorIdAtividade(filtro.idAtividade)
                 .filtrarPorIdCondicao(filtro.idStatusLicenca)
                 .filtrarPorIdTipoLicenca(filtro.idManejoDigital);
-
-        return processoBuilder;
     }
 
     private void enviarProcessoAnaliseShape(String token) {

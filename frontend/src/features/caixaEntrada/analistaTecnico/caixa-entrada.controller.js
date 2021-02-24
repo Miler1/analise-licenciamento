@@ -64,11 +64,11 @@ var CxEntAnalistaTecnicoController = function($scope, config, $uibModal,
 		return processoService.visualizarProcesso(processo);
 	}
 
-	cxEntAnalistaTecnico.getPrazoAnaliseTecnica = function(dataParecerGerente, prazo) {
+	cxEntAnalistaTecnico.getPrazoAnaliseTecnica = function(dataParecerCoordenador, prazo) {
 
-		if(dataParecerGerente) {
+		if(dataParecerCoordenador) {
 
-			var dataVencimento = cxEntAnalistaTecnico.dateUtil.somaPrazoEmDias(dataParecerGerente, prazo);
+			var dataVencimento = cxEntAnalistaTecnico.dateUtil.somaPrazoEmDias(dataParecerCoordenador, prazo);
 
 			return cxEntAnalistaTecnico.dateUtil.getDiasRestantes(dataVencimento);
 

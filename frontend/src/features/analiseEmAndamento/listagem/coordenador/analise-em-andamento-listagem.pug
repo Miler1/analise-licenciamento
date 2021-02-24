@@ -1,0 +1,76 @@
+include ../../../../layout/components/paginacao
+
+div
+	div(growl inline="true" reference='5')
+	filtro-processos(paginacao="listagem.paginacao",
+		disabled-fields="listagem.disabledFields"
+		atualizar-lista="listagem.atualizarListaProcessos",
+		atualizar-paginacao="listagem.atualizarPaginacao",
+		condicao-tramitacao="listagem.condicaoTramitacao",
+		pesquisar-ao-inicializar="true",
+		is-coordenador="usuarioLogadoCodigoPerfil === app.utils.Perfis.COORDENADOR",
+		is-coordenador-logado="usuarioLogadoCodigoPerfil === app.utils.Perfis.COORDENADOR")
+
+	h4 Lista de protocolo
+
+	hr
+	.row
+		.col-md-12
+			div(ng-if="listagem.processos && listagem.processos.length > 0").table-responsive
+				table.table.table-striped.table-condensed.no-margin
+					thead
+						tr
+							th
+							th.col-md-1 Protocolo
+							th.col-md-2 CPF/CNPJ
+							th.col-md-3 Empreendimento
+							th.col-md-2 Município
+							th.col-md-1 Licença
+							th.col-md-1 Prazo análise
+							th.col-md-1 Prazo análise GEO
+							th.col-md-1 Prazo análise técnica
+							th.col-md-1.text-right Ações
+					tbody
+						tr(ng-repeat="processo in listagem.processos")
+							td
+								span(ng-class="{'icone-analise-geo': processo.idCondicaoTramitacao === listagem.legendas.EM_ANALISE_COORDENADOR }")
+								span(ng-class="{'icone-analise-tecnica': processo.idCondicaoTramitacao === listagem.legendas.EM_ANALISE_TECNICA_COORDENADOR }")
+							td(ng-attr-title="{{processo.numero}}") {{processo.numero}}
+							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
+							td.break-word {{processo.denominacaoEmpreendimento}}
+							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
+							td {{processo.licencas}}
+							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimoData(listagem.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, listagem.PrazoAnalise.ANALISE), listagem.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
+								| {{ listagem.dateUtil.getContaDiasRestantesData(listagem.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, listagem.PrazoAnalise.ANALISE)) }}
+							td(ng-class="{'error-message': processo.diasAnaliseGeo > listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO}")
+								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : listagem.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
+							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+								| {{ processo.dataConclusaoAnaliseTecnica ? 'Concluída' : listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
+							td
+								span.pull-right
+
+									.dropdown.action-table
+										button#dropdownMenu1.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='true')
+											| Ações &nbsp;
+											span.caret
+										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
+											li(ng-if="processo.idCondicaoTramitacao === listagem.condicoesEmAnalise.EM_ANALISE_COORDENADOR")
+												a(ng-click="listagem.continuarAnaliseGeo(processo.idAnalise)")
+													i.glyphicon.glyphicon-play-circle
+													span Continuar validação geo
+											li(ng-if="processo.idCondicaoTramitacao === listagem.condicoesEmAnalise.EM_ANALISE_TECNICA_COORDENADOR")
+												a(ng-click="listagem.continuarAnaliseTecnica(processo.idAnalise)")
+													i.glyphicon.glyphicon-play-circle
+													span Continuar validação técnica
+											li
+												a(ng-click="listagem.exibirDadosProcesso(processo)")
+													i.glyphicon.glyphicon-eye-open
+													span Visualizar protocolo
+				div
+					span.col-md-4.icone-analise-geo.legenda-margin Análise Geo
+					span.col-md-4.icone-analise-tecnica.legenda-margin(style="margin-bottom:23px") Análise Técnica
+				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
+
+		.row(ng-show="!listagem.processos || listagem.processos.length == 0")
+			.col-md-12
+				p.empty-result Não existem dados a serem exibidos.

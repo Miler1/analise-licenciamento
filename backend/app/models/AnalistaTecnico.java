@@ -1,15 +1,12 @@
 package models;
 
-import exceptions.PortalSegurancaException;
 import exceptions.ValidacaoException;
 import models.EntradaUnica.CodigoPerfil;
 import models.EntradaUnica.Setor;
-import models.EntradaUnica.Usuario;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
 import play.db.jpa.JPA;
 import security.Auth;
-import security.cadastrounificado.CadastroUnificadoWS;
 import utils.Mensagem;
 
 import javax.persistence.*;
@@ -129,12 +126,12 @@ public class AnalistaTecnico extends GenericModel {
 		analistaTecnico.save();
 		
 		/**
-		 * Se for o gerente o executor da vinculação, então atribui o usuário executor para o campo do gerente,
+		 * Se for o coordenador o executor da vinculação, então atribui o usuário executor para o campo do coordenador,
 		 * caso contrário atribui o usuário executor para o campo do coordenador. 
 		 */
-		if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.GERENTE)) {
+		if (usuarioExecutor.usuarioEntradaUnica.perfilSelecionado.codigo.equals(CodigoPerfil.COORDENADOR)) {
 
-			analiseTecnica.usuarioValidacaoGerente = usuarioExecutor;
+			analiseTecnica.usuarioValidacaoCoordenador = usuarioExecutor;
 
 		}
 		

@@ -70,9 +70,9 @@ var MenuPrincipal = {
 				filtro.isAnaliseJuridica = isAnaliseJuridica(codigoPerfilSelecionado);
 				filtro.isAnaliseTecnica = isAnaliseTecnica(codigoPerfilSelecionado);
 				filtro.isAnaliseGeo = isAnaliseGeo(codigoPerfilSelecionado);
-				filtro.isGerente = isGerente(codigoPerfilSelecionado);
+				filtro.isCoordenador = isCoordenador(codigoPerfilSelecionado);
 				filtro.isDiretor = isDiretor(codigoPerfilSelecionado);
-				filtro.isDiretor = isPresidente(codigoPerfilSelecionado);
+				filtro.isDiretor = isSecretario(codigoPerfilSelecionado);
 			}
 
 			processoService.getProcessosCount(filtro)
@@ -104,9 +104,9 @@ var MenuPrincipal = {
 			return codigoPerfilSelecionado === app.utils.Perfis.ANALISTA_GEO;
 		}
 
-		function isGerente(codigoPerfilSelecionado) {
+		function isCoordenador(codigoPerfilSelecionado) {
 
-			return codigoPerfilSelecionado === app.utils.Perfis.GERENTE;
+			return codigoPerfilSelecionado === app.utils.Perfis.COORDENADOR;
 
 		}
 
@@ -116,9 +116,9 @@ var MenuPrincipal = {
 
 		}
 
-		function isPresidente(codigoPerfilSelecionado) {
+		function isSecretario(codigoPerfilSelecionado) {
 
-			return codigoPerfilSelecionado === app.utils.Perfis.PRESIDENTE;
+			return codigoPerfilSelecionado === app.utils.Perfis.SECRETARIO;
 
 		}
 

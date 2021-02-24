@@ -99,8 +99,8 @@ var ConsultarProcessoController = function($scope,
 
 	consultarProcesso.getPrazoAnaliseGeo = function(processo) {
 
-		if(processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.EM_ANALISE_GERENTE ||
-			processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_GERENTE || 
+		if(processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.EM_ANALISE_COORDENADOR ||
+			processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_COORDENADOR || 
 			processo.dataConclusaoAnaliseGeo) {
 
 			return 'Concluída';
@@ -167,13 +167,13 @@ var ConsultarProcessoController = function($scope,
 
 	consultarProcesso.verificaStatusAnaliseGeo = function(idCondicaoTramitacao) {
 
-		var CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE = [27, 31];
+		var CONSULTAR_PROTOCOLO_ANALISTA_GEO_COORDENADOR = [27, 31];
 		var CONSULTAR_PROTOCOLO_ANALISTA_GEO = [25, 26, 30, 4];	
 		var status = false;
 
-		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE) {
+		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.COORDENADOR) {
 
-			CONSULTAR_PROTOCOLO_ANALISTA_GEO_GERENTE.forEach(function(condicao){
+			CONSULTAR_PROTOCOLO_ANALISTA_GEO_COORDENADOR.forEach(function(condicao){
 
 				if(idCondicaoTramitacao === condicao) {
 
@@ -206,11 +206,11 @@ var ConsultarProcessoController = function($scope,
 
 		var status = false;
 
-		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE) {
+		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.COORDENADOR) {
 
-			var CONSULTAR_PROTOCOLO_ANALISE_TECNICA_GERENTE = [10, 36];
+			var CONSULTAR_PROTOCOLO_ANALISE_TECNICA_COORDENADOR = [10, 36];
 
-			CONSULTAR_PROTOCOLO_ANALISE_TECNICA_GERENTE.forEach(function(condicao){
+			CONSULTAR_PROTOCOLO_ANALISE_TECNICA_COORDENADOR.forEach(function(condicao){
 
 				if(idCondicaoTramitacao === condicao) {
 

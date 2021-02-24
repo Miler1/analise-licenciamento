@@ -5,18 +5,12 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import security.Auth;
 import utils.Configuracoes;
 import utils.DateUtil;
 import utils.Mensagem;
 
 import javax.persistence.*;
-import javax.validation.ValidationException;
-import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static models.tramitacao.AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO;
 
@@ -40,16 +34,16 @@ public class DesvinculoAnaliseGeo extends GenericModel {
     public String justificativa;
 
 
-    @Column(name="resposta_gerente")
-    public String respostaGerente;
+    @Column(name="resposta_coordenador")
+    public String respostaCoordenador;
 
 
     @Column(name="aprovada")
     public Boolean aprovada;
 
     @OneToOne
-    @JoinColumn(name="id_gerente", referencedColumnName = "id")
-    public UsuarioAnalise gerente;
+    @JoinColumn(name="id_coordenador", referencedColumnName = "id")
+    public UsuarioAnalise coordenador;
 
     @Required
     @Column(name="data_solicitacao")
@@ -73,7 +67,7 @@ public class DesvinculoAnaliseGeo extends GenericModel {
 
     public void update(DesvinculoAnaliseGeo novoDesvinculo) {
 
-        this.respostaGerente = novoDesvinculo.respostaGerente;
+        this.respostaCoordenador = novoDesvinculo.respostaCoordenador;
         this.aprovada = novoDesvinculo.aprovada;
         this.dataResposta = novoDesvinculo.dataResposta;
         this.analistaGeoDestino = novoDesvinculo.analistaGeoDestino;
@@ -93,17 +87,17 @@ public class DesvinculoAnaliseGeo extends GenericModel {
 
         String siglaSetor = usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla;
 
-        Gerente gerente = Gerente.distribuicaoAutomaticaGerente(siglaSetor, this.analiseGeo);
+        Coordenador coordenador = Coordenador.distribuicaoAutomaticaCoordenador(siglaSetor, this.analiseGeo);
 
-        gerente.save();
+        coordenador.save();
 
-        this.gerente = UsuarioAnalise.findByGerente(gerente);
+        this.coordenador = UsuarioAnalise.findByCoordenador(coordenador);
         this.analistaGeo =  usuarioSessao;
 
         this.save();
 
         this.analiseGeo = AnaliseGeo.findById(this.analiseGeo.id);
-        this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, SOLICITAR_DESVINCULO_ANALISE_GEO, usuarioSessao, this.gerente);
+        this.analiseGeo.analise.processo.tramitacao.tramitar(this.analiseGeo.analise.processo, SOLICITAR_DESVINCULO_ANALISE_GEO, usuarioSessao, this.coordenador);
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseGeo.analise.processo.objetoTramitavel.id), usuarioSessao);
 
     }
@@ -112,8 +106,8 @@ public class DesvinculoAnaliseGeo extends GenericModel {
 
         if(this.justificativa == null ||
                 this.justificativa.equals("") ||
-                this.respostaGerente== null  ||
-                this.respostaGerente.equals("") ||
+                this.respostaCoordenador == null  ||
+                this.respostaCoordenador.equals("") ||
                 this.aprovada == null){
 
             throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);

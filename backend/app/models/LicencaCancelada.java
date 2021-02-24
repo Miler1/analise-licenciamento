@@ -71,8 +71,8 @@ public class LicencaCancelada extends GenericModel{
 
 			this.licenca.caracterizacao.status = StatusCaracterizacao.findById(StatusCaracterizacaoEnum.CANCELADO.id);
 
-			ParecerPresidente parecerPresidente = ParecerPresidente.getUltimoParecerPresidente(this.licenca.caracterizacao.processo.analise.pareceresPresidente);
-			parecerPresidente.enviarEmailStatusAnalise(this.licenca.caracterizacao.processo.analise);
+			ParecerSecretario parecerSecretario = ParecerSecretario.getUltimoParecerSecretario(this.licenca.caracterizacao.processo.analise.pareceresSecretario);
+			parecerSecretario.enviarEmailStatusAnalise(this.licenca.caracterizacao.processo.analise);
 			
 //			enviarNotificacaoCanceladoPorEmail();
 			

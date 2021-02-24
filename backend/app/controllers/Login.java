@@ -2,29 +2,26 @@ package controllers;
 
 import exceptions.AppException;
 import models.EntradaUnica.Usuario;
-import models.PerfilUsuarioAnalise;
 import models.Pessoa;
-import models.SetorUsuarioAnalise;
 import models.UsuarioAnalise;
 import play.Logger;
 import play.Play;
 import play.cache.Cache;
 import play.mvc.Before;
+import play.mvc.Http;
+import play.mvc.Scope;
 import security.Auth;
 import security.AuthService;
 import security.AuthServiceFactory;
 import security.ExternalServiceSecurity;
-import services.IntegracaoEntradaUnicaService;
 import utils.Configuracoes;
 import utils.Helper;
 import utils.Mensagem;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Login extends GenericController {
 
 	private static AuthService authenticationService = new AuthServiceFactory().getInstance();
+
 	@Before(unless={"login", "logout", "showLogin","getAuthenticatedUser", "showLoginEntradaUnica"})
 	protected static void isAutenticado() {
 
@@ -75,7 +72,7 @@ public class Login extends GenericController {
 
 	private static void clearUsuarioSessao() {
 
-		request.current().cookies.remove("PLAY_SESSION");
+		Http.Request.current().cookies.remove("PLAY_SESSION");
 		Cache.delete(session.getId());
 		session.clear();
 	}
@@ -133,13 +130,13 @@ public class Login extends GenericController {
 
 	public static void logout() {
 
-		Auth.logout(session.current());
+		Auth.logout(Scope.Session.current());
 		redirect(Configuracoes.LOGIN_URL);
 	}
 
 	public static UsuarioAnalise getAuthenticatedUser() {
 
-		Logger.debug("ID da Sessão: %s", new Object[]{session.getId()});
+		Logger.debug("ID da Sessão: %s", session.getId());
 
 		return Cache.get(session.getId(), UsuarioAnalise.class);
 
@@ -147,7 +144,7 @@ public class Login extends GenericController {
 
 	private static boolean isExternalResource() {
 
-		return request.path.indexOf(Play.configuration.getProperty("authentication.url.external")) != -1;
+		return request.path.contains(Play.configuration.getProperty("authentication.url.external"));
 
 	}
 

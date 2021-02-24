@@ -12,10 +12,10 @@ var AnaliseTecnicaService = function(request, config) {
                 	.post(config.BASE_URL() + 'analisesTecnicas/iniciar', analise);
 	};
 
-	this.iniciarAnaliseTecnicaGerente = function(analise) {
+	this.iniciarAnaliseTecnicaCoordenador = function(analise) {
 
 		return request
-                	.post(config.BASE_URL() + 'analisesTecnicas/iniciarAnaliseTecnicaGerente', analise);
+                	.post(config.BASE_URL() + 'analisesTecnicas/iniciarAnaliseTecnicaCoordenador', analise);
 	};
 
 	this.findAnalisesTecnicaByNumeroProcesso = function(numero) {
@@ -62,10 +62,10 @@ var AnaliseTecnicaService = function(request, config) {
 				.post(config.BASE_URL() + 'analisesTecnicas/validarParecer', analise);
 	};
 
-	this.validarParecerGerente = function(analise) {
+	this.validarParecerCoordenador = function(analise) {
 
 		return request
-				.post(config.BASE_URL() + 'analisesTecnicas/validarParecerGerente', analise);
+				.post(config.BASE_URL() + 'analisesTecnicas/validarParecerCoordenador', analise);
     };
 
     this.solicitarAjusteAprovador = function(analise) {

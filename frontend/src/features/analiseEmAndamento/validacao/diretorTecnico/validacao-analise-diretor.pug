@@ -32,24 +32,24 @@ section.margin-bottom-md
 
 section(style="padding-top:20px;")
 
-	button.btn.btn-default.pull-left.posicao-cancelar-gerente(title='Cancelar análise',
+	button.btn.btn-default.pull-left.posicao-cancelar-coordenador(title='Cancelar análise',
                                     ng-bootbox-title='Confirmação',
                                     ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
                                     ng-bootbox-confirm-action="validacaoAnaliseDiretor.cancelar()")
 		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
 		| Cancelar
 	
-	button.btn.btn-success.posicao-avancar-concluir-gerente(ng-click="validacaoAnaliseDiretor.concluir()",
+	button.btn.btn-success.posicao-avancar-concluir-coordenador(ng-click="validacaoAnaliseDiretor.concluir()",
 			ng-if="validacaoAnaliseDiretor.controleVisualizacao === 'ETAPA_VALIDACAO_DIRETOR'")
 		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
 		| Concluir
 
-	button.btn.btn-default.posicao-voltar-gerente(ng-click="validacaoAnaliseDiretor.voltarEtapaAnterior()",
+	button.btn.btn-default.posicao-voltar-coordenador(ng-click="validacaoAnaliseDiretor.voltarEtapaAnterior()",
 			ng-if="validacaoAnaliseDiretor.controleVisualizacao === 'ETAPA_VALIDACAO_DIRETOR' || validacaoAnaliseDiretor.controleVisualizacao === 'ETAPA_VALIDACAO_TECNICO'")
 		i.glyphicon.glyphicon-arrow-left
 		| Voltar
 		
-	button.btn.btn-success.posicao-avancar-gerente(ng-click="validacaoAnaliseDiretor.avancarProximaEtapa()",
+	button.btn.btn-success.posicao-avancar-coordenador(ng-click="validacaoAnaliseDiretor.avancarProximaEtapa()",
 			ng-if="validacaoAnaliseDiretor.controleVisualizacao === 'ETAPA_VALIDACAO_TECNICO' || validacaoAnaliseDiretor.controleVisualizacao === 'ETAPA_VALIDACAO_GEO'")
 		i.glyphicon.glyphicon-arrow-right
 		| &nbsp;Avançar                

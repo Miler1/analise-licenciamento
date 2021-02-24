@@ -12,10 +12,10 @@ var AnaliseGeoService = function(request, $window ,config) {
                 	.post(config.BASE_URL() + 'analisesGeo/iniciar', analise);
 	};
 
-	this.iniciarAnaliseGerente = function(analise) {
+	this.iniciarAnaliseCoordenador = function(analise) {
 
 		return request
-                	.post(config.BASE_URL() + 'analisesGeo/iniciarAnaliseGerente', analise);
+                	.post(config.BASE_URL() + 'analisesGeo/iniciarAnaliseCoordenador', analise);
 	};
 
 	this.getAnaliseGeo = function(idAnaliseGeo) {
@@ -80,10 +80,10 @@ var AnaliseGeoService = function(request, $window ,config) {
 
 	};
 
-	this.validarParecerGerente = function(analise) {
+	this.validarParecerCoordenador = function(analise) {
 
 		return request
-				.post(config.BASE_URL() + 'analisesGeo/validarParecerGerente', analise);
+				.post(config.BASE_URL() + 'analisesGeo/validarParecerCoordenador', analise);
     };
 
     this.solicitarAjusteAprovador = function(analise) {
