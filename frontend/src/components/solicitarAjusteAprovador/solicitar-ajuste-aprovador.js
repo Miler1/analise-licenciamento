@@ -13,12 +13,12 @@ var SoliciarAjusteAprovador = {
 		ctrl.perfis = app.utils.Perfis;
 		ctrl.solicitacao = {};
 
-		ctrl.listarCoordenadores = listarCoordenadores;
+		ctrl.listarCoordenador = listarCoordenador;
 		ctrl.solicitar = solicitar;
 
-		function listarCoordenadores() {
+		function listarCoordenador() {
 
-			coordenadorService.getCoordenadores(ctrl.solicitacao.tipo, ctrl.analise.processo.id)
+			coordenadorService.getCoordenador(ctrl.solicitacao.tipo, ctrl.analise.processo.id)
 				.then(function (response) {
 
 					ctrl.coordenadores = response.data;

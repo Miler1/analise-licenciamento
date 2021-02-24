@@ -31,13 +31,13 @@ caixasEntrada.config(["$routeProvider", function($routeProvider) {
 
 caixasEntrada
 	.controller('cxEntCoordenadorJuridicoController', controllers.CxEntCoordenadorJuridicoController)
-	.controller('cxEntCoordenadorTecnicoController', controllers.CxEntCoordenadorTecnicoController)
+	.controller('cxEntCoordenadorController', controllers.CxEntCoordenadorController)
 	.controller('modalVincularConsultorController', controllers.ModalVincularConsultorController)
 	.controller('cxEntConsultorJuridicoController', controllers.CxEntConsultorJuridicoController)
 	.controller('cxEntAnalistaTecnicoController', controllers.CxEntAnalistaTecnicoController)
-	.controller('cxEntGerenteTecnicoController', controllers.CxEntGerenteController)
+	.controller('cxEntCoordenadorController', controllers.CxEntCoordenadorController)
 	.controller('cxEntDiretorController', controllers.CxEntDiretorController)
-	.controller('cxEntPresidenteController', controllers.CxEntPresidenteController)
+	.controller('cxEntSecretarioController', controllers.CxEntSecretarioController)
 	.controller('cxEntAnalistaGeoController', controllers.CxEntAnalistaGeoController);
 
 caixasEntrada

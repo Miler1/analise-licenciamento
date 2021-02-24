@@ -4,8 +4,6 @@ import br.ufla.lemaf.beans.pessoa.Contato;
 import br.ufla.lemaf.beans.pessoa.Pessoa;
 import com.itextpdf.text.DocumentException;
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import controllers.PareceresAnalistasGeo;
 import deserializers.GeometryDeserializer;
 import enums.CamadaGeoEnum;
 import exceptions.PortalSegurancaException;
@@ -24,8 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import play.data.validation.Required;
-import play.db.jpa.GenericModel;
-import play.libs.Crypto;
 import security.cadastrounificado.CadastroUnificadoWS;
 import services.IntegracaoEntradaUnicaService;
 import utils.*;
@@ -82,7 +78,7 @@ public class AnaliseGeo extends Analisavel {
     public String justificativaCoordenador;
 
     @OneToMany(mappedBy = "analiseGeo", cascade = CascadeType.ALL)
-    public List<Gerente> gerentes;
+    public List<Coordenador> coordenadores;
 
     @Required
     @Column(name = "data_cadastro")
@@ -116,7 +112,7 @@ public class AnaliseGeo extends Analisavel {
 
     @OneToMany(mappedBy = "analiseGeo")
     @Fetch(FetchMode.SUBSELECT)
-    public List<ParecerGerenteAnaliseGeo> pareceresGerenteAnaliseGeo;
+    public List<ParecerCoordenadorAnaliseGeo> pareceresCoordenadorAnaliseGeo;
 
     @OneToMany(mappedBy = "analiseGeo")
     @Fetch(FetchMode.SUBSELECT)
@@ -190,11 +186,11 @@ public class AnaliseGeo extends Analisavel {
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 
-    public void iniciarAnaliseGerente(UsuarioAnalise usuarioExecutor) {
+    public void iniciarAnaliseCoordenador(UsuarioAnalise usuarioExecutor) {
 
         verificarDataInicio();
 
-        this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_GERENTE, usuarioExecutor);
+        this.analise.processo.tramitacao.tramitar(this.analise.processo, AcaoTramitacao.INICIAR_ANALISE_COORDENADOR, usuarioExecutor);
         HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analise.processo.objetoTramitavel.id), usuarioExecutor);
     }
 
@@ -213,8 +209,7 @@ public class AnaliseGeo extends Analisavel {
     }
 
     public Boolean validarEmissaoLicencas(List<LicencaAnalise> licencas) {
-        for (int i = 0; i < licencas.size(); i++) {
-            LicencaAnalise licencaVerificar = licencas.get(i);
+        for (LicencaAnalise licencaVerificar : licencas) {
             if (licencaVerificar.emitir) {
                 return true;
             }
@@ -349,7 +344,7 @@ public class AnaliseGeo extends Analisavel {
                 // remove o documeto do banco apenas se ele não estiver relacionado
                 // com outra análises
                 List<AnaliseGeo> analisesGeoRelacionadas = docCadastrado.getAnaliseGeoRelacionadas();
-                if (analisesGeoRelacionadas.size() == 0) {
+                if (analisesGeoRelacionadas.isEmpty()) {
 
                     documentosDeletar.add(docCadastrado);
                 }
@@ -408,7 +403,7 @@ public class AnaliseGeo extends Analisavel {
         Empreendimento empreendimento = Empreendimento.findById(this.analise.processo.empreendimento.id);
 
         Contato emailCadastrante =  CadastroUnificadoWS.ws.getPessoa(empreendimento.cpfCnpjCadastrante).contatos.stream()
-                .filter(contato -> contato.principal == true && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null);
+                .filter(contato -> contato.principal && contato.tipo.descricao.equals("Email")).findFirst().orElseThrow(null);
 
         List<String> destinatarios = new ArrayList<>(Collections.singleton(emailCadastrante.valor));
 
@@ -444,9 +439,9 @@ public class AnaliseGeo extends Analisavel {
         List<String> destinatarios = new ArrayList<>();
         destinatarios.add(orgaoResponsavel.email);
 
-        Boolean aguardandoResposta = false;
+        boolean aguardandoResposta = false;
 
-        if (parecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoEmpreendimento)) {
+        if (ParecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoEmpreendimento)) {
 
             aguardandoResposta = true;
         }
@@ -465,9 +460,9 @@ public class AnaliseGeo extends Analisavel {
         List<String> destinatarios = new ArrayList<String>();
         destinatarios.add(orgaoResponsavel.email);
 
-        Boolean aguardandoResposta = false;
+        boolean aguardandoResposta = false;
 
-        if (parecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoComplexo)) {
+        if (ParecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoComplexo)) {
 
             aguardandoResposta = true;
         }
@@ -486,9 +481,9 @@ public class AnaliseGeo extends Analisavel {
         List<String> destinatarios = new ArrayList<String>();
         destinatarios.add(orgaoResponsavel.email);
 
-        Boolean aguardandoResposta = false;
+        boolean aguardandoResposta = false;
 
-        if (parecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoAtividade)) {
+        if (ParecerAnalistaGeo.verificaTipoSobreposicaoComunicado(sobreposicaoCaracterizacaoAtividade)) {
 
             aguardandoResposta = true;
         }
@@ -528,18 +523,18 @@ public class AnaliseGeo extends Analisavel {
         tiposResultadosAnalise.validarParecer(this, analiseGeo, usuarioExecutor);
     }
 
-    public void validaParecerGerente(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
+    public void validaParecerCoordenador(AnaliseGeo analiseGeo, UsuarioAnalise usuarioExecutor) {
 
-        TipoResultadoAnaliseChain<AnaliseGeo> tiposResultadosAnalise = new ParecerValidadoGeoGerente();
-        tiposResultadosAnalise.setNext(new SolicitarAjustesGeoGerente());
-        tiposResultadosAnalise.setNext(new ParecerNaoValidadoGeoGerente());
+        TipoResultadoAnaliseChain<AnaliseGeo> tiposResultadosAnalise = new ParecerValidadoGeoCoordenador();
+        tiposResultadosAnalise.setNext(new SolicitarAjustesGeoCoordenador());
+        tiposResultadosAnalise.setNext(new ParecerNaoValidadoGeoCoordenador());
 
         tiposResultadosAnalise.validarParecer(this, analiseGeo, usuarioExecutor);
     }
 
     private void validarAnaliseDocumentos() {
 
-        if (this.analisesDocumentos == null || this.analisesDocumentos.size() == 0)
+        if (this.analisesDocumentos == null || this.analisesDocumentos.isEmpty())
             throw new ValidacaoException(Mensagem.ANALISE_DOCUMENTO_NAO_AVALIADO);
 
         for (AnaliseDocumento analise : this.analisesDocumentos) {
@@ -584,22 +579,22 @@ public class AnaliseGeo extends Analisavel {
         }
     }
 
-    public void validarTipoResultadoValidacaoGerente() {
+    public void validarTipoResultadoValidacaoCoordenador() {
 
-        ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo = ParecerGerenteAnaliseGeo.find("analiseGeo", this).first();
+        ParecerCoordenadorAnaliseGeo parecerCoordenadorAnaliseGeo = ParecerCoordenadorAnaliseGeo.find("analiseGeo", this).first();
 
-        if (parecerGerenteAnaliseGeo == null) {
+        if (parecerCoordenadorAnaliseGeo == null) {
 
             throw new ValidacaoException(Mensagem.ANALISE_SEM_RESULTADO_VALIDACAO);
         }
 
     }
 
-    public void validarParecerValidacaoGerente() {
+    public void validarParecerValidacaoCoordenador() {
 
-        ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo = ParecerGerenteAnaliseGeo.find("analiseGeo", this).first();
+        ParecerCoordenadorAnaliseGeo parecerCoordenadorAnaliseGeo = ParecerCoordenadorAnaliseGeo.find("analiseGeo", this).first();
 
-        if (StringUtils.isEmpty(parecerGerenteAnaliseGeo.parecer)) {
+        if (StringUtils.isEmpty(parecerCoordenadorAnaliseGeo.parecer)) {
 
             throw new ValidacaoException(Mensagem.ANALISE_SEM_PARECER_VALIDACAO);
         }
@@ -661,14 +656,14 @@ public class AnaliseGeo extends Analisavel {
             copia.analistasGeo.add(copiaAnalistaGeo);
         }
 
-        copia.gerentes = new ArrayList<>();
+        copia.coordenadores = new ArrayList<>();
 
-        for (Gerente gerente : this.gerentes) {
+        for (Coordenador coordenador : this.coordenadores) {
 
-            Gerente copiaGerenteGeo = gerente.gerarCopia();
+            Coordenador copiaCoordenadorGeo = coordenador.gerarCopia();
 
-            copiaGerenteGeo.analiseGeo = copia;
-            copia.gerentes.add(copiaGerenteGeo);
+            copiaCoordenadorGeo.analiseGeo = copia;
+            copia.coordenadores.add(copiaCoordenadorGeo);
         }
 
         copia.licencasAnalise = new ArrayList<>();
@@ -703,14 +698,14 @@ public class AnaliseGeo extends Analisavel {
         return this.analistasGeo.get(0);
     }
 
-    public boolean hasGerentes() {
+    public boolean hasCoordenadores() {
 
-        return this.gerentes != null && this.gerentes.size() > 0;
+        return this.coordenadores != null && this.coordenadores.size() > 0;
     }
 
-    public Gerente getGerente() {
+    public Coordenador getCoordenador() {
 
-        return this.gerentes.get(0);
+        return this.coordenadores.get(0);
     }
 
     public Documento gerarPDFParecer(ParecerAnalistaGeo parecerAnalistaGeo) throws IOException, DocumentException {
@@ -753,9 +748,7 @@ public class AnaliseGeo extends Analisavel {
                     }
                 });
 
-        Documento documento = new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos), "parecer_analista_geo.pdf", parecerAnalistaGeo.usuario.pessoa.nome, new Date());
-
-        return documento;
+        return new Documento(tipoDocumento, PDFGenerator.mergePDF(documentos), "parecer_analista_geo.pdf", parecerAnalistaGeo.usuario.pessoa.nome, new Date());
 
     }
 
@@ -980,7 +973,6 @@ public class AnaliseGeo extends Analisavel {
     public Documento gerarPDFOficioOrgao(Comunicado comunicado) {
 
         TipoDocumento tipoDocumento = TipoDocumento.findById(TipoDocumento.DOCUMENTO_OFICIO_ORGAO);
-        Documento documento = null;
 
         IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
         Municipio municipio = null;
@@ -1002,7 +994,7 @@ public class AnaliseGeo extends Analisavel {
 
         br.ufla.lemaf.beans.Empreendimento empreendimentoEU = integracaoEntradaUnica.findEmpreendimentosByCpfCnpj(comunicado.analiseGeo.analise.processo.empreendimento.getCpfCnpj());
         for (Endereco endereco : empreendimentoEU.enderecos) {
-            if (endereco.tipo.id == TipoEndereco.ID_PRINCIPAL) {
+            if (endereco.tipo.id.equals(TipoEndereco.ID_PRINCIPAL)) {
                 municipio = endereco.municipio;
             }
         }
@@ -1038,37 +1030,32 @@ public class AnaliseGeo extends Analisavel {
 
     public List<CamadaGeoRestricaoVO> AreasDeRestricaoParaPDF(List<CamadaGeoRestricaoVO> restricoes) {
 
-        List<CamadaGeoRestricaoVO> areasDeRestricoes = restricoes.stream().filter(restricao ->
+        return restricoes.stream().filter(restricao ->
                 restricao.orgao.sigla.equals(OrgaoEnum.IPHAN.codigo) || restricao.orgao.sigla.equals(OrgaoEnum.IBAMA.codigo))
                 .collect(Collectors.toList());
-
-        return areasDeRestricoes;
 
     }
 
     public List<CamadaGeoRestricaoVO> UnidadesConservacaoParaPDF(List<CamadaGeoRestricaoVO> restricoes) {
 
-        List<CamadaGeoRestricaoVO> unidadesConservacao = restricoes.stream().filter(restricao ->
+        return restricoes.stream().filter(restricao ->
                 !restricao.orgao.sigla.equals(OrgaoEnum.IPHAN.codigo) && !restricao.orgao.sigla.equals(OrgaoEnum.IBAMA.codigo))
                 .collect(Collectors.toList());
-
-        return unidadesConservacao;
 
     }
 
     public String getJustificativaUltimoParecer() {
 
-        ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo = this.pareceresGerenteAnaliseGeo.stream()
+        ParecerCoordenadorAnaliseGeo parecerCoordenadorAnaliseGeo = this.pareceresCoordenadorAnaliseGeo.stream()
                 .filter(parecer -> parecer.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.SOLICITAR_AJUSTES))
-                .max(Comparator.comparing(ParecerGerenteAnaliseGeo::getDataParecer))
+                .max(Comparator.comparing(ParecerCoordenadorAnaliseGeo::getDataParecer))
                 .orElseThrow(() -> new ValidacaoException(Mensagem.PARECER_NAO_ENCONTRADO));
 
-        return parecerGerenteAnaliseGeo.parecer;
+        return parecerCoordenadorAnaliseGeo.parecer;
 
     }
 
     public static AnaliseGeo findUltimaByAnalise(Analise analise){
-
         return AnaliseGeo.find("analise.processo.numero = :numero ORDER BY id DESC")
                 .setParameter("numero", analise.processo.numero)
                 .first();
@@ -1082,11 +1069,9 @@ public class AnaliseGeo extends Analisavel {
 
 
     public static List<AnaliseGeo> findAllByProcesso(String numero){
-
         return AnaliseGeo.find("analise.processo.numero = :numero ORDER BY analise.id DESC")
                 .setParameter("numero", numero)
                 .fetch();
-
     }
 
 }

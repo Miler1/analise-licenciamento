@@ -5,20 +5,12 @@ import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import play.data.validation.Required;
 import play.db.jpa.GenericModel;
-import security.Auth;
 import utils.Configuracoes;
 import utils.DateUtil;
 import utils.Mensagem;
 
 import javax.persistence.*;
-import javax.validation.ValidationException;
-import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static models.tramitacao.AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA;
 
 @Entity
 @Table(schema="analise", name="desvinculo_analise_tecnica")
@@ -41,16 +33,16 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 	public String justificativa;
 
 
-	@Column(name="resposta_gerente")
-	public String respostaGerente;
+	@Column(name="resposta_coordenador")
+	public String respostaCoordenador;
 
 
 	@Column(name="aprovada")
 	public Boolean aprovada;
 
 	@OneToOne
-	@JoinColumn(name="id_gerente", referencedColumnName = "id")
-	public UsuarioAnalise gerente;
+	@JoinColumn(name="id_coordenador", referencedColumnName = "id")
+	public UsuarioAnalise coordenador;
 
 	@Required
 	@Column(name="data_solicitacao")
@@ -74,7 +66,7 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 
 	public void update(DesvinculoAnaliseTecnica novoDesvinculo) {
 
-		this.respostaGerente = novoDesvinculo.respostaGerente;
+		this.respostaCoordenador = novoDesvinculo.respostaCoordenador;
 		this.aprovada = novoDesvinculo.aprovada;
 		this.dataResposta = novoDesvinculo.dataResposta;
 		this.analistaTecnicoDestino = novoDesvinculo.analistaTecnicoDestino;
@@ -95,18 +87,18 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 
 		String siglaSetor = usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla;
 
-		Gerente gerente = Gerente.distribuicaoAutomaticaGerenteAnaliseTecnica(siglaSetor, this.analiseTecnica);
+		Coordenador coordenador = Coordenador.distribuicaoAutomaticaCoordenadorAnaliseTecnica(siglaSetor, this.analiseTecnica);
 
-		gerente.save();
+		coordenador.save();
 
-		this.gerente = UsuarioAnalise.findByGerente(gerente);
+		this.coordenador = UsuarioAnalise.findByCoordenador(coordenador);
 
 		this.analistaTecnico =  usuarioSessao;
 
 		this.save();
 
 		this.analiseTecnica = AnaliseTecnica.findById(this.analiseTecnica.id);
-		this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA, usuarioSessao, this.gerente);
+		this.analiseTecnica.analise.processo.tramitacao.tramitar(this.analiseTecnica.analise.processo, AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA, usuarioSessao, this.coordenador);
 		HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(this.analiseTecnica.analise.processo.objetoTramitavel.id), usuarioSessao);
 
 	}
@@ -116,8 +108,8 @@ public class DesvinculoAnaliseTecnica extends GenericModel {
 
 		if(this.justificativa == null ||
 				this.justificativa.equals("") ||
-				this.respostaGerente== null  ||
-				this.respostaGerente.equals("") ||
+				this.respostaCoordenador == null  ||
+				this.respostaCoordenador.equals("") ||
 				this.aprovada == null){
 
 			throw new ValidacaoException(Mensagem.CAMPOS_OBRIGATORIOS);

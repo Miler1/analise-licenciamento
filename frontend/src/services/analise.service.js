@@ -12,10 +12,10 @@ var AnaliseService = function(request, config) {
                 	.post(config.BASE_URL() + 'analises/iniciar/'+ idAnalise);
 	};
 
-	this.iniciarAnalisePresidente = function(idAnalise) {
+	this.iniciarAnaliseSecretario = function(idAnalise) {
 
 		return request
-                	.post(config.BASE_URL() + 'analises/iniciarAnalisePresidente/'+ idAnalise);
+                	.post(config.BASE_URL() + 'analises/iniciarAnaliseSecretario/'+ idAnalise);
 	};
 
 };

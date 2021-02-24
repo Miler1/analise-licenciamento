@@ -1306,7 +1306,7 @@ var AnaliseTecnicaController = function ($rootScope, uploadService, $route, $sco
                 indexParametro: function(){
                     return indexParametroModal;
                 },
-                isGerente: function(){
+                isCoordenador: function(){
                     return false;
                 }
             }

@@ -8,24 +8,24 @@ div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaE
 
 div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.COORDENADOR_TECNICO",
     ng-controller='cxEntCoordenadorTecnicoController as cxEntCoordenadorTecnico')
-    include coordenadorTecnico/caixa-entrada    
+    include coordenadorTecnico/caixa-entrada
 
 div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.ANALISTA_TECNICO",
     ng-controller='cxEntAnalistaTecnicoController as cxEntAnalistaTecnico')
     include analistaTecnico/caixa-entrada
 
 div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.ANALISTA_GEO",
-ng-controller='cxEntAnalistaGeoController as cxEntAnalistaGeo')
+    ng-controller='cxEntAnalistaGeoController as cxEntAnalistaGeo')
     include analistaGeo/caixa-entrada
 
-div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.GERENTE",
-    ng-controller='cxEntGerenteTecnicoController as cxEntGerente')
-    include gerenteTecnico/caixa-entrada
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.COORDENADOR",
+    ng-controller='cxEntCoordenadorController as cxEntCoordenador')
+    include coordenador/caixa-entrada
 
 div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.DIRETOR",
     ng-controller='cxEntDiretorController as cxEntDiretor')
     include diretorTecnico/caixa-entrada
 
-div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.PRESIDENTE",
-    ng-controller='cxEntPresidenteController as cxEntPresidente')
-    include presidente/caixa-entrada
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.SECRETARIO",
+    ng-controller='cxEntSecretarioController as cxEntSecretario')
+    include secretario/caixa-entrada

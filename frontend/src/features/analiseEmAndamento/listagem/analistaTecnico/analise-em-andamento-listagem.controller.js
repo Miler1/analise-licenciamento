@@ -1,5 +1,5 @@
 var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location, $uibModal,
-														parecerGerenteService, $rootScope,
+														parecerCoordenadorService, $rootScope,
 														analiseTecnicaService, processoService) {
 
 	$rootScope.tituloPagina = 'EM ANÁLISE TÉCNICA';
@@ -61,7 +61,7 @@ var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location
 
 	function visualizarSolicitacaoAjustes(processo) {
 
-		parecerGerenteService.findJustificativaParecerByIdAnaliseTecnica(processo.idAnaliseTecnica)
+		parecerCoordenadorService.findJustificativaParecerByIdAnaliseTecnica(processo.idAnaliseTecnica)
 			.then(function(response){
 
 				$uibModal.open({
@@ -85,15 +85,15 @@ var AnaliseEmAndamentoTecnicaListController = function($scope, config, $location
 		analiseTecnicaService.getAnaliseTecnica(processo.idAnaliseTecnica)
 			.then(function(response){
 
-				if(_.isEmpty(response.data.pareceresGerenteAnaliseTecnica)){
+				if(_.isEmpty(response.data.pareceresCoordenadorAnaliseTecnica)){
 
 					processo.verificaAnalise = false;
 					
 				}else{
 
-					_.find(response.data.pareceresGerenteAnaliseTecnica, function(parecerGerente) {
+					_.find(response.data.pareceresCoordenadorAnaliseTecnica, function(parecerCoordenador) {
 
-						if(parecerGerente.parecer === null || parecerGerente.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
+						if(parecerCoordenador.parecer === null || parecerCoordenador.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
 
 							processo.verificaAnalise = false;
 							
