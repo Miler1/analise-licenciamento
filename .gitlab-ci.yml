@@ -1,0 +1,104 @@
+image: 177.105.35.54:5000/zetta-builder:latest
+
+stages:
+    - build
+    - deploy
+
+build:
+    only:
+        - development
+        - homologation
+        - production
+    stage: build
+    script:
+        - bash /n 8.10.0
+        - cd /builds/amapa/analise/frontend
+        - npm install
+        - bower install --allow-root
+        - bower update --allow-root
+        - gulp dist
+
+deploy_dev:
+    only:
+        - development
+    stage: deploy
+    script:
+        - cd /builds/amapa/analise/backend
+        - rm -rf public
+        - /opt/play-1.5.1/play deps --sync
+        - cd /builds/amapa/analise/frontend
+        - bash /n 8.10.0
+        - npm install
+        - bower install --allow-root
+        - bower update --allow-root
+        - gulp dist
+        - cd /builds/amapa/analise/backend
+        - mkdir -p /builds/amapa/analise/dist
+        - cp -R app conf lib modules db public /builds/amapa/analise/dist/
+        - echo "" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.version=Development" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.update=$(TZ='America/Sao_Paulo' date +%d-%m-%Y\ %H:%M:%S)" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.name=ap.puma.ti.lemaf.ufla.br" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.geradaPor=GITLAB-CI" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "@include.production = ambientes/teste.conf" >> /builds/amapa/analise/dist/conf/application.conf
+        - cd /builds/amapa/analise
+        - zip -r release-analise-licenciamento-ap.zip dist
+        - sshpass -p "$SSH_HOST_TESTE_SENHA" scp -v -o StrictHostKeyChecking=no release-analise-licenciamento-ap.zip $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE:/var/tmp
+        - sshpass -p "$SSH_HOST_TESTE_SENHA" ssh -tt -o StrictHostKeyChecking=no $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE 'unzip /var/tmp/release-analise-licenciamento-ap.zip -d /var/tmp; cp -rf /var/tmp/dist/* /var/play/amapa/licenciamento_ambiental/analise/; sudo /usr/bin/systemctl restart analise-licenciamento-ap.service; rm -rf /var/tmp/dist /var/tmp/release-analise-licenciamento-ap.zip'
+
+deploy_homologation:
+    only:
+        - homologation
+    stage: deploy
+    script:
+        - cd /builds/amapa/analise/backend
+        - rm -rf public
+        - /opt/play-1.5.1/play deps --sync
+        - cd /builds/amapa/analise/frontend
+        - bash /n 8.10.0
+        - npm install
+        - bower install --allow-root
+        - bower update --allow-root
+        - gulp dist
+        - cd /builds/amapa/analise/backend
+        - mkdir -p /builds/amapa/analise/dist
+        - cp -R app conf lib modules db public /builds/amapa/analise/dist/
+        - echo "" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.version=Homologation" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.update=$(TZ='America/Sao_Paulo' date +%d-%m-%Y\ %H:%M:%S)" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.name=sema-car-vmapp01" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.geradaPor=GITLAB-CI" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "@include.production = ambientes/homologacao.conf" >> /builds/amapa/analise/dist/conf/application.conf
+        - cd /builds/amapa/analise
+        - zip -r release-licenciamento-analise-ap-homolog.zip dist
+        - vpnc-connect /etc/vpnc/vpn-prodap
+        - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" scp -P 15012 -v -o StrictHostKeyChecking=no release-licenciamento-analise-ap-homolog.zip $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG:/var/tmp
+        - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" ssh -p 15012 -tt -o StrictHostKeyChecking=no $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG 'unzip /var/tmp/release-licenciamento-analise-ap-homolog.zip -d /var/tmp; tar czvf /var/tmp/analise-ap-homolog-bkp-$(date  +%d-%m-%Y-%H.%M.%S).tgz /dados/var/play/licenciamento/analise/ ;cp -rf /var/tmp/dist/* /dados/var/play/licenciamento/analise/; sudo /usr/bin/systemctl restart licenciamento-analise.service; rm -rf /var/tmp/dist /var/tmp/release-licenciamento-analise-ap-homolog.zip'
+        - vpnc-disconnect
+
+deploy_production:
+    only:
+        - production
+    stage: deploy
+    script:
+        - cd /builds/amapa/analise/backend
+        - rm -rf public
+        - /opt/play-1.5.1/play deps --sync
+        - cd /builds/amapa/analise/frontend
+        - npm install
+        - bower install --allow-root
+        - bower update --allow-root
+        - gulp dist
+        - cp -R app conf lib modules db /builds/amapa/analise/dist/
+        - echo "" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.version=Homologation" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.update=$(TZ='America/Sao_Paulo' date +%d-%m-%Y\ %H:%M:%S)" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.name=sema-car-vmapp01" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "server.geradaPor=GITLAB-CI" >> /builds/amapa/analise/dist/conf/application.conf
+        - echo "@include.production = ambientes/homologacao.conf" >> /builds/amapa/analise/dist/conf/application.conf
+        - cd /builds/amapa/analise
+        - zip -r release-analise-ap-homolog.zip dist
+        - vpnc-connect /etc/vpnc/vpn-prodap
+        - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" scp -P 15012 -v -o StrictHostKeyChecking=no release-analise-ap-homolog.zip $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG:/var/tmp
+        - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" ssh -p 15012 -tt -o StrictHostKeyChecking=no $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG 'unzip /var/tmp/release-analise-ap-homolog.zip -d /var/tmp; tar czvf /var/tmp/analise-ap-homolog-bkp-$(date  +%d-%m-%Y-%H.%M.%S).tgz /dados/var/play/licenciamento_ambiental/analise-licenciamento/ ;cp -rf /var/tmp/dist/* /dados/var/play/licenciamento_ambiental/analise-licenciamento/; sudo /usr/bin/systemctl restart analise-licenciamento.service; rm -rf /var/tmp/dist /var/tmp/release-analise-ap-homolog.zip'
+        - vpnc-disconnect
