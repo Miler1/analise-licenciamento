@@ -11,6 +11,7 @@ build:
         - production
     stage: build
     script:
+        - echo "nameserver 8.8.8.8" > /etc/resolv.conf
         - bash /n 8.17.0
         - cd /builds/amapa/analise/frontend
         - npm install
@@ -23,6 +24,7 @@ deploy_dev:
         - development
     stage: deploy
     script:
+        - echo "nameserver 8.8.8.8" > /etc/resolv.conf
         - cd /builds/amapa/analise/backend
         - rm -rf public
         - /opt/play-1.5.1/play deps --sync
@@ -51,6 +53,7 @@ deploy_homologation:
         - homologation
     stage: deploy
     script:
+        - echo "nameserver 8.8.8.8" > /etc/resolv.conf
         - cd /builds/amapa/analise/backend
         - rm -rf public
         - /opt/play-1.5.1/play deps --sync
@@ -81,6 +84,7 @@ deploy_production:
         - production
     stage: deploy
     script:
+        - echo "nameserver 8.8.8.8" > /etc/resolv.conf
         - cd /builds/amapa/analise/backend
         - rm -rf public
         - /opt/play-1.5.1/play deps --sync
