@@ -3,7 +3,7 @@ var CxEntDiretorController = function($scope, config, mensagem,$rootScope, proce
 	$rootScope.tituloPagina = 'AGUARDANDO VALIDAÇÃO DO DIRETOR TÉCNICO';
 
 	var cxEntDiretor = this;
-	console.log($rootScope.tituloPagina);
+
 	cxEntDiretor.atualizarListaProcessos = atualizarListaProcessos;
 	cxEntDiretor.atualizarPaginacao = atualizarPaginacao;
 	cxEntDiretor.selecionarTodosProcessos = selecionarTodosProcessos;
