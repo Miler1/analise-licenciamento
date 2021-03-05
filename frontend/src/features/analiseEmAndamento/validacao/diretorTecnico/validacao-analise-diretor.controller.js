@@ -1,6 +1,6 @@
 var ValidacaoAnaliseDiretorController = function($rootScope,
-                                                 $route,      
-                                                 analiseGeoService, 
+                                                 $route,
+                                                 analiseGeoService,
                                                  analiseTecnicaService,
                                                  documentoAnaliseService,
                                                  documentoService,
@@ -17,7 +17,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
     var validacaoAnaliseDiretor = this;
 
     validacaoAnaliseDiretor.init = init;
-    validacaoAnaliseDiretor.titulo = 'VALIDAÇÃO TÉCNICA';   
+    validacaoAnaliseDiretor.titulo = 'VALIDAÇÃO TÉCNICA';
     validacaoAnaliseDiretor.tiposResultadoAnalise = app.utils.TiposResultadoAnalise;
     validacaoAnaliseDiretor.tipoDocumento =  app.utils.TiposDocumentosAnalise;
     validacaoAnaliseDiretor.labelParecerCoordenador = null;
@@ -27,7 +27,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
     validacaoAnaliseDiretor.controleVisualizacao = null;
     validacaoAnaliseDiretor.concluir = concluir;
     validacaoAnaliseDiretor.parecerTecnico = {};
-    validacaoAnaliseDiretor.idTipoResultadoAnalise = null; 
+    validacaoAnaliseDiretor.idTipoResultadoAnalise = null;
     validacaoAnaliseDiretor.parecerDiretorTecnico = '';
     validacaoAnaliseDiretor.exibirDadosProcesso = exibirDadosProcesso;
     validacaoAnaliseDiretor.documentosAnaliseTecnica = [];
@@ -36,7 +36,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
 		despacho: false,
         resultadoAnalise: false,
-        	
+
     };
 
     var getUltimoParecerAnalistaGeo = function(analiseGeo) {
@@ -73,7 +73,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
     validacaoAnaliseDiretor.downloadDocumentoAnalise = function (idDocumento) {
 
         documentoAnaliseService.download(idDocumento);
-        
+
 	};
 
     var getUltimoParecercoordenador = function(analiseTecnica) {
@@ -153,7 +153,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             validacaoAnaliseDiretor.labelParecerCoordenador = 'Justificativa';
 
         }
-        
+
     };
 
     function exibirDadosProcesso() {
@@ -172,7 +172,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
         } else {
 
             processo.cpfEmpreendimento = validacaoAnaliseDiretor.analiseGeo.analise.processo.empreendimento.cpfCnpj;
-        }		
+        }
 
         processoService.visualizarProcesso(processo);
     }
@@ -189,7 +189,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                 getUltimoParecerCoordenadorGeo(validacaoAnaliseDiretor.analiseGeo);
 
 
-        });     
+        });
 
         analiseTecnicaService.getAnaliseTecnicaByAnalise($route.current.params.idAnalise)
             .then(function(response){
@@ -199,7 +199,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
                 getUltimoParecercoordenador(validacaoAnaliseDiretor.analiseTecnica);
 
         });
-        
+
         $rootScope.$broadcast('atualizarContagemProcessos');
 
     }
@@ -220,7 +220,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
             validacaoAnaliseDiretor.errors.resultadoAnalise = false;
         }
-        
+
         if(validacaoAnaliseDiretor.parecerDiretorTecnico === "" || validacaoAnaliseDiretor.parecerDiretorTecnico === null || validacaoAnaliseDiretor.parecerDiretorTecnico === undefined) {
 
             validacaoAnaliseDiretor.errors.despacho = true;
@@ -237,15 +237,15 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             return false;
 
         }
-        
+
         return true;
 
     }
 
     validacaoAnaliseDiretor.validacaoAbaVoltar = function() {
-		
+
         validacaoAnaliseDiretor.controleVisualizacao = "ETAPA_VALIDACAO_GEO";
-		
+
 		scrollTop();
 	};
 
@@ -253,10 +253,10 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 		$timeout(function() {
 			$('.nav-tabs > .active').prev('li').find('a').trigger('click');
             scrollTop();
-			
+
 		}, 0);
 	};
-    
+
     validacaoAnaliseDiretor.avancarProximaEtapa = function() {
 		$timeout(function() {
             $('.nav-tabs > .active').next('li').find('a').trigger('click');
@@ -268,17 +268,17 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
     validacaoAnaliseDiretor.validacaoAbaAvancarDiretor = function() {
 
         validacaoAnaliseDiretor.controleVisualizacao = "ETAPA_VALIDACAO_DIRETOR";
-        
+
         scrollTop();
-    
+
     };
 
     validacaoAnaliseDiretor.validacaoAbaAvancarTecnico = function() {
 
         validacaoAnaliseDiretor.controleVisualizacao = "ETAPA_VALIDACAO_TECNICO";
-        
+
         scrollTop();
-    
+
     };
 
     validacaoAnaliseDiretor.cancelar = function() {
@@ -318,7 +318,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             if(documento.tipo.id === app.utils.TiposDocumentosAnalise.AUTO_INFRACAO){
 
                 documentoAnaliseService.download(documento.id);
-                
+
             }
         });
     };
@@ -338,7 +338,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
             documentoService.downloadMinutaByIdAnaliseTecnica(analiseTecnica.id);
 
         }
-                    
+
     };
 
     validacaoAnaliseDiretor.baixarDocumentoGeo = function (parecerGeo, tipoDocumento ) {
@@ -351,7 +351,7 @@ var ValidacaoAnaliseDiretorController = function($rootScope,
 
             analiseGeoService.download(parecerGeo.cartaImagem.id);
 
-        }                    
+        }
     };
 
 };

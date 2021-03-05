@@ -44,7 +44,7 @@ var AguardandoValidacaoTecnicaListController = function($scope, config, $locatio
 	function validarAnalise(idAnaliseTecnica) {
 
 		$location.path('/aguardando-validacao/' + idAnaliseTecnica.toString());
-	}	
+	}
 
 	function exibirDadosProcesso(processo) {
 

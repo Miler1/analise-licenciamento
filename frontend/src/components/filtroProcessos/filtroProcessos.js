@@ -28,7 +28,7 @@ var FiltroProcessos = {
 		var ctrl = this;
 		var caixaEntrada = false;
 		var emAnalise = false;
-		
+
 		var analiseGeoFinalizada = false;
 		var analiseTecnicaFinalizada = false;
 
@@ -93,26 +93,26 @@ var FiltroProcessos = {
 
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR;
-			
+
 			} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO) {
-				
+
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_SECRETARIO;
-			
+
 			} else if(emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO) {
-				
+
 				ctrl.filtro.listaIdCondicaoTramitacao = [];
 				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_SECRETARIO;
-			
+
 			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_TECNICA_FINALIZADA') {
 
 				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseTecnicaFinalizada();
 
 				analiseTecnicaFinalizada = true;
 				ctrl.filtro.idCondicaoTramitacao = null;
-			
+
 			} else if(!caixaEntrada && !emAnalise && [app.utils.Perfis.COORDENADOR,app.utils.Perfis.DIRETOR, app.utils.Perfis.SECRETARIO].includes($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo)) {
-				
+
 				ctrl.filtro.listaIdCondicaoTramitacao = null;
 				ctrl.filtro.filtrarPorUsuario = false;
 				ctrl.filtro.analiseAtiva = true;
@@ -339,7 +339,7 @@ var FiltroProcessos = {
 
 						}
 
-						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO || 
+						if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO ||
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR ||
 							$rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
 

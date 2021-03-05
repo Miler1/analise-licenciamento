@@ -49,7 +49,7 @@ var CxEntConsultorJuridicoController = function($scope, config, $rootScope, $loc
 
 				$rootScope.$broadcast('atualizarContagemProcessos');
 				$location.path('/analise-juridica/' + idAnaliseJuridica.toString());
-			
+
 			}, function(error){
 
 				mensagem.error(error.data.texto);

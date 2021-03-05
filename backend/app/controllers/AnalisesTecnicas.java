@@ -28,7 +28,7 @@ public class AnalisesTecnicas extends InternalController {
 				
 		analiseAAlterar.iniciar(usuarioExecutor);
 				
-		renderMensagem(Mensagem.ANALISE_TECNICA_INICIADA_SUCESSO);	
+		renderMensagem(Mensagem.ANALISE_TECNICA_INICIADA_SUCESSO);
 
 	}
 

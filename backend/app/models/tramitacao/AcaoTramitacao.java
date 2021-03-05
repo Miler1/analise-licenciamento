@@ -7,7 +7,7 @@ import play.db.jpa.GenericModel;
 // De acordo com o que for inserido na tabela inserir aqui também
 
 public class AcaoTramitacao extends GenericModel{
-	
+
 	public static final Long VINCULAR_CONSULTOR = 1L;
 	public static final Long INICIAR_ANALISE_JURIDICA = 2L;
 	public static final Long NOTIFICAR_PELO_ANALISTA_GEO = 3L;
@@ -19,16 +19,16 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long SOLICITAR_AJUSTES_PARECER_JURIDICO = 9L;
 	public static final Long VINCULAR_ANALISTA = 10L;
 	public static final Long INICIAR_ANALISE_TECNICA = 11L;
-	public static final Long DEFERIR_ANALISE_TECNICA_VIA_GERENTE = 12L;
-	public static final Long INDEFERIR_ANALISE_TECNICA_VIA_GERENTE = 13L;
+	// public static final Long DEFERIR_ANALISE_TECNICA_VIA_GERENTE = 12L;
+	// public static final Long INDEFERIR_ANALISE_TECNICA_VIA_GERENTE = 13L;
 	public static final Long INVALIDAR_PARECER_TECNICO_PELO_COORDENADOR = 14L;
 	public static final Long SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR = 15L;
 	public static final Long VALIDAR_DEFERIMENTO_TECNICO_PELO_GERENTE = 16L;
 	public static final Long VALIDAR_INDEFERIMENTO_TECNICO_PELO_GERENTE = 17L;
 	public static final Long INICIAR_PROTOCOLO = 18L;
 	public static final Long VINCULAR_COORDENADOR = 19L;
-	public static final Long INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR = 20L;
-	public static final Long DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR = 21L;
+	public static final Long INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR = 13L;
+	public static final Long DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR = 12L;
 	public static final Long VALIDAR_DEFERIMENTO_TECNICO_PELO_COORDENADOR = 22L;
 	public static final Long VALIDAR_INDEFERIMENTO_TECNICO_PELO_COORDENADOR = 23L;
 	public static final Long INVALIDAR_PARECER_TECNICO_PELO_COORD_ENCAMINHANDO_COORDENADOR= 24L;
@@ -87,5 +87,5 @@ public class AcaoTramitacao extends GenericModel{
 	public static final Long RESOLVER_ANALISE_JURIDICA = 77L;
 	public static final Long APROVAR_SOLICITACAO_LICENCA = 78L;
 	public static final Long NEGAR_SOLICITACAO_LICENCA = 79L;
-	
+
 }

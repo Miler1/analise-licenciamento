@@ -46,11 +46,11 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 
 	function hasAtLeastOneProcessoSelected() {
 
-		return _.some(cxEntCoordenadorJuridico.processos, {selecionado: true});		
+		return _.some(cxEntCoordenadorJuridico.processos, {selecionado: true});
 	}
 
 	function vincularConsultor(processoSelecionado) {
-		
+
 		var processosSelecionados = [];
 
 		if (processoSelecionado) {
@@ -64,8 +64,8 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 				 if (processo.selecionado) {
 
 					 processosSelecionados.push(processo);
-				 } 
-			});  
+				 }
+			});
 		}
 
 		if (processosSelecionados.length === 0) {
@@ -83,17 +83,17 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
-						mensagem.success(response.data.texto);						
+						mensagem.success(response.data.texto);
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});
-					});				
+					});
 			})
 			.catch(function(){ });
 	}
 
 	function abrirModal(processos){
-		
+
 		var modalInstance = $uibModal.open({
 			controller: 'modalVincularConsultorController',
 			controllerAs: 'modalCtrl',
@@ -130,10 +130,10 @@ var CxEntCoordenadorJuridicoController = function($scope, config, consultorServi
 
 	function verificarTodosProcessosMarcados() {
 
-		cxEntCoordenadorJuridico.todosProcessosSelecionados = 
-			
+		cxEntCoordenadorJuridico.todosProcessosSelecionados =
+
 			_.reduce(cxEntCoordenadorJuridico.processos, function(resultado, p){
-			
+
 				return resultado && p;
 
 			}, true);
