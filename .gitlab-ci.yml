@@ -11,6 +11,7 @@ build:
         - production
     stage: build
     script:
+        - apt install net-tools iputils-ping -y
         - echo "nameserver 8.8.8.8" > /etc/resolv.conf
         - bash /n 8.17.0
         - cd /builds/amapa/analise/frontend
@@ -24,6 +25,7 @@ deploy_dev:
         - development
     stage: deploy
     script:
+        - apt install net-tools iputils-ping -y
         - echo "nameserver 8.8.8.8" > /etc/resolv.conf
         - cd /builds/amapa/analise/backend
         - rm -rf public
@@ -53,6 +55,7 @@ deploy_homologation:
         - homologation
     stage: deploy
     script:
+        - apt install net-tools iputils-ping -y
         - echo "nameserver 8.8.8.8" > /etc/resolv.conf
         - cd /builds/amapa/analise/backend
         - rm -rf public
@@ -84,6 +87,7 @@ deploy_production:
         - production
     stage: deploy
     script:
+        - apt install net-tools iputils-ping -y
         - echo "nameserver 8.8.8.8" > /etc/resolv.conf
         - cd /builds/amapa/analise/backend
         - rm -rf public
