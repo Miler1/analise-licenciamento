@@ -51,7 +51,7 @@ var CxEntCoordenadorController = function($scope, config, analistaService,analis
 	}
 
 	function vincularAnalista(processoSelecionado) {
-		
+
 		var processosSelecionados = [];
 
 		if (processoSelecionado) {
@@ -65,8 +65,8 @@ var CxEntCoordenadorController = function($scope, config, analistaService,analis
 				 if (processo.selecionado) {
 
 					 processosSelecionados.push(processo);
-				 } 
-			});  
+				 }
+			});
 		}
 
 		if (processosSelecionados.length === 0) {
@@ -94,7 +94,7 @@ var CxEntCoordenadorController = function($scope, config, analistaService,analis
 	}
 
 	function abrirModal(processos){
-		
+
 		$uibModal.open({
 			controller: 'modalVincularConsultorController',
 			controllerAs: 'modalCtrl',
@@ -132,9 +132,9 @@ var CxEntCoordenadorController = function($scope, config, analistaService,analis
 	function verificarTodosProcessosMarcados() {
 
 		cxEntCoordenador.todosProcessosSelecionados =
-			
+
 			_.reduce(cxEntCoordenador.processos, function(resultado, p){
-			
+
 				return resultado && p;
 
 			}, true);
@@ -160,31 +160,31 @@ var CxEntCoordenadorController = function($scope, config, analistaService,analis
 					return processo;
 				}
 			}
-			
+
 		});
 	};
 
 	cxEntCoordenador.verificarStatusGeo = function(processo) {
-		
+
 		return processo.idCondicaoTramitacao === cxEntCoordenador.legendaDesvinculo ||
 			processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA ||
 			processo.idCondicaoTramitacao !== cxEntCoordenador.legendas.AGUARDANDO_VALIDACAO_GEO_PELO_COORDENADOR;
-		
+
 	};
 
 	cxEntCoordenador.verificarStatusTecnico = function(processo) {
-		
+
 		return processo.idCondicaoTramitacao === cxEntCoordenador.legendaDesvinculo ||
-			processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA || 
-			processo.idCondicaoTramitacao !== cxEntCoordenador.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR;
-	
+			processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA ||
+			processo.idCondicaoTramitacao !== cxEntCoordenador.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE;
+
 	};
 
 	cxEntCoordenador.verificarSolicitacaoDesvinculo = function(processo) {
-		
+
 		return processo.idCondicaoTramitacao === cxEntCoordenador.legendaDesvinculo ||
 			processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA;
-	
+
 	};
 
 	cxEntCoordenador.iniciarAnaliseCoordenador = function(idAnalise, idAnaliseGeo, idAnaliseTecnica) {
@@ -197,7 +197,7 @@ var CxEntCoordenadorController = function($scope, config, analistaService,analis
 				$rootScope.$broadcast('atualizarContagemProcessos');
 				$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO COORDENADOR';
 				$location.path('/analise-coordenador/' + idAnalise.toString());
-			
+
 			}, function(error){
 				mensagem.error(error.data.texto);
 			});
@@ -210,13 +210,13 @@ var CxEntCoordenadorController = function($scope, config, analistaService,analis
 				$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO COORDENADOR';
 				$location.path('/analise-tecnica-coordenador/' + idAnalise.toString());
 				$rootScope.$broadcast('atualizarContagemProcessos');
-			
+
 			}, function(error){
 				mensagem.error(error.data.texto);
 			});
 		}
-		
-		
+
+
 	};
 };
 

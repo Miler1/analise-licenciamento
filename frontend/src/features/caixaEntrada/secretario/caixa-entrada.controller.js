@@ -1,9 +1,9 @@
-var CxEntSecretarioController = function($scope, 
-										config, 
+var CxEntSecretarioController = function($scope,
+										config,
 										mensagem,
-										$rootScope, 
-										processoService, 
-										analiseService, 
+										$rootScope,
+										processoService,
+										analiseService,
 										$location) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO ASSINATURA DO SECRETÁRIO';
@@ -27,7 +27,7 @@ var CxEntSecretarioController = function($scope,
 	function atualizarListaProcessos(processos) {
 
 		cxEntSecretario.processos = processos;
-		
+
 	}
 
 	function iniciarAnaliseSecretario(idAnalise) {
@@ -38,7 +38,7 @@ var CxEntSecretarioController = function($scope,
 				$rootScope.$broadcast('atualizarContagemProcessos');
 				$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO SECRETARIO';
 				$location.path('/analise-secretario/' + idAnalise.toString());
-							
+
 			}, function(error){
 
 				mensagem.error(error.data.texto);
@@ -48,7 +48,7 @@ var CxEntSecretarioController = function($scope,
 	function atualizarPaginacao(totalItens, paginaAtual) {
 
 		cxEntSecretario.paginacao.update(totalItens, paginaAtual);
-    }  
+    }
 
 	function onPaginaAlterada(){
 

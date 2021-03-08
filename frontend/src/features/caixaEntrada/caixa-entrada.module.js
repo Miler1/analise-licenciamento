@@ -5,7 +5,7 @@ var utils = app.utils,
     directives = app.directives;
 
 caixasEntrada.config(["$routeProvider", function($routeProvider) {
-	
+
 	$routeProvider
 		.when("/caixa-entrada", {
 			templateUrl: "features/caixaEntrada/caixa-entrada.html",
@@ -18,7 +18,7 @@ caixasEntrada.config(["$routeProvider", function($routeProvider) {
 			controllerAs: 'caixaEntrada',
 
 			resolve: {
-				
+
 				idProcesso: function($route) {
 					return $route.current.params.idProcesso;
 				}

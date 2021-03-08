@@ -3,7 +3,7 @@
         .col-md-12
 
             .label-analista
-                span.title-info Analista Geo: 
+                span.title-info Analista Geo:
                 span {{validacaoAnaliseGeoCoordenador.analiseGeo.analistasGeo[0].usuario.pessoa.nome}}
 
 #accordion-empreendimento.panel-group
@@ -12,7 +12,7 @@
             uib-accordion-heading(ng-click="validacaoAnaliseGeoCoordenador.openedAccordionEmpreendimento=!validacaoAnaliseGeoCoordenador.openedAccordionEmpreendimento")
                 div Resumo da análise
                     i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoCoordenador.openedAccordionEmpreendimento, 'glyphicon-chevron-right': !validacaoAnaliseGeoCoordenador.openedAccordionEmpreendimento}")
-        
+
             #dados-empreendimento
                 #lista-camadas-empreendimento
                     span.title-info Dados do empreendimento
@@ -28,7 +28,7 @@
                                 td.col-md-5 {{camada.geometrias[0].descricao}}
 
                 #lista-camadas-restricoes
-                    
+
                     label Restrição da sobreposição
                     div(ng-if="getRestricoes().length > 0")
                         table.table.table-striped.table-condensed.table-responsive.table-empreendimento
@@ -40,13 +40,13 @@
 
                             tbody(ng-repeat="restricao in getRestricoes()")
                                 tr(ng-repeat="orgao in getOrgaos(restricao)")
-                                    td.col-md-6 {{ restricao.item }} 
+                                    td.col-md-6 {{ restricao.item }}
                                     td.col-md-5 {{ restricao.descricao }}
                                     td.col-md-1.text-right
                                         i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
                                             ng-click="(orgao.sigla === 'IPHAN' || orgao.sigla === 'IBAMA') ? validacaoAnaliseGeoCoordenador.openModalNotificacao(restricao) : validacaoAnaliseGeoCoordenador.openModalOficio(restricao)",
                                             data-toggle="tooltip", title="Visualizar resposta do comunicado ao órgão")
-                    
+
                     div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="getRestricoes().length === 0")
                         i Nenhuma restrição encontrada.
 
@@ -61,23 +61,23 @@
 
                             tbody(ng-repeat="restricao in validacaoAnaliseGeoCoordenador.dadosProjeto.restricoes")
                                 tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoAtividade.tipoSobreposicao.orgaosResponsaveis")
-                                    td.col-md-5 {{ restricao.item }} 
-                                    td.col-md-5 {{ restricao.descricao }}              
+                                    td.col-md-5 {{ restricao.item }}
+                                    td.col-md-5 {{ restricao.descricao }}
 
                                 tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoEmpreendimento.tipoSobreposicao.orgaosResponsaveis")
-                                    td.col-md-5 {{ restricao.item }} 
-                                    td.col-md-5 {{ restricao.descricao }} 
-                                
+                                    td.col-md-5 {{ restricao.item }}
+                                    td.col-md-5 {{ restricao.descricao }}
+
                                 tr(ng-repeat="orgao in restricao.sobreposicaoCaracterizacaoComplexo.tipoSobreposicao.orgaosResponsaveis")
-                                    td.col-md-5 {{ restricao.item }} 
-                                    td.col-md-5 {{ restricao.descricao }} 
-                        
+                                    td.col-md-5 {{ restricao.item }}
+                                    td.col-md-5 {{ restricao.descricao }}
+
                     div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="validacaoAnaliseGeoCoordenador.dadosProjeto.restricoes.length === 0")
                         i Nenhuma sobreposição encontrada.
-                    
+
                     label.title-inconsistencia Inconsistências Adicionadas
                     div.inconsistencias(ng-if="validacaoAnaliseGeoCoordenador.inconsistencias.length > 0")
-                        
+
                         table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;", ng-if="validacaoAnaliseGeoCoordenador.verificarTamanhoInconsistencias()")
                             thead
                                 tr
@@ -94,7 +94,7 @@
                                     td.col-md-2.text-right
                                         i.aba-clicavel.icon-eye.glyphicon.glyphicon-eye-open(
                                             ng-click="(orgao.sigla !== 'IPHAN' || orgao.sigla !== 'IBAMA') ? validacaoAnaliseGeoCoordenador.openModalNotificacao(inconsistencia) : validacaoAnaliseGeoCoordenador.openModalOficio(restricao, processo)")
-                    
+
                     div.info-sem-dados-para-exibir.margin-inconsistencia(ng-if="!validacaoAnaliseGeoCoordenador.verificarTamanhoInconsistencias()")
                         i Nenhuma inconsistência adicionada.
 
@@ -104,7 +104,7 @@
                             uib-accordion-heading(ng-click="validacaoAnaliseGeoCoordenador.openedAccordionDadosComplexo=!validacaoAnaliseGeoCoordenador.openedAccordionDadosComplexo")
                                 div {{ validacaoAnaliseGeoCoordenador.labelDadosProjeto }}
                                     i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoCoordenador.openedAccordionDadosComplexo, 'glyphicon-chevron-right': !validacaoAnaliseGeoCoordenador.openedAccordionDadosComplexo}")
-                        
+
                             #meusDadosComplexo
                                 span.atividades Atividades:
                                 .div-list(style="margin-left: 10px",  ng-repeat="atividade in validacaoAnaliseGeoCoordenador.dadosProjeto.atividades")
@@ -132,7 +132,7 @@
                                     uib-accordion-heading(ng-click="atividade.openedAccordion=!atividade.openedAccordion")
                                         div Atividade: {{ atividade.atividadeCaracterizacao.atividade.nome.toUpperCase() }}
                                             i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': atividade.openedAccordion, 'glyphicon-chevron-right': !atividade.openedAccordion}")
-                        
+
 
                                     table.table.table-striped.table-condensed.no-margin.table-responsive(style="border: 1px solid #d0cbcb;")
                                         thead
@@ -151,12 +151,12 @@
             uib-accordion-heading(ng-click="validacaoAnaliseGeoCoordenador.openedAccordionResultado=!validacaoAnaliseGeoCoordenador.openedAccordionResultado")
                 div Resultado da análise
                     i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseGeoCoordenador.openedAccordionResultado, 'glyphicon-chevron-right': !validacaoAnaliseGeoCoordenador.openedAccordionResultado}")
-        
+
             #resultatdo-analise
                 .label-situacao
-                    span.title-info Situação: 
+                    span.title-info Situação:
                     span {{validacaoAnaliseGeoCoordenador.parecerGeo.tipoResultadoAnalise.nome | uppercase}}
-                
+
                 .botoes-download
                     button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseGeoCoordenador.downloadPDFparecer(validacaoAnaliseGeoCoordenador.analiseGeo)")
                         .glyphicon.glyphicon-file.icon-download
@@ -164,7 +164,7 @@
                     br
                     button.btn.btn-success.btn-download(type="button",title="Visualizar anexo",ng-click="validacaoAnaliseGeoCoordenador.downloadPDFCartaImagem(validacaoAnaliseGeoCoordenador.analiseGeo)")
                         .glyphicon.glyphicon-file.icon-download
-                        | Carta Imagem 
+                        | Carta Imagem
 
                 #camposAnaliseGeo
                     div
@@ -233,7 +233,7 @@
             uib-accordion-heading(ng-click="validacaoAnaliseTecnicaCoordenador.openedAccordionHistoricoAnalises=!validacaoAnaliseTecnicaCoordenador.openedAccordionHistoricoAnalises")
                 div Histórico da(s) análise(s) anterior(es)
                     i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': validacaoAnaliseTecnicaCoordenador.openedAccordionHistoricoAnalises, 'glyphicon-chevron-right': !validacaoAnaliseTecnicaCoordenador.openedAccordionHistoricoAnalises}")
-        
+
             #historico-analises
 
                 table.table.table-striped.table-condensed
@@ -252,6 +252,6 @@
                             td.col-md-2 {{parecer.dataParecer}}
                             td.col-md-2 {{parecer.usuario.pessoa.nome}}
                             td.col-md-2 {{parecer.tipoResultadoAnalise.nome}}
-                            td.col-md-1 
+                            td.col-md-1
                                 button.btn.btn-default.pull-center.btn-visualizar-justificativa(ng-click="validacaoAnaliseGeoCoordenador.visualizarJustificativas(parecer, analiseGeo, analiseGeo.analise.processo )")
                                     i.glyphicon.glyphicon-list-alt

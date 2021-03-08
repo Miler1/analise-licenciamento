@@ -48,7 +48,7 @@ div
 								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-solicitacao-licenca-indeferida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_NEGADA}")
 								span(ng-class="{'icone-aguardando-resposta-juridico': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_RESPOSTA_JURIDICO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO}")
 								span(ng-class="{'icone-aguardando-comunicado': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_RESPOSTA_COMUNICADO}")
-														
+
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero}}
 							td.text-center.break-word {{processo.denominacaoEmpreendimento}}
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}

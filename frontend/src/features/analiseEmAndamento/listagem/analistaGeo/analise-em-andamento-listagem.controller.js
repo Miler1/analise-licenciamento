@@ -32,7 +32,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 	function atualizarListaProcessos(processos) {
 
 		listagem.processos = processos;
-		
+
 	}
 
 	function verificaSolicitacaoAjustes(processo) {
@@ -141,7 +141,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 	}
 
 	function notificacaoAtendida(processo) {
-		
+
 		if (processo.idAnalistaGeoAnterior !== undefined) {
 
 			return processo && processo.retificacao && processo.idAnalistaGeoAnterior === processo.idAnalistaGeo;

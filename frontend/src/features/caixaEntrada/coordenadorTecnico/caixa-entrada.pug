@@ -36,9 +36,9 @@ div
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in cxEntCoordenadorTecnico.processos")
-							td 
-								input(type='checkbox', 
-									ng-model='processo.selecionado', 
+							td
+								input(type='checkbox',
+									ng-model='processo.selecionado',
 									ng-click="cxEntCoordenadorTecnico.verificarTodosProcessosMarcados()",
 									ng-disabled='!cxEntCoordenadorTecnico.selecionouUmGerente',
 									ng-attr-title='{{cxEntCoordenadorTecnico.getTitleSelecaoProcesso()}}')
@@ -47,7 +47,7 @@ div
 							td.break-word {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': cxEntCoordenadorTecnico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntCoordenadorTecnico.PrazoMinimoAvisoAnalise.ANALISE)}") 
+							td(ng-class="{'error-message': cxEntCoordenadorTecnico.dateUtil.verificaPrazoMinimo(processo.totalDiasAnalise, cxEntCoordenadorTecnico.PrazoMinimoAvisoAnalise.ANALISE)}")
 								| {{cxEntCoordenadorTecnico.dateUtil.getContaDiasRestantes(processo.totalDiasAnalise, cxEntCoordenadorTecnico.PrazoAnalise.ANALISE)}}
 							td(ng-class="{'error-message': cxEntCoordenadorTecnico.dateUtil.verificaPrazoMinimo(processo.diasAnaliseTecnica, cxEntCoordenadorTecnico.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
 								| {{cxEntCoordenadorTecnico.dateUtil.getContaDiasRestantes(processo.diasAnaliseTecnica,cxEntCoordenadorTecnico.PrazoAnalise.ANALISE_TECNICA)}}
@@ -73,19 +73,19 @@ div
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
 				div
-					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntCoordenadorTecnico.vincularAnalista()", 
+					button.btn.btn-default.pull-right.btn-success(ng-click="cxEntCoordenadorTecnico.vincularAnalista()",
 																  ng-disabled="!cxEntCoordenadorTecnico.hasAtLeastOneProcessoSelected()",
-																  ng-attr-title="{{!cxEntCoordenadorTecnico.hasAtLeastOneProcessoSelected() ? 'É necessário selecionar ao menos um processo para vinculá-lo ao analista.' : ''}}" 
+																  ng-attr-title="{{!cxEntCoordenadorTecnico.hasAtLeastOneProcessoSelected() ? 'É necessário selecionar ao menos um processo para vinculá-lo ao analista.' : ''}}"
 																  tabindex="0")
 						span.glyphicon.glyphicon-share
 						| &nbsp; Vincular analista
 
 					button.btn.btn-default.pull-right.btn-success.margin-right-sm(ng-click="cxEntCoordenadorTecnico.vincularGerente()",
 																  ng-disabled="!cxEntCoordenadorTecnico.hasAtLeastOneProcessoSelected()",
-																  ng-attr-title="{{!cxEntCoordenadorTecnico.hasAtLeastOneProcessoSelected() ? 'É necessário selecionar ao menos um processo para vinculá-lo ao gerente técnico.' : ''}}" 
+																  ng-attr-title="{{!cxEntCoordenadorTecnico.hasAtLeastOneProcessoSelected() ? 'É necessário selecionar ao menos um processo para vinculá-lo ao coordenador.' : ''}}"
 																  tabindex="0")
 						span.glyphicon.glyphicon-share
-						| &nbsp; Vincular gerente técnico
+						| &nbsp; Vincular coordenador
 
 				+paginacao('cxEntCoordenadorTecnico.paginacao', 'cxEntCoordenadorTecnico.onPaginaAlterada')
 

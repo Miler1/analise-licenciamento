@@ -16,21 +16,21 @@ import java.util.stream.Collectors;
 @Entity
 @Table(schema="analise", name="dia_analise")
 public class DiasAnalise extends GenericModel{
-	
+
 	public static final String SEQ = "analise.dia_analise_id_seq";
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
-	public Long id;	
-	
+	public Long id;
+
 	@OneToOne
 	@JoinColumn(name="id_analise")
 	public Analise analise;
-	
+
 	@Column(name="quantidade_dias_juridica")
 	public Integer qtdeDiasJuridica;
-	
+
 	@Column(name="quantidade_dias_tecnica")
 	public Integer qtdeDiasTecnica;
 
@@ -39,13 +39,13 @@ public class DiasAnalise extends GenericModel{
 
 	@Column(name="quantidade_dias_analise")
 	public Integer qtdeDiasAnalise;
-	
+
 	@Column(name="quantidade_dias_aprovador")
 	public Integer qtdeDiasAprovador;
-	
+
 	@Column(name="quantidade_dias_notificacao")
 	public Integer qtdeDiasNotificacao;
-	
+
 	public DiasAnalise(Analise analise) {
 
 		this.analise = analise;
@@ -54,7 +54,7 @@ public class DiasAnalise extends GenericModel{
 		this.qtdeDiasTecnica = 0;
 
 	}
-	
+
 	public DiasAnalise() {}
 
 	private static Integer verificaUltimaTramitacaoAnaliseGeo(List<HistoricoTramitacao> historicoTramitacao) {

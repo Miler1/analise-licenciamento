@@ -49,7 +49,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 	function hasAtLeastOneProcessoSelected() {
 
-		return _.some(cxEntCoordenadorTecnico.processos, {selecionado: true});		
+		return _.some(cxEntCoordenadorTecnico.processos, {selecionado: true});
 	}
 
 	function getProcessosSelecionados(processoSelecionado) {
@@ -67,15 +67,15 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 				 if (processo.selecionado) {
 
 					 processosSelecionados.push(processo);
-				 } 
-			});  
+				 }
+			});
 		}
 
 		return processosSelecionados;
 	}
 
 	function vincularAnalista(processoSelecionado) {
-		
+
 		var processosSelecionados = getProcessosSelecionados(processoSelecionado);
 
 		if (processosSelecionados.length === 0) {
@@ -93,17 +93,17 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
-						mensagem.success(response.data.texto);						
+						mensagem.success(response.data.texto);
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});
-					});				
+					});
 			})
 			.catch(function(){ });
-	}	
+	}
 
 	function vincularCoordenador(processoSelecionado) {
-		
+
 		var processosSelecionados = getProcessosSelecionados(processoSelecionado);
 
 		if (processosSelecionados.length === 0) {
@@ -121,7 +121,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
-						mensagem.success(response.data.texto);						
+						mensagem.success(response.data.texto);
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});
@@ -131,7 +131,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 	}
 
 	function abrirModal(processos, tipo, getAnalistasGerentes, justificationEnabled){
-		
+
 		return $uibModal.open({
 			controller: 'modalVincularConsultorController',
 			controllerAs: 'modalCtrl',
@@ -179,7 +179,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 	function getCoordenador(idProcesso) {
 
 		return coordenadorService.getCoordenadorByIdProcesso(idProcesso);
-	}	
+	}
 
 	function visualizarProcesso(processo) {
 
@@ -188,10 +188,10 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 	function verificarTodosProcessosMarcados() {
 
-		cxEntCoordenadorTecnico.todosProcessosSelecionados = 
-			
+		cxEntCoordenadorTecnico.todosProcessosSelecionados =
+
 			_.reduce(cxEntCoordenadorTecnico.processos, function(resultado, p){
-			
+
 				return resultado && p.selecionado;
 
 			}, true);

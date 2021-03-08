@@ -183,7 +183,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_JURIDICA;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.CONSULTOR_JURIDICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
-				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR)
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR)
 					return app.utils.CondicaoTramitacao.CAIXA_ENTRADA_COORDENADOR;
@@ -244,7 +244,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 					 return '/analise-tecnica';
 
-				} 
+				}
 			},
 			countItens: true,
 			estaSelecionado: function() {
@@ -320,34 +320,35 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 			}
 		},
-		{
+		// {
 
-			titulo: 'Aguardando validação',
-			icone: 'glyphicon glyphicon-check',
-			url: function() {
+		// 	titulo: 'Aguardando validação',
+		// 	icone: 'glyphicon glyphicon-check',
+		// 	url: function() {
 
-				return '/aguardando-validacao';
-			},
-			countItens: true,
-			estaSelecionado: function () {
+		// 		return '/aguardando-validacao';
+		// 	},
+		// 	countItens: true,
+		// 	estaSelecionado: function () {
 
-				return $location.path().indexOf('/aguardando-validacao') > -1;
-			},
-			visivel: function() {
+		// 		return $location.path().indexOf('/aguardando-validacao') > -1;
+		// 	},
+		// 	visivel: function() {
+		// 		console.log(app.utils.Perfis.COORDENADOR);
+		// 		console.log($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo);
+		// 		return [app.utils.Perfis.COORDENADOR].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+		// 	},
+		// 	condicaoTramitacao: function () {
 
-				return [app.utils.Perfis.COORDENADOR].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
-			},
-			condicaoTramitacao: function () {
+		// 		if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR)
+		// 			return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR;
+		// 	},
+		// 	deveFiltrarPorUsuario: true,
+		// 	codigoPerfilSelecionado: function(){
 
-				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR;
-			},
-			deveFiltrarPorUsuario: true,
-			codigoPerfilSelecionado: function(){
-
-				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
-			}
-		},
+		// 		return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
+		// 	}
+		// },
 		{
 
 			titulo: 'Aguardando assinatura',

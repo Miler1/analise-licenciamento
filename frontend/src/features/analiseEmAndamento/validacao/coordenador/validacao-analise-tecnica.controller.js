@@ -74,7 +74,7 @@ var ValidacaoAnaliseTecnicaCoordenadorController = function($rootScope,
             findAnalisesTecnicaByNumeroProcesso(validacaoAnaliseTecnicaCoordenador.analiseTecnicaAntiga.analise.processo);
 
             _.filter(validacaoAnaliseTecnicaCoordenador.parecerTecnico.documentos , function(documento){
-                
+
                 if(documento.tipo.id === validacaoAnaliseTecnicaCoordenador.enumDocumentos.AUTO_INFRACAO){
                     validacaoAnaliseTecnicaCoordenador.possuiAutoInfracao = true;
                 }else {
@@ -155,7 +155,7 @@ var ValidacaoAnaliseTecnicaCoordenadorController = function($rootScope,
                     });
                 }
             });
-            
+
         });
     }
 
@@ -174,20 +174,20 @@ var ValidacaoAnaliseTecnicaCoordenadorController = function($rootScope,
                     if(validacaoAnaliseTecnicaCoordenador.processo.processoAnterior === undefined || validacaoAnaliseTecnicaCoordenador.processo.processoAnterior === null  ){
 
                         getAnaliseTecnica(validacaoAnaliseTecnicaCoordenador.analiseTecnica.id);
-                        
+
                     } else{
 
                         if(validacaoAnaliseTecnicaCoordenador.processo.processoAnterior.analise.analisesTecnicas.length === 0) {
-                            
+
                             getAnaliseTecnica(validacaoAnaliseTecnicaCoordenador.analiseTecnica.id);
-                       
+
                         } else {
 
                             getAnaliseTecnica(validacaoAnaliseTecnicaCoordenador.processo.processoAnterior.analise.analisesTecnicas[0].id);
                         }
 
                     }
-                   
+
                     getUltimoParecerAnalistaTecnico(validacaoAnaliseTecnicaCoordenador.analiseTecnica);
 
                 });
@@ -250,7 +250,7 @@ var ValidacaoAnaliseTecnicaCoordenadorController = function($rootScope,
         } else {
 
             processo.cpfEmpreendimento = validacaoAnaliseTecnicaCoordenador.analiseTecnica.analise.processo.empreendimento.cpfCnpj;
-        }		
+        }
 
 
         processoService.visualizarProcesso(processo);
@@ -482,11 +482,11 @@ var ValidacaoAnaliseTecnicaCoordenadorController = function($rootScope,
 
                 validacaoAnaliseTecnicaCoordenador.errors.analistas = true;
                 mensagem.error("Preencha os campos obrigatórios para prosseguir com a análise.");
-    
+
             }else{
-    
+
                 validacaoAnaliseTecnicaCoordenador.errors.analistas = false;
-    
+
             }
 
         }
