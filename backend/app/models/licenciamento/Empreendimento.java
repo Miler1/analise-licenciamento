@@ -35,7 +35,7 @@ public class Empreendimento extends GenericModel {
 	public Long id;
 //
 //	@Required
-//	public String denominacao;
+	public String denominacao;
 	
 //	@Column(name = "id_redesim")
 //	public Long idRedeSim;
