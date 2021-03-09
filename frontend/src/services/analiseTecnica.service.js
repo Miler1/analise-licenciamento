@@ -2,8 +2,8 @@ var AnaliseTecnicaService = function(request, config) {
 
 	this.getRestricoesGeo = function(idAnaliseTecnica) {
 
-		return request
-                	.get(config.BASE_URL() + 'analisesTecnicas/' + idAnaliseTecnica + '/restricoesGeo');
+		// return request
+        //         	.get(config.BASE_URL() + 'analisesTecnicas/' + idAnaliseTecnica + '/restricoesGeo');
 	};
 
 	this.iniciar = function(analise) {
