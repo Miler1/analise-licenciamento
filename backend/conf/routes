@@ -59,7 +59,7 @@ GET		/analisesTecnicas/parecer							                    AnalisesTecnicas.findBy
 POST	/analisesTecnicas/iniciar 							                    AnalisesTecnicas.iniciar
 POST	/analisesTecnicas									                    AnalisesTecnicas.alterar
 GET		/analisesTecnicas/{idAnaliseTecnica}				                    AnalisesTecnicas.findById
-GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	                    AnalisesTecnicas.getRestricoesGeo
+# GET		/analisesTecnicas/{idAnaliseTecnica}/restricoesGeo	                    AnalisesTecnicas.getRestricoesGeo
 POST	/analisesTecnicas/validarParecer					                    AnalisesTecnicas.validarParecer
 POST	/analisesTecnicas/validarParecerCoordenador 		                    AnalisesTecnicas.validarParecerCoordenador
 POST	/analisesTecnicas/validarParecerAprovador			                    AnalisesTecnicas.validarParecerAprovador
@@ -77,7 +77,7 @@ GET		/analisesGeo/parecer							                    AnalisesGeo.findByNumeroProc
 POST	/analisesGeo/iniciar 							                    AnalisesGeo.iniciar
 POST	/analisesGeo									                    AnalisesGeo.alterar
 GET		/analisesGeo/{idAnaliseGeo}				                            AnalisesGeo.findById
-GET		/analisesGeo/{idAnaliseGeo}/restricoesGeo	                        AnalisesGeo.getRestricoesGeo
+# GET		/analisesGeo/{idAnaliseGeo}/restricoesGeo	                        AnalisesGeo.getRestricoesGeo
 POST	/analisesGeo/validarParecer					                        AnalisesGeo.validarParecer
 POST	/analisesGeo/validarParecerCoordenador				                AnalisesGeo.validarParecerCoordenador
 POST	/analisesGeo/validarParecerAprovador			                    AnalisesGeo.validarParecerAprovador

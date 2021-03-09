@@ -5,7 +5,7 @@ var utils = app.utils,
     directives = app.directives;
 
 analiseGeo.config(['$routeProvider', function($routeProvider) {
-	
+
 	$routeProvider
 		.when('/analise-geo/:idAnaliseGeo', {
 			templateUrl: 'features/analiseGeo/analise-geo.html',
@@ -16,7 +16,7 @@ analiseGeo.config(['$routeProvider', function($routeProvider) {
 
 				analiseGeo: function(analiseGeoService, $route, $q) {
 
-					var deferred = $q.defer();					
+					var deferred = $q.defer();
 					analiseGeoService.getAnaliseGeo($route.current.params.idAnaliseGeo)
 						.then(function(response){
 							deferred.resolve(response.data);
@@ -25,12 +25,12 @@ analiseGeo.config(['$routeProvider', function($routeProvider) {
 				},
 				restricoes: function(analiseGeoService, $route, $q) {
 
-					var deferred = $q.defer();
-					analiseGeoService.getRestricoesGeo($route.current.params.idAnaliseGeo)
-						.then(function(response){
-							deferred.resolve(response.data);
-						});
-					return deferred.promise;
+					// var deferred = $q.defer();
+					// analiseGeoService.getRestricoesGeo($route.current.params.idAnaliseGeo)
+					// 	.then(function(response){
+					// 		deferred.resolve(response.data);
+					// 	});
+					// return deferred.promise;
 
 				},
 				idAnaliseGeo: function($route) {
@@ -43,7 +43,7 @@ analiseGeo.config(['$routeProvider', function($routeProvider) {
 		.otherwise({
 			redirectTo: '/'
 		});
-}]);    
+}]);
 
 analiseGeo
 	//.controller('analiseGeoController', controllers.AnaliseGeoController)
