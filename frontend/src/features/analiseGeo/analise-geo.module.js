@@ -25,12 +25,12 @@ analiseGeo.config(['$routeProvider', function($routeProvider) {
 				},
 				restricoes: function(analiseGeoService, $route, $q) {
 
-					// var deferred = $q.defer();
-					// analiseGeoService.getRestricoesGeo($route.current.params.idAnaliseGeo)
-					// 	.then(function(response){
-					// 		deferred.resolve(response.data);
-					// 	});
-					// return deferred.promise;
+					var deferred = $q.defer();
+					analiseGeoService.getRestricoesGeo($route.current.params.idAnaliseGeo)
+						.then(function(response){
+							deferred.resolve(response.data);
+						});
+					return deferred.promise;
 
 				},
 				idAnaliseGeo: function($route) {

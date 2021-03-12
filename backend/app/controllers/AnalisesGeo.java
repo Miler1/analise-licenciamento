@@ -101,22 +101,22 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-//    public static void getRestricoesGeo(Long idAnaliseGeo) throws Exception {
-//
-//        verificarPermissao(Acao.INICIAR_PARECER_GEO);
-//
-//        AnaliseGeo analiseGeo = AnaliseGeo.findById(idAnaliseGeo);
-//
-//        analiseGeo.analise.processo.empreendimento.empreendimentoEU =  new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpj);
-//
-//        File file = Geoserver.verificarRestricoes(
-//                GeoJsonUtils.toGeometry(analiseGeo.analise.processo.empreendimento.empreendimentoEU.localizacao.geometria),
-//                analiseGeo.analise.processo.empreendimento.imovel,
-//                "analise-geo-id-" + idAnaliseGeo
-//        );
-//
-//        renderJSON(FileUtils.readFileToString(file, Charset.defaultCharset()));
-//    }
+   public static void getRestricoesGeo(Long idAnaliseGeo) throws Exception {
+
+       verificarPermissao(Acao.INICIAR_PARECER_GEO);
+
+       AnaliseGeo analiseGeo = AnaliseGeo.findById(idAnaliseGeo);
+
+       analiseGeo.analise.processo.empreendimento.empreendimentoEU =  new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpj);
+
+       File file = Geoserver.verificarRestricoes(
+               GeoJsonUtils.toGeometry(analiseGeo.analise.processo.empreendimento.empreendimentoEU.localizacao.geometria),
+               analiseGeo.analise.processo.empreendimento.imovel,
+               "analise-geo-id-" + idAnaliseGeo
+       );
+
+       renderJSON(FileUtils.readFileToString(file, Charset.defaultCharset()));
+   }
 
     public static void validarParecer(AnaliseGeo analise) {
 

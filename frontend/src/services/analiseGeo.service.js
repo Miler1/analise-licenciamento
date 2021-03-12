@@ -2,8 +2,8 @@ var AnaliseGeoService = function(request, $window ,config) {
 
 	this.getRestricoesGeo = function(idAnaliseGeo) {
 
-		// return request
-        //         	.get(config.BASE_URL() + 'analisesGeo/' + idAnaliseGeo + '/restricoesGeo');
+		return request
+                	.get(config.BASE_URL() + 'analisesGeo/' + idAnaliseGeo + '/restricoesGeo');
 	};
 
 	this.iniciar = function(analise) {

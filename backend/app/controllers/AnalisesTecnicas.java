@@ -17,17 +17,17 @@ import java.util.Comparator;
 import java.util.List;
 
 public class AnalisesTecnicas extends InternalController {
-		
+
 	public static void iniciar(AnaliseTecnica analise) {
-		
+
 		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
-		
+
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
-				
+
 		analiseAAlterar.iniciar(usuarioExecutor);
-				
+
 		renderMensagem(Mensagem.ANALISE_TECNICA_INICIADA_SUCESSO);
 
 	}
@@ -45,95 +45,95 @@ public class AnalisesTecnicas extends InternalController {
 	}
 
 	public static void findByNumeroProcesso() {
-		
+
 		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
-		
+
 		String numeroProcesso = getParamAsString("numeroProcesso");
-		
+
 		AnaliseTecnica analise = AnaliseTecnica.findByNumeroProcesso(numeroProcesso);
 
 		analise.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analise.analise.processo.empreendimento.cpfCnpj);
-		
+
 		renderJSON(analise, AnaliseTecnicaSerializer.parecer);
-	
+
 	}
-	
+
 	public static void alterar(AnaliseTecnica analise) {
-		
+
 		verificarPermissao(Acao.INICIAR_PARECER_TECNICO);
-		
+
 		AnaliseTecnica analiseAAlterar = AnaliseTecnica.findById(analise.id);
-				
+
 		analiseAAlterar.update(analise);
-				
-		renderMensagem(Mensagem.ANALISE_CADASTRADA_SUCESSO);	
+
+		renderMensagem(Mensagem.ANALISE_CADASTRADA_SUCESSO);
 	}
 
 	public static void findById(Long idAnaliseTecnica) {
-	
+
 		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO, Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES);
-		
+
 		AnaliseTecnica analise = AnaliseTecnica.findById(idAnaliseTecnica);
 
 		analise.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analise.analise.processo.empreendimento.cpfCnpj);
-		
+
 		renderJSON(analise, AnaliseTecnicaSerializer.findInfo);
-		
+
 	}
-	
-//	public static void getRestricoesGeo(Long idAnaliseTecnica) throws Exception {
-//
-//		verificarPermissao(Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES);
-//
-//		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnaliseTecnica);
-//
-//		analiseTecnica.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.cpfCnpj);
-//
-//		File file = Geoserver.verificarRestricoes(
-//				GeoJsonUtils.toGeometry(analiseTecnica.analise.processo.empreendimento.empreendimentoEU.localizacao.geometria),
-//				analiseTecnica.analise.processo.empreendimento.imovel,
-//				"analise-geo-id-" + idAnaliseTecnica
-//		);
-//
-//		renderJSON(FileUtils.readFileToString(file, Charset.defaultCharset()));
-//	}
-	
+
+	public static void getRestricoesGeo(Long idAnaliseTecnica) throws Exception {
+
+		verificarPermissao(Acao.INICIAR_PARECER_TECNICO, Acao.VALIDAR_PARECERES);
+
+		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(idAnaliseTecnica);
+
+		analiseTecnica.analise.processo.empreendimento.empreendimentoEU = new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analiseTecnica.analise.processo.empreendimento.cpfCnpj);
+
+		File file = Geoserver.verificarRestricoes(
+				GeoJsonUtils.toGeometry(analiseTecnica.analise.processo.empreendimento.empreendimentoEU.localizacao.geometria),
+				analiseTecnica.analise.processo.empreendimento.imovel,
+				"analise-geo-id-" + idAnaliseTecnica
+		);
+
+		renderJSON(FileUtils.readFileToString(file, Charset.defaultCharset()));
+	}
+
 	public static void validarParecer(AnaliseTecnica analise) {
-		
+
 		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO);
-		
+
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
-		
+
 		analiseAValidar.validaParecer(analise, usuarioExecutor);
-		
+
 		renderMensagem(Mensagem.VALIDACAO_PARECER_TECNICO_CONCLUIDA_SUCESSO);
 	}
-	
+
 	public static void validarParecerCoordenador(AnaliseTecnica analise) {
-		
+
 		verificarPermissao(Acao.VALIDAR_PARECER_TECNICO);
-		
+
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
-		
+
 		analiseAValidar.validaParecerCoordenador(analise, usuarioExecutor);
-		
+
 		renderMensagem(Mensagem.VALIDACAO_PARECER_TECNICO_CONCLUIDA_SUCESSO);
 	}
-	
+
 	public static void validarParecerAprovador(AnaliseTecnica analise) {
-		
+
 		verificarPermissao(Acao.VALIDAR_PARECERES);
-		
+
 		AnaliseTecnica analiseAValidar = AnaliseTecnica.findById(analise.id);
 
 		UsuarioAnalise usuarioExecutor = getUsuarioSessao();
-		
+
 		analiseAValidar.validarParecerValidacaoAprovador(analise, usuarioExecutor);
-		
+
 		renderMensagem(Mensagem.VALIDACAO_PARECER_APROVADOR_CONCLUIDA_SUCESSO);
 	}
 
@@ -240,5 +240,5 @@ public class AnalisesTecnicas extends InternalController {
 		renderJSON(AnaliseTecnica.findAnalisesByNumeroProcesso(numeroDecodificado), AnaliseTecnicaSerializer.findInfo);
 
 	}
-	
+
 }
