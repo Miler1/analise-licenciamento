@@ -25,12 +25,12 @@ analiseTecnica.config(['$routeProvider', function($routeProvider) {
 				},
 				restricoes: function(analiseTecnicaService, $route, $q) {
 
-					// var deferred = $q.defer();
-					// analiseTecnicaService.getRestricoesGeo($route.current.params.idAnaliseTecnica)
-					// 	.then(function(response){
-					// 		deferred.resolve(response.data);
-					// 	});
-					// return deferred.promise;
+					var deferred = $q.defer();
+					analiseTecnicaService.getRestricoesGeo($route.current.params.idAnaliseTecnica)
+						.then(function(response){
+							deferred.resolve(response.data);
+						});
+					return deferred.promise;
 
 				},
 				idAnaliseTecnica: function($route) {

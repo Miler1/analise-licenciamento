@@ -75,9 +75,15 @@ public class PareceresAnalistasTecnico extends InternalController {
 
 	public static void getUltimoParecerAnaliseTecnica(Long id) {
 
-		AnaliseTecnica analiseTecnica = AnaliseTecnica.findById(id);
+		AnaliseTecnica analiseTecnica = new AnaliseTecnica();
 
-		renderJSON(analiseTecnica.pareceresAnalistaTecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new), ParecerAnalistaTecnicoSerializer.findByIdHistoricoTramitacao);
+		if (id != null) {
+
+			analiseTecnica = AnaliseTecnica.findById(id);
+
+			renderJSON(analiseTecnica.pareceresAnalistaTecnico.stream().max(Comparator.comparing(ParecerAnalistaTecnico::getDataParecer)).orElseThrow(ValidationException::new), ParecerAnalistaTecnicoSerializer.findByIdHistoricoTramitacao);
+
+		}
 
 	}
 

@@ -1,10 +1,10 @@
-var ConsultarProcessoController = function($scope, 
-										config, 
-										$rootScope, 
-										processoService, 
-										TiposSetores, 
-										documentoAnaliseService, 
-										mensagem, 
+var ConsultarProcessoController = function($scope,
+										config,
+										$rootScope,
+										processoService,
+										TiposSetores,
+										documentoAnaliseService,
+										mensagem,
 										documentoService,
 										parecerAnalistaTecnicoService) {
 
@@ -34,7 +34,7 @@ var ConsultarProcessoController = function($scope,
 	consultarProcesso.GERENCIA = TiposSetores.GERENCIA;
 	consultarProcesso.disabledFields = [app.DISABLED_FILTER_FIELDS.COORDENADORIA, app.DISABLED_FILTER_FIELDS.CONSULTOR_JURIDICO,
 		app.DISABLED_FILTER_FIELDS.GERENCIA];
-	
+
 	consultarProcesso.temMinuta = null;
 	consultarProcesso.temRTV = null;
 	consultarProcesso.statusCaracterizacao = app.utils.StatusCaracterizacao;
@@ -75,13 +75,13 @@ var ConsultarProcessoController = function($scope,
 	function getDiasRestantes(processo, dataVencimento, dataConclusao) {
 
 		if(processo[dataConclusao]) {
-			
+
 			return 'Concluída em ' + processo[dataConclusao].split(' ')[0];
-		
+
 		} else if(processo[dataVencimento]) {
 
 			return consultarProcesso.dateUtil.getDiasRestantes(processo[dataVencimento]);
-		
+
 		} else {
 
 			return '-';
@@ -91,16 +91,16 @@ var ConsultarProcessoController = function($scope,
 	function isPrazoMinimoAvisoAnalise(processo, dataVencimento, dataConclusao, tipoAnalise) {
 
 		if(processo[dataConclusao]) {
-			return false;		
+			return false;
 		}
-		return consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo[dataVencimento], 
+		return consultarProcesso.dateUtil.isPrazoMinimoAvisoAnalise(processo[dataVencimento],
 					consultarProcesso.PrazoMinimoAvisoAnalise[tipoAnalise]);
 	}
 
 	consultarProcesso.getPrazoAnaliseGeo = function(processo) {
 
 		if(processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.EM_ANALISE_COORDENADOR ||
-			processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_COORDENADOR || 
+			processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_VALIDACAO_GEO_PELO_COORDENADOR ||
 			processo.dataConclusaoAnaliseGeo) {
 
 			return 'Concluída';
@@ -168,7 +168,7 @@ var ConsultarProcessoController = function($scope,
 	consultarProcesso.verificaStatusAnaliseGeo = function(idCondicaoTramitacao) {
 
 		var CONSULTAR_PROTOCOLO_ANALISTA_GEO_COORDENADOR = [27, 31];
-		var CONSULTAR_PROTOCOLO_ANALISTA_GEO = [25, 26, 30, 4];	
+		var CONSULTAR_PROTOCOLO_ANALISTA_GEO = [25, 26, 30, 4];
 		var status = false;
 
 		if (consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.COORDENADOR) {
@@ -262,10 +262,12 @@ var ConsultarProcessoController = function($scope,
 	};
 
 	consultarProcesso.validacaoDocumentos = function(processo) {
-		
+
 		if(!consultarProcesso.condicaoTramitacao.VISUALIZA_DOC_TECNICO.includes(processo.idCondicaoTramitacao)){
 
-			parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(processo.idAnaliseTecnica)
+			if (processo.idAnaliseTecnica !== undefined) {
+
+				parecerAnalistaTecnicoService.getUltimoParecerAnaliseTecnica(processo.idAnaliseTecnica)
 				.then(function(response){
 
 					var parecerTecnico = response.data;
@@ -275,6 +277,8 @@ var ConsultarProcessoController = function($scope,
 					consultarProcesso.temRTV = parecerTecnico.vistoria.realizada;
 
 				});
+
+			}
 
 		}
 
