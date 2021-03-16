@@ -3,7 +3,7 @@ doctype html
 |%{
 |	 numeroProcesso = analiseTecnica.analise.processo.numero;
 |	 empreendimento = analiseTecnica.analise.processo.empreendimento;
-|    contatoCadastrante = contatoCadastrante;
+|    contatoPrincipal = contatoPrincipal;
 |	 empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
 |	 empreendimentoCPF = empreendimento.cpfCnpj;
 |	 enderecoCompleto = enderecoCompleto;
@@ -44,7 +44,7 @@ html(lang='en')
 					.container-flex
 						.container-left
 							span <strong>Notificado:</strong> ${empreendimentoNome}
-						
+
 						.container-right
 							span <strong>Protocolo nº:</strong> ${numeroProcesso}
 
@@ -67,7 +67,7 @@ html(lang='en')
 						.container-left
 							span <strong>CNPJ/CPF:</strong> ${empreendimentoCPF}
 						.container-right
-							span <strong>E-mail:</strong> ${contatoCadastrante}
+							span <strong>E-mail:</strong> ${contatoPrincipal}
 					br
 
 				div
@@ -81,9 +81,9 @@ html(lang='en')
 					|\#{/if}
 
 					|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("PARAMETRO")}
-					span <strong>Atividade:</strong> ${inconsistencia.inconsistenciaTecnicaParametro.atividadeCaracterizacao.atividade.nome} 
+					span <strong>Atividade:</strong> ${inconsistencia.inconsistenciaTecnicaParametro.atividadeCaracterizacao.atividade.nome}
 					br
-					span <strong>Parâmetro:</strong> ${inconsistencia.inconsistenciaTecnicaParametro.parametroAtividade.nome} 
+					span <strong>Parâmetro:</strong> ${inconsistencia.inconsistenciaTecnicaParametro.parametroAtividade.nome}
 					|\#{/if}
 
 					|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("QUESTIONARIO")}
@@ -144,7 +144,7 @@ html(lang='en')
 							h3 Tipo da inconsistência:
 								p
 									span ${inconsistencia.tipoInconsistencia}
-													
+
 		div(style="text-align: center")
 			span <strong>Analisado por:</strong> ${analista.nomeAnalista}
 			br

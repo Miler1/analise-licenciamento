@@ -3,7 +3,7 @@ doctype html
 |%{
 |	 numeroProcesso = analiseGeo.analise.processo.numero;
 |	 empreendimento = analiseGeo.analise.processo.empreendimento;
-| 	 contatoCadastrante = contatoCadastrante;
+| 	 contatoPrincipal = contatoPrincipal;
 |	 empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
 |	 empreendimentoCPF = empreendimento.cpfCnpj;
 |	 enderecoCompleto = enderecoCompleto;
@@ -44,7 +44,7 @@ html(lang='en')
 					.container-flex
 						.container-left
 							span <strong>Notificado:</strong> ${empreendimentoNome}
-						
+
 						.container-right
 							span <strong>Protocolo nº:</strong> ${numeroProcesso}
 
@@ -67,7 +67,7 @@ html(lang='en')
 						.container-left
 							span <strong>CNPJ/CPF:</strong> ${empreendimentoCPF}
 						.container-right
-							span <strong>E-mail:</strong> ${contatoCadastrante}
+							span <strong>E-mail:</strong> ${contatoPrincipal}
 					br
 
 				div
@@ -78,7 +78,7 @@ html(lang='en')
 						|\#{/list}
 					|\#{/if}
 					|\#{if categoriaInconsistencia.name().equals("ATIVIDADE")}
-					span <strong>Localização da atividade ${inconsistencia.atividadeCaracterizacao.atividade.nome}: 
+					span <strong>Localização da atividade ${inconsistencia.atividadeCaracterizacao.atividade.nome}:
 						|\#{list items:localizacoes, as:'localizacao'}
 						</strong> ${localizacao}
 						|\#{/list}
@@ -125,7 +125,7 @@ html(lang='en')
 							h3 Descrição da(s) solicitação(ões):
 								p
 									span ${inconsistencia.tipoInconsistencia}
-													
+
 		div(style="text-align: center")
 			span <strong>Analisado por:</strong> ${analista.nomeAnalista}
 			br
