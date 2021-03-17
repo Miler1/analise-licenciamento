@@ -30,7 +30,7 @@ div(ng-if="modalVisualizacaoProcessoCtrl.verificaLoginAnaliseGeo()")
 					.panel.panel-default
 						.panel-heading
 							h4.panel-title
-								| COORDENADOR TÉCNICO: {{ parecer.usuario.pessoa.nome }}
+								| COORDENADOR: {{ parecer.usuario.pessoa.nome }}
 								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordioncoordenador, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordioncoordenador}")
 				
 				div.collapse(ng-class="{in: parecer.id}", id="dados-coordenadorTecnico-tecnico-{{parecer.id}}")
@@ -56,7 +56,7 @@ div(ng-if="modalVisualizacaoProcessoCtrl.verificaLoginAnaliseTecnica()")
 					.panel.panel-default
 						.panel-heading
 							h4.panel-title
-								| ANALISTA TECNICO: {{ parecer.analistaTecnico.pessoa.nome }}
+								| ANALISTA TÉCNICO: {{ parecer.analistaTecnico.pessoa.nome }}
 								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionTecnico, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionTecnico}")
 				
 				div.collapse(ng-class="{in: parecer.id}", id="dados-analista-tecnico-{{parecer.id}}")
@@ -77,7 +77,7 @@ div(ng-if="modalVisualizacaoProcessoCtrl.verificaLoginAnaliseTecnica()")
 					.panel.panel-default
 						.panel-heading
 							h4.panel-title
-								| COORDENADOR TÉCNICO: {{ parecer.usuario.pessoa.nome }}
+								| COORDENADOR: {{ parecer.usuario.pessoa.nome }}
 								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionCoordenador, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionCoordenador}")
 				
 				div.collapse(ng-class="{in: parecer.id}", id="dados-coordenadorTecnico-{{parecer.id}}")
@@ -129,7 +129,7 @@ div(ng-if="(modalVisualizacaoProcessoCtrl.dadosProcesso.analise.pareceresSecreta
 					.panel.panel-default
 						.panel-heading
 							h4.panel-title
-								| SECRETARIO: {{ parecerSecretario.usuario.pessoa.nome }}
+								| SECRETÁRIO: {{ parecerSecretario.usuario.pessoa.nome }}
 								i(class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': modalVisualizacaoProcessoCtrl.openedAccordionSecretario, 'glyphicon-chevron-right': !modalVisualizacaoProcessoCtrl.openedAccordionSecretario}")
 				
 				div.collapse(ng-class="{in: parecerSecretario.id}", id="dados-secretario-{{parecerSecretario.id}}")
