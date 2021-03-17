@@ -33,8 +33,8 @@ public class Empreendimento extends GenericModel {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
 	@SequenceGenerator(name = SEQ, sequenceName = SEQ, allocationSize = 1)
 	public Long id;
-//
-//	@Required
+
+	@Required
 	public String denominacao;
 	
 //	@Column(name = "id_redesim")
