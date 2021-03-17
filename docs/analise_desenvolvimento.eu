@@ -12,10 +12,6 @@
 			"codigo": "ANL_LISTAR_PROCESSO",
 			"perfis": [
 				{
-					"nome": "Analista CAR",
-					"codigo": "ANALISTA_CAR"
-				},
-				{
 					"nome": "Analista GEO",
 					"codigo": "ANALISTA_GEO"
 				},
@@ -56,10 +52,6 @@
 					"codigo": "COORDENADOR"
 				},
 				{
-					"nome": "Analista CAR",
-					"codigo": "ANALISTA_CAR"
-				},
-				{
 					"nome": "Analista GEO",
 					"codigo": "ANALISTA_GEO"
 				},
@@ -73,10 +65,6 @@
 			"nome": "Consultar processo",
 			"codigo": "ANL_CONSULTAR_PROCESSO",
 			"perfis": [
-				{
-					"nome": "Analista CAR",
-					"codigo": "ANALISTA_CAR"
-				},
 				{
 					"nome": "Analista GEO",
 					"codigo": "ANALISTA_GEO"
@@ -129,16 +117,6 @@
 				}
 			]
 		},
-                {
-			"nome": "Iniciar parecer CAR",
-			"codigo": "ANL_INICIAR_PARECER_CAR",
-			"perfis": [
-				{
-					"nome": "Analista CAR",
-					"codigo": "ANALISTA_CAR"
-				}
-			]
-		},
 		{
 			"nome": "Iniciar parecer GEO",
 			"codigo": "ANL_INICIAR_PARECER_GEO",
@@ -183,10 +161,6 @@
 			"nome": "Consultar licenças emitidas",
 			"codigo": "ANL_CONSULTAR_LICENCAS_EMITIDAS",
 			"perfis": [
-				{
-					"nome": "Analista CAR",
-					"codigo": "ANALISTA_CAR"
-				},
 				{
 					"nome": "Analista GEO",
 					"codigo": "ANALISTA_GEO"
