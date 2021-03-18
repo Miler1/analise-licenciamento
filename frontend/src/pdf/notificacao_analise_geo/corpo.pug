@@ -3,7 +3,7 @@ doctype html
 |%{
 |	 numeroProcesso = analiseGeo.analise.processo.numero;
 |	 empreendimento = analiseGeo.analise.processo.empreendimento;
-| 	 contatoPrincipal = contatoPrincipal;
+| 	 contatoCadastrante = contatoCadastrante;
 |	 empreendimentoNome = empreendimento.empreendimentoEU.empreendedor.pessoa.nome ? empreendimento.empreendimentoEU.empreendedor.pessoa.nome : empreendimento.empreendimentoEU.empreendedor.pessoa.razaoSocial;
 |	 empreendimentoCPF = empreendimento.cpfCnpj;
 |	 enderecoCompleto = enderecoCompleto;
@@ -67,7 +67,7 @@ html(lang='en')
 						.container-left
 							span <strong>CNPJ/CPF:</strong> ${empreendimentoCPF}
 						.container-right
-							span <strong>E-mail:</strong> ${contatoPrincipal}
+							span <strong>E-mail:</strong> ${contatoCadastrante}
 					br
 
 				div

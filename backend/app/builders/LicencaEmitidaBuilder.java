@@ -80,7 +80,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		
 		addEmpreendimentoAlias();
 		
-		addAlias(EMPREENDIMENTO_ALIAS+".pessoa", PESSOA_EMPREENDIMENTO_ALIAS);
+//		addAlias(EMPREENDIMENTO_ALIAS+".pessoa", PESSOA_EMPREENDIMENTO_ALIAS);
 		
 		return this;
 	}
@@ -183,10 +183,9 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 	public LicencaEmitidaBuilder groupByCpfCnpjEmpreendimento(){
 		
 		addPessoaEmpreendimentoAlias();
-		
-		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cpf").as("cpfEmpreendimento"));
-		addProjection(Projections.groupProperty(PESSOA_EMPREENDIMENTO_ALIAS+".cnpj").as("cnpjEmpreendimento"));
-		
+
+		addProjection(Projections.groupProperty(EMPREENDIMENTO_ALIAS+".cpfCnpj").as("cpfEmpreendimento"));
+
 		return this;
 	}	
 	
@@ -195,7 +194,7 @@ public class LicencaEmitidaBuilder extends CriteriaBuilder<LicencaEmitida> {
 		addEmpreendimentoAlias();
 		
 		addProjection(Projections.groupProperty(EMPREENDIMENTO_ALIAS+".denominacao").as("denominacaoEmpreendimento"));
-		
+
 		return this;
 	}
 	
