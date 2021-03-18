@@ -837,6 +837,7 @@ public class AnaliseTecnica extends Analisavel {
                     .setTemplate(tipoDocumento.getPdfTemplate())
                     .addParam("analiseTecnica", analiseTecnica)
                     .addParam("inconsistencia", analiseTecnica.vistoria.inconsistenciaVistoria)
+                    .addParam("contatoCadastrante", contatoCadastrante.valor)
                     .addParam("enderecoCompleto", enderecoCompleto)
                     .addParam("analista", finalAnalistaVO)
                     .addParam("vistoria", true)
