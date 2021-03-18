@@ -30,7 +30,7 @@ div
 								span(ng-class="{'icone-licenca-vigente': consultarLicencas.statusCaracterizacao.VIGENTE === licenca.statusCaracterizacao}")
 								span(ng-class="{'icone-licenca-suspensa': consultarLicencas.statusCaracterizacao.SUSPENSO === licenca.statusCaracterizacao}")
 								span(ng-class="{'icone-licenca-cancelada': consultarLicencas.statusCaracterizacao.CANCELADO === licenca.statusCaracterizacao}")
-								
+
 							td(ng-attr-title="{{licenca.numeroLincenca}}") {{licenca.numeroLincenca }}
 							td(ng-attr-title="{{licenca.numeroProcesso}}") {{licenca.numero }}
 							td {{licenca.cpfEmpreendimento ? licenca.cpfEmpreendimento : licenca.cnpjEmpreendimento | brCpfCnpj}}
