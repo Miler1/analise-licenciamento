@@ -16,21 +16,21 @@ import java.util.stream.Collectors;
 @Entity
 @Table(schema="analise", name="dia_analise")
 public class DiasAnalise extends GenericModel{
-	
+
 	public static final String SEQ = "analise.dia_analise_id_seq";
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator=SEQ)
 	@SequenceGenerator(name=SEQ, sequenceName=SEQ, allocationSize=1)
-	public Long id;	
-	
+	public Long id;
+
 	@OneToOne
 	@JoinColumn(name="id_analise")
 	public Analise analise;
-	
+
 	@Column(name="quantidade_dias_juridica")
 	public Integer qtdeDiasJuridica;
-	
+
 	@Column(name="quantidade_dias_tecnica")
 	public Integer qtdeDiasTecnica;
 
@@ -39,13 +39,13 @@ public class DiasAnalise extends GenericModel{
 
 	@Column(name="quantidade_dias_analise")
 	public Integer qtdeDiasAnalise;
-	
+
 	@Column(name="quantidade_dias_aprovador")
 	public Integer qtdeDiasAprovador;
-	
+
 	@Column(name="quantidade_dias_notificacao")
 	public Integer qtdeDiasNotificacao;
-	
+
 	public DiasAnalise(Analise analise) {
 
 		this.analise = analise;
@@ -54,26 +54,29 @@ public class DiasAnalise extends GenericModel{
 		this.qtdeDiasTecnica = 0;
 
 	}
-	
+
 	public DiasAnalise() {}
 
 	private static Integer verificaUltimaTramitacaoAnaliseGeo(List<HistoricoTramitacao> historicoTramitacao) {
 
 		HistoricoTramitacao ultimaTramitacao = historicoTramitacao.stream()
 				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) ||
-						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) ||
-						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE) ||
+						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_COORDENADOR) ||
+						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_COORDENADOR) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_GEO))
 				.max(Comparator.comparing(HistoricoTramitacao::getDataInicial)).orElseThrow(ValidationException::new);
 		int dias = 0;
 
-		if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_GEO) ||  ultimaTramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE)) {
+		if (ultimaTramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) ||
+				ultimaTramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_GEO) ||
+				ultimaTramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_COORDENADOR) ||
+				ultimaTramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_COORDENADOR)) {
 
 			final Date ultimoDeferirOuIndeferir = ultimaTramitacao.dataInicial;
 
 			boolean temSolicitacaoDeAjustesFinal = historicoTramitacao.stream()
-					.anyMatch(tramitacao -> tramitacao.dataInicial.after(ultimoDeferirOuIndeferir) && tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE));
+					.anyMatch(tramitacao -> tramitacao.dataInicial.after(ultimoDeferirOuIndeferir) && tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_COORDENADOR));
 
 			if(!temSolicitacaoDeAjustesFinal) {
 
@@ -105,8 +108,8 @@ public class DiasAnalise extends GenericModel{
 
 		boolean temTramitacao = historicoTramitacao.stream()
 				.anyMatch(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.AGUARDAR_RESPOSTA_COMUNICADO) ||
-						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) ||
-						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE) ||
+						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_COORDENADOR) ||
+						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_COORDENADOR) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_GEO) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_GEO));
 
@@ -118,11 +121,11 @@ public class DiasAnalise extends GenericModel{
 
 					dataTramitacaoInicial = tramitacao.dataInicial;
 
-				} else if (tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_GERENTE) || tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_GERENTE)) {
+				} else if (tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_COORDENADOR) || tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_COORDENADOR)) {
 
 					dataTramitacaoInicial = tramitacao.dataInicial;
 
-				} else if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_GERENTE) && dataTramitacaoInicial != null) {
+				} else if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_GEO_PELO_COORDENADOR) && dataTramitacaoInicial != null) {
 
 					dias += DateUtil.getDiferencaEmDias(dataTramitacaoInicial, tramitacao.dataInicial);
 
@@ -188,18 +191,18 @@ public class DiasAnalise extends GenericModel{
 
 		HistoricoTramitacao ultimaTramitacao = historicoTramitacao.stream()
 				.filter(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA) ||
-						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE) ||
-						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE) ||
+						tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR) ||
+						tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR) ||
 						tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO))
 				.max(Comparator.comparing(HistoricoTramitacao::getDataInicial)).orElseThrow(ValidationException::new);
 		int dias = 0;
 
-		if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE)) {
+		if(ultimaTramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO) || ultimaTramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR)) {
 
 			final Date ultimoDeferirOuIndeferir = ultimaTramitacao.dataInicial;
 
 			boolean temSolicitacaoDeAjustesFinal = historicoTramitacao.stream()
-					.anyMatch(tramitacao -> tramitacao.dataInicial.after(ultimoDeferirOuIndeferir) && tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE));
+					.anyMatch(tramitacao -> tramitacao.dataInicial.after(ultimoDeferirOuIndeferir) && tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR));
 
 			if (!temSolicitacaoDeAjustesFinal) {
 
@@ -234,19 +237,19 @@ public class DiasAnalise extends GenericModel{
 
 		boolean temTramitacao = historicoTramitacao.stream()
 				.anyMatch(tramitacao -> tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_DESVINCULO_ANALISE_TECNICA) ||
-							tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE) ||
-							tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE) ||
+							tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR) ||
+							tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR) ||
 							tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO));
 
 		if(temTramitacao) {
 
 			for (HistoricoTramitacao tramitacao : historicoTramitacao) {
 
-				if (tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_GERENTE) || tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO) || tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_GERENTE)) {
+				if (tramitacao.idAcao.equals(AcaoTramitacao.DEFERIR_ANALISE_TECNICA_VIA_COORDENADOR) || tramitacao.idAcao.equals(AcaoTramitacao.NOTIFICAR_PELO_ANALISTA_TECNICO) || tramitacao.idAcao.equals(AcaoTramitacao.INDEFERIR_ANALISE_TECNICA_VIA_COORDENADOR)) {
 
 					dataTramitacaoInicial = tramitacao.dataInicial;
 
-				} else if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_GERENTE) && dataTramitacaoInicial != null) {
+				} else if (tramitacao.idAcao.equals(AcaoTramitacao.SOLICITAR_AJUSTES_PARECER_TECNICO_PELO_COORDENADOR) && dataTramitacaoInicial != null) {
 
 					dias += DateUtil.getDiferencaEmDias(dataTramitacaoInicial, tramitacao.dataInicial);
 

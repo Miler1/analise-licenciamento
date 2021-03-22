@@ -1,4 +1,4 @@
-var CxEntCoordenadorTecnicoController = function($scope, config, analistaService, mensagem, $uibModal, $rootScope, processoService, gerenteService) {
+var CxEntCoordenadorTecnicoController = function($scope, config, analistaService, mensagem, $uibModal, $rootScope, processoService, coordenadorService) {
 
 	$rootScope.tituloPagina = 'AGUARDANDO VINCULAÇÃO TÉCNICA';
 
@@ -11,7 +11,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 	cxEntCoordenadorTecnico.onPaginaAlterada = onPaginaAlterada;
 	cxEntCoordenadorTecnico.hasAtLeastOneProcessoSelected = hasAtLeastOneProcessoSelected;
 	cxEntCoordenadorTecnico.visualizarProcesso = visualizarProcesso;
-	cxEntCoordenadorTecnico.vincularGerente = vincularGerente;
+	cxEntCoordenadorTecnico.vincularCoordenador = vincularCoordenador;
 	cxEntCoordenadorTecnico.afterUpdateFilters = afterUpdateFilters;
 	cxEntCoordenadorTecnico.verificarTodosProcessosMarcados = verificarTodosProcessosMarcados;
 	cxEntCoordenadorTecnico.getTitleSelecaoProcesso = getTitleSelecaoProcesso;
@@ -49,7 +49,7 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 	function hasAtLeastOneProcessoSelected() {
 
-		return _.some(cxEntCoordenadorTecnico.processos, {selecionado: true});		
+		return _.some(cxEntCoordenadorTecnico.processos, {selecionado: true});
 	}
 
 	function getProcessosSelecionados(processoSelecionado) {
@@ -67,15 +67,15 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 				 if (processo.selecionado) {
 
 					 processosSelecionados.push(processo);
-				 } 
-			});  
+				 }
+			});
 		}
 
 		return processosSelecionados;
 	}
 
 	function vincularAnalista(processoSelecionado) {
-		
+
 		var processosSelecionados = getProcessosSelecionados(processoSelecionado);
 
 		if (processosSelecionados.length === 0) {
@@ -93,35 +93,35 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
-						mensagem.success(response.data.texto);						
+						mensagem.success(response.data.texto);
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});
-					});				
+					});
 			})
 			.catch(function(){ });
-	}	
+	}
 
-	function vincularGerente(processoSelecionado) {
-		
+	function vincularCoordenador(processoSelecionado) {
+
 		var processosSelecionados = getProcessosSelecionados(processoSelecionado);
 
 		if (processosSelecionados.length === 0) {
 
-			mensagem.warning('É necessário selecionar ao menos um protocolo para vinculá-lo ao gerente técnico.');
+			mensagem.warning('É necessário selecionar ao menos um protocolo para vinculá-lo ao coordenador.');
 			return;
 		}
 
-		var modalInstance = abrirModal(processosSelecionados, 'gerente técnico', getGerentes, false);
+		var modalInstance = abrirModal(processosSelecionados, 'coordenador', getCoordenador, false);
 
 		modalInstance.result
 			.then(function (result) {
 
-				gerenteService.vincularAnaliseGerenteTecnico(result.idConsultorSelecionado, result.idsProcessosSelecionados)
+				coordenadorService.vincularAnaliseCoordenador(result.idConsultorSelecionado, result.idsProcessosSelecionados)
 					.then(function(response){
 
 						$scope.$broadcast('pesquisarProcessos');
-						mensagem.success(response.data.texto);						
+						mensagem.success(response.data.texto);
 					})
 					.catch(function(response){
 						mensagem.error(response.data.texto, {ttl: 15000});
@@ -131,8 +131,8 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 	}
 
 	function abrirModal(processos, tipo, getAnalistasGerentes, justificationEnabled){
-		
-		var modalInstance = $uibModal.open({
+
+		return $uibModal.open({
 			controller: 'modalVincularConsultorController',
 			controllerAs: 'modalCtrl',
 			backdrop: 'static',
@@ -153,7 +153,6 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 			}
 		});
 
-		return modalInstance;
 	}
 
 	function afterUpdateFilters(filtro) {
@@ -177,10 +176,10 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 		return analistaService.getAnalistasTecnicosByProcesso(idProcesso);
 	}
 
-	function getGerentes(idProcesso) {
+	function getCoordenador(idProcesso) {
 
-		return gerenteService.getGerentesTecnicosByIdProcesso(idProcesso);
-	}	
+		return coordenadorService.getCoordenadorByIdProcesso(idProcesso);
+	}
 
 	function visualizarProcesso(processo) {
 
@@ -189,10 +188,10 @@ var CxEntCoordenadorTecnicoController = function($scope, config, analistaService
 
 	function verificarTodosProcessosMarcados() {
 
-		cxEntCoordenadorTecnico.todosProcessosSelecionados = 
-			
+		cxEntCoordenadorTecnico.todosProcessosSelecionados =
+
 			_.reduce(cxEntCoordenadorTecnico.processos, function(resultado, p){
-			
+
 				return resultado && p.selecionado;
 
 			}, true);

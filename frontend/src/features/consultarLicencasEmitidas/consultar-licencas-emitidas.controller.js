@@ -151,7 +151,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 
 		if((licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.SIMPLIFICADO ||
 			licenca.tipoCaracterizacao === consultarLicencas.TIPOS_CARACTERIZACOES.DECLARATORIO || licenca.origemLicenca !== app.ORIGEM_LICENCA.DISPENSA) &&
-			(LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE &&
+			(LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO &&
 				LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken)) {
 			return true;
 
@@ -164,7 +164,7 @@ var ConsultarLicencasEmitidasController = function($scope, config, $rootScope, p
 	function isCancelamentoVisivel(licenca) {
 
 		if ((licenca.origemLicenca !== app.ORIGEM_LICENCA.DISPENSA) &&
-			LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE &&
+			LICENCIAMENTO_CONFIG.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO &&
 			LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken && licenca.ativo) {
 			return true;
 		}

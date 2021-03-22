@@ -1,10 +1,11 @@
 package controllers;
 
-import models.*;
+import models.AnaliseGeo;
+import models.ParecerAnalistaGeo;
+import models.Processo;
+import models.UsuarioAnalise;
 import security.Acao;
 import serializers.ParecerAnalistaGeoSerializer;
-import serializers.ParecerAnalistaTecnicoSerializer;
-import serializers.ParecerGerenteSerializer;
 import utils.Mensagem;
 
 import javax.validation.ValidationException;

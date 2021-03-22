@@ -80,7 +80,7 @@ public class Analistas extends InternalController {
 
 		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosEntradaUnica(CodigoPerfil.ANALISTA_TECNICO, tipoAtividadeCaracterizacao.atividade.siglaSetor);
 
-		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasCoordenadores);
 
 	}
 
@@ -90,7 +90,7 @@ public class Analistas extends InternalController {
 
 		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfil(CodigoPerfil.ANALISTA_TECNICO);
 
-		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasCoordenadores);
 
 	}
 
@@ -107,7 +107,7 @@ public class Analistas extends InternalController {
 
 		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosEntradaUnica(CodigoPerfil.ANALISTA_GEO, tipoAtividadeCaracterizacao.atividade.siglaSetor);
 
-		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasCoordenadores);
 
 	}
 
@@ -117,7 +117,7 @@ public class Analistas extends InternalController {
 
 		List<UsuarioAnalise> consultores = UsuarioAnalise.getUsuariosByPerfil(CodigoPerfil.ANALISTA_GEO);
 
-		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasGerentes);
+		renderJSON(consultores, UsuarioSerializer.getConsultoresAnalistasCoordenadores);
 
 	}
 
@@ -145,7 +145,7 @@ public class Analistas extends InternalController {
 
 	}
 
-	public static void getAnalistaTecnicoPerfilSetores(boolean isGerente) {
+	public static void getAnalistaTecnicoPerfilSetores(boolean isCoordenador) {
 
 //		verificarPermissao(Acao.VINCULAR_PROCESSO, Acao.VALIDAR_PARECERES);
 //
@@ -171,7 +171,7 @@ public class Analistas extends InternalController {
 //				pessoas = UsuarioAnalise.getUsuariosByPerfilSetores(CodigoPerfil.ANALISTA_TECNICO, siglasSetoresFilhos);
 //				break;
 //			/**
-//			 * No caso aqui seria o Gerente ou outros que estão no mesmo setor que os Analistas
+//			 * No caso aqui seria o Coordenador ou outros que estão no mesmo setor que os Analistas
 //			 */
 //			default:
 //				pessoas = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.ANALISTA_TECNICO, usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
@@ -181,15 +181,15 @@ public class Analistas extends InternalController {
 
 		List<UsuarioAnalise> pessoas = UsuarioAnalise.findUsuariosByPerfil(CodigoPerfil.ANALISTA_TECNICO);
 
-		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasGerentes);
+		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasCoordenadores);
 
 	}
 
-	public static void getAnalistaGeoPerfilSetores(boolean isGerente) {
+	public static void getAnalistaGeoPerfilSetores(boolean isCoordenador) {
 
 		List<UsuarioAnalise> pessoas = UsuarioAnalise.findUsuariosByPerfil(CodigoPerfil.ANALISTA_GEO);
 
-		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasGerentes);
+		renderJSON(pessoas, UsuarioSerializer.getConsultoresAnalistasCoordenadores);
 
 	}
 

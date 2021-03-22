@@ -1,0 +1,217 @@
+{
+	"nome": "Análise do Licenciamento Ambiental- AP",
+	"sigla": "MAL",
+	"url": "http://localhost:9011/login",
+	"descricao": "Análise do Licenciamento Ambiental do Estado do Amapá.",
+	"cadastrarPerfis": true,
+	"loginTokenObrigatorio": false,
+	"ips": "127.0.0.1,0:0:0:0:0:0:0:1",
+	"permissoes": [
+		{
+			"nome": "Listar processo",
+			"codigo": "ANL_LISTAR_PROCESSO",
+			"perfis": [
+				{
+					"nome": "Analista GEO",
+					"codigo": "ANALISTA_GEO"
+				},
+                                {
+					"nome": "Analista TÉCNICO",
+					"codigo": "ANALISTA_TECNICO"
+				},
+				{
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
+				},
+                                {
+					"nome": "Diretor",
+					"codigo": "DIRETOR"
+				},
+				{
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
+				}
+			]lE
+		},
+		{
+			"nome": "Vincular processo",
+			"codigo": "ANL_VINCULAR_PROCESSO",
+			"perfis": [
+				{
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
+				}
+			]
+		},
+                {
+			"nome": "Desvincular processo",
+			"codigo": "ANL_DESVINCULAR_PROCESSO",
+			"perfis": [
+				{
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
+				},
+				{
+					"nome": "Analista GEO",
+					"codigo": "ANALISTA_GEO"
+				},
+                                {
+					"nome": "Analista TÉCNICO",
+					"codigo": "ANALISTA_TECNICO"
+				}
+			]
+		},
+		{
+			"nome": "Consultar processo",
+			"codigo": "ANL_CONSULTAR_PROCESSO",
+			"perfis": [
+				{
+					"nome": "Analista GEO",
+					"codigo": "ANALISTA_GEO"
+				},
+                                {
+					"nome": "Analista TÉCNICO",
+					"codigo": "ANALISTA_TECNICO"
+				},
+				{
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
+				},
+                                {
+					"nome": "Diretor",
+					"codigo": "DIRETOR"
+				},
+				{
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
+				}
+			]
+		},
+		{
+			"nome": "Validar parecer CAR",
+			"codigo": "ANL_VALIDAR_PARECER_CAR",
+			"perfis": [
+				{
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
+				}
+			]
+		},
+		{
+			"nome": "Validar parecer GEO",
+			"codigo": "ANL_VALIDAR_PARECER_GEO",
+			"perfis": [
+				{
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
+				}
+			]
+		},
+		{
+			"nome": "Validar parecer técnico",
+			"codigo": "ANL_VALIDAR_PARECER_TECNICO",
+			"perfis": [
+				{
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
+				}
+			]
+		},
+		{
+			"nome": "Iniciar parecer GEO",
+			"codigo": "ANL_INICIAR_PARECER_GEO",
+			"perfis": [
+				{
+					"nome": "Analista GEO",
+					"codigo": "ANALISTA_GEO"
+				}
+			]
+		},
+		{
+			"nome": "Iniciar parecer técnico",
+			"codigo": "ANL_INICIAR_PARECER_TECNICO",
+			"perfis": [
+				{
+					"nome": "Analista TÉCNICO",
+					"codigo": "ANALISTA_TECNICO"
+				}
+			]
+		},
+		{
+			"nome": "Aprovar análise",
+			"codigo": "ANL_APROVAR_ANALISE",
+			"perfis": [
+				{
+					"nome": "Diretor",
+					"codigo": "DIRETOR"
+				}
+			]
+		},
+		{
+			"nome": "Validar pareceres",
+			"codigo": "ANL_VALIDAR_PARECERES",
+			"perfis": [
+				{
+					"nome": "Diretor",
+					"codigo": "DIRETOR"
+				}
+			]
+		},
+		{
+			"nome": "Consultar licenças emitidas",
+			"codigo": "ANL_CONSULTAR_LICENCAS_EMITIDAS",
+			"perfis": [
+				{
+					"nome": "Analista GEO",
+					"codigo": "ANALISTA_GEO"
+				},
+                                {
+					"nome": "Analista TÉCNICO",
+					"codigo": "ANALISTA_TECNICO"
+				},
+				{
+					"nome": "Coordenador",
+					"codigo": "COORDENADOR"
+				},
+                                {
+					"nome": "Diretor",
+					"codigo": "DIRETOR"
+				},
+				{
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
+				}
+			]
+		},
+		{
+			"nome": "Emitir licença",
+			"codigo": "ANL_EMITIR_LICENCA",
+			"perfis": [
+				{
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
+				}
+			]
+		},
+		{
+			"nome": "Suspender licença emitida",
+			"codigo": "ANL_SUSPENDER_LICENCA_EMITIDA",
+			"perfis": [
+				{
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
+				}
+			]
+		},
+		{
+			"nome": "Cancelar licença emitida",
+			"codigo": "ANL_CANCELAR_LICENCA_EMITIDA",
+			"perfis": [
+				{
+					"nome": "Secretario",
+					"codigo": "SECRETARIO"
+				}
+			]
+		}
+	]
+}

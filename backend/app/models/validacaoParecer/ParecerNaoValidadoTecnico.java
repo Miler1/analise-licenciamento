@@ -1,11 +1,8 @@
 package models.validacaoParecer;
 
 import exceptions.ValidacaoException;
-import models.AnaliseTecnica;
-import models.AnalistaTecnico;
-import models.Gerente;
-import models.TipoResultadoAnalise;
-import models.UsuarioAnalise;
+import models.*;
+import models.Coordenador;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
 import utils.Mensagem;
@@ -30,11 +27,11 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		
 		analiseTecnica._save();
 		
-		if (novaAnaliseTecnica.hasGerentes()) {
+		if (novaAnaliseTecnica.hasCoordenadores()) {
 			
-			criarNovaAnaliseComGerente(analiseTecnica, novaAnaliseTecnica.getGerente().usuario, usuarioExecutor);
+			criarNovaAnaliseComCoordenador(analiseTecnica, novaAnaliseTecnica.getCoordenador().usuario, usuarioExecutor);
 			
-			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_COORD_ENCAMINHANDO_GERENTE, usuarioExecutor);
+			analiseTecnica.analise.processo.tramitacao.tramitar(analiseTecnica.analise.processo, AcaoTramitacao.INVALIDAR_PARECER_TECNICO_PELO_COORD_ENCAMINHANDO_COORDENADOR, usuarioExecutor);
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseTecnica.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 		} else {
@@ -58,13 +55,13 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		novaAnalise._save();
 	}
 	
-	private void criarNovaAnaliseComGerente(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioGerente, UsuarioAnalise usuarioValidacao) {
+	private void criarNovaAnaliseComCoordenador(AnaliseTecnica analiseTecnica, UsuarioAnalise usuarioCoordenador, UsuarioAnalise usuarioValidacao) {
 		
 		AnaliseTecnica novaAnalise = new AnaliseTecnica();
 		
-		novaAnalise.gerentes = new ArrayList<>();
-		Gerente gerente = new Gerente(novaAnalise, usuarioGerente);
-		novaAnalise.gerentes.add(gerente);
+		novaAnalise.coordenadores = new ArrayList<>();
+		Coordenador coordenador = new Coordenador(novaAnalise, usuarioCoordenador);
+		novaAnalise.coordenadores.add(coordenador);
 		
 		salvarNovaAnalise(novaAnalise, analiseTecnica, usuarioValidacao);
 	}
@@ -83,10 +80,10 @@ public class ParecerNaoValidadoTecnico extends TipoResultadoAnaliseChain<Analise
 		
 		analiseTecnica.validarParecerValidacao();
 		
-		if ((novaAnaliseTecnica.gerentes == null || novaAnaliseTecnica.gerentes.isEmpty()) &&
+		if ((novaAnaliseTecnica.coordenadores == null || novaAnaliseTecnica.coordenadores.isEmpty()) &&
 			(novaAnaliseTecnica.analistaTecnico == null)) {
 			
-			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_GERENTE_ANALISTA_NAO_INFORMADO);
+			throw new ValidacaoException(Mensagem.ANALISE_TECNICA_COORDENADOR_ANALISTA_NAO_INFORMADO);
 		}		
 	}
 }

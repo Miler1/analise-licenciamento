@@ -1,0 +1,48 @@
+include ../../../../layout/components/panel
+include ../../../../features/resumoProcesso/resumo-processo
+include ../../../../layout/components/inputErrors
+
++resumo-processo('validacaoAnaliseGeoCoordenador.analiseGeo.analise.processo','validacaoAnaliseGeoCoordenador.exibirDadosProcesso()','validacaoAnaliseGeoCoordenador.titulo')
+
+section.margin-bottom-md
+
+	.row
+		div(style="padding:15px;")
+			div.modal-body
+
+			ul.nav.nav-tabs(role="tablist")
+				li#localizacaoGeografica.active.aba-clicavel(role="presentation", ng-click="validacaoAnaliseGeoCoordenador.validacaoAbaVoltar()")
+					a(data-toggle="tab", data-target="#tabAnaliseGeo") Análise Geo
+					
+				li#conclusao.aba-clicavel(role="tab", ng-click="validacaoAnaliseGeoCoordenador.validacaoAbaAvancar()")
+					a(data-toggle="tab", data-target="#tabValidacaoDaAnalise") Validação da Análise
+
+			.tab-content
+				#tabAnaliseGeo.tab-pane.fade.in.active
+					include tab-analise-geo
+
+				#tabValidacaoDaAnalise.tab-pane
+					include tab-validacao-analise
+
+section(style="padding-top:20px;")
+
+	button.btn.btn-default.pull-left.posicao-cancelar-coordenador(title='Cancelar análise',
+                                    ng-bootbox-title='Confirmação',
+                                    ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
+                                    ng-bootbox-confirm-action="validacaoAnaliseGeoCoordenador.cancelar()")
+		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
+		| Cancelar
+	
+	button.btn.btn-success.posicao-avancar-concluir-coordenador(ng-click="validacaoAnaliseGeoCoordenador.concluir()",
+			ng-if="validacaoAnaliseGeoCoordenador.controleVisualizacao === 'ETAPA_VALIDACAO_ANALISE_GEO'")
+		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
+		| Concluir
+
+	button.btn.btn-default.posicao-voltar-coordenador(ng-click="validacaoAnaliseGeoCoordenador.voltarEtapaAnterior()",
+			ng-if="validacaoAnaliseGeoCoordenador.controleVisualizacao === 'ETAPA_VALIDACAO_ANALISE_GEO'")
+		i.glyphicon.glyphicon-arrow-left
+		| Voltar
+	button.btn.btn-success.posicao-avancar-coordenador(ng-click="validacaoAnaliseGeoCoordenador.avancarProximaEtapa()",
+			ng-if="validacaoAnaliseGeoCoordenador.controleVisualizacao === 'ETAPA_ANALISE_GEO'")
+		i.glyphicon.glyphicon-arrow-right
+		| &nbsp;Avançar                    

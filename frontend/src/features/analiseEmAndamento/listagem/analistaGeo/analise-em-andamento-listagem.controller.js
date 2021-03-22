@@ -1,6 +1,6 @@
 var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 												   $rootScope, processoService,
-												   analiseGeoService, parecerGerenteService,
+												   analiseGeoService, parecerCoordenadorService,
 												   mensagem, $uibModal) {
 
 	$rootScope.tituloPagina = 'EM ANÁLISE GEO';
@@ -32,7 +32,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 	function atualizarListaProcessos(processos) {
 
 		listagem.processos = processos;
-		
+
 	}
 
 	function verificaSolicitacaoAjustes(processo) {
@@ -40,12 +40,12 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 		analiseGeoService.getAnaliseGeo(processo.idAnaliseGeo)
 			.then(function(response){
 
-				if(_.isEmpty(response.data.pareceresGerenteAnaliseGeo)){
+				if(_.isEmpty(response.data.pareceresCoordenadorAnaliseGeo)){
 					processo.verificaAnalise = false;
 
 				}else{
-					_.find(response.data.pareceresGerenteAnaliseGeo, function(parecerGerente) {
-						if(parecerGerente.parecer === null || parecerGerente.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
+					_.find(response.data.pareceresCoordenadorAnaliseGeo, function(parecerCoordenador) {
+						if(parecerCoordenador.parecer === null || parecerCoordenador.tipoResultadoAnalise.id !== listagem.tipoResultadoAnalise.SOLICITAR_AJUSTES){
 							processo.verificaAnalise = false;
 
 						}else{
@@ -116,7 +116,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 
 	function visualizarSolicitacaoAjustes(processo) {
 
-		parecerGerenteService.findJustificativaParecerByIdAnaliseGeo(processo.idAnaliseGeo)
+		parecerCoordenadorService.findJustificativaParecerByIdAnaliseGeo(processo.idAnaliseGeo)
 			.then(function(response){
 
 				$uibModal.open({
@@ -141,7 +141,7 @@ var AnaliseEmAndamentoGeoListController = function($scope, config, $location,
 	}
 
 	function notificacaoAtendida(processo) {
-		
+
 		if (processo.idAnalistaGeoAnterior !== undefined) {
 
 			return processo && processo.retificacao && processo.idAnalistaGeoAnterior === processo.idAnalistaGeo;

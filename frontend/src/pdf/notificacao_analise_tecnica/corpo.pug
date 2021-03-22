@@ -44,7 +44,7 @@ html(lang='en')
 					.container-flex
 						.container-left
 							span <strong>Notificado:</strong> ${empreendimentoNome}
-						
+
 						.container-right
 							span <strong>Protocolo nº:</strong> ${numeroProcesso}
 
@@ -67,7 +67,7 @@ html(lang='en')
 						.container-left
 							span <strong>CNPJ/CPF:</strong> ${empreendimentoCPF}
 						.container-right
-							span <strong>Email:</strong> ${contatoCadastrante}
+							span <strong>E-mail:</strong> ${contatoCadastrante}
 					br
 
 				div
@@ -81,9 +81,9 @@ html(lang='en')
 					|\#{/if}
 
 					|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("PARAMETRO")}
-					span <strong>Atividade:</strong> ${inconsistencia.inconsistenciaTecnicaParametro.atividadeCaracterizacao.atividade.nome} 
+					span <strong>Atividade:</strong> ${inconsistencia.inconsistenciaTecnicaParametro.atividadeCaracterizacao.atividade.nome}
 					br
-					span <strong>Parâmetro:</strong> ${inconsistencia.inconsistenciaTecnicaParametro.parametroAtividade.nome} 
+					span <strong>Parâmetro:</strong> ${inconsistencia.inconsistenciaTecnicaParametro.parametroAtividade.nome}
 					|\#{/if}
 
 					|\#{if inconsistencia.tipoDeInconsistenciaTecnica.equals("QUESTIONARIO")}
@@ -144,14 +144,14 @@ html(lang='en')
 							h3 Tipo da inconsistência:
 								p
 									span ${inconsistencia.tipoInconsistencia}
-													
+
 		div(style="text-align: center")
 			span <strong>Analisado por:</strong> ${analista.nomeAnalista}
 			br
 			span ${analista.perfilAnalista} - ${analista.setorAnalista}
 		br
 		div(style="text-align: center")
-			span <strong> Robério Aleixo</strong>
+			span <strong> Robério Aleixo Anselmo Nobre</strong>
 			br
-			span <strong> Diretor Presidente</strong>
+			span <strong> Secretário</strong>
 		br

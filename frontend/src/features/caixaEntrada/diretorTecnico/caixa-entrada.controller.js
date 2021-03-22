@@ -25,7 +25,7 @@ var CxEntDiretorController = function($scope, config, mensagem,$rootScope, proce
 	function atualizarListaProcessos(processos) {
 
 		cxEntDiretor.processos = processos;
-		
+
 	}
 
 	function iniciarAnaliseDiretor(idAnalise) {
@@ -36,7 +36,7 @@ var CxEntDiretorController = function($scope, config, mensagem,$rootScope, proce
 				$rootScope.$broadcast('atualizarContagemProcessos');
 				$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO DIRETOR TÉCNICO';
 				$location.path('/analise-diretor/' + idAnalise.toString());
-							
+
 			}, function(error){
 
 				mensagem.error(error.data.texto);
@@ -50,15 +50,15 @@ var CxEntDiretorController = function($scope, config, mensagem,$rootScope, proce
 
     function verificarTodosProcessosMarcados() {
 
-		cxEntDiretor.todosProcessosSelecionados = 
-			
+		cxEntDiretor.todosProcessosSelecionados =
+
 			_.reduce(cxEntDiretor.processos, function(resultado, p){
-			
+
 				return resultado && p;
 
 			}, true);
 	}
-    
+
     function hasAtLeastOneProcessoSelected() {
 
 		return _.some(cxEntDiretor.processos, {selecionado: true});

@@ -2,21 +2,14 @@ package models;
 
 import java.util.*;
 
-import com.vividsolutions.jts.geom.Geometry;
-import enums.TipoSobreposicaoDistanciaEnum;
-import models.licenciamento.Caracterizacao.OrigemSobreposicao;
 import models.licenciamento.*;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
-import org.omg.CORBA.PRIVATE_MEMBER;
 import play.db.jpa.GenericModel;
-import serializers.ParecerJuridicoSerializer;
 import utils.*;
 
 import javax.persistence.*;
 import javax.validation.ValidationException;
-
-import static security.Auth.getUsuarioSessao;
 
 @Entity
 @Table(schema="analise", name="parecer_juridico")
@@ -118,7 +111,7 @@ public class ParecerJuridico extends GenericModel {
                 // remove o documeto do banco apenas se ele não estiver relacionado
                 // com outra análises
                 List<ParecerJuridico> pareceresJuridicosRelacionados = docCadastrado.getPareceresJuridicosRelacionados();
-                if(pareceresJuridicosRelacionados.size() == 0) {
+                if (pareceresJuridicosRelacionados.isEmpty()) {
 
                     documentosDeletar.add(docCadastrado);
                 }
@@ -153,11 +146,11 @@ public class ParecerJuridico extends GenericModel {
             parecerJuridicoBanco.saveAnexos(parecerJuridico.anexos);
             parecerJuridicoBanco.dataResposta = new Date();
 
-            ParecerGerenteAnaliseGeo parecerGerenteAnaliseGeo = parecerJuridicoBanco.analiseGeo.pareceresGerenteAnaliseGeo.stream().max(Comparator.comparing(ParecerGerenteAnaliseGeo::getDataParecer)).orElseThrow(ValidationException::new);
+            ParecerCoordenadorAnaliseGeo parecerCoordenadorAnaliseGeo = parecerJuridicoBanco.analiseGeo.pareceresCoordenadorAnaliseGeo.stream().max(Comparator.comparing(ParecerCoordenadorAnaliseGeo::getDataParecer)).orElseThrow(ValidationException::new);
 
-            UsuarioAnalise gerente = UsuarioAnalise.findById(parecerGerenteAnaliseGeo.usuario.id);
+            UsuarioAnalise coordenador = UsuarioAnalise.findById(parecerCoordenadorAnaliseGeo.usuario.id);
 
-            parecerJuridicoBanco.analiseGeo.analise.processo.tramitacao.tramitar(parecerJuridicoBanco.analiseGeo.analise.processo, AcaoTramitacao.RESOLVER_ANALISE_JURIDICA, gerente);
+            parecerJuridicoBanco.analiseGeo.analise.processo.tramitacao.tramitar(parecerJuridicoBanco.analiseGeo.analise.processo, AcaoTramitacao.RESOLVER_ANALISE_JURIDICA, coordenador);
             HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(parecerJuridicoBanco.analiseGeo.analise.processo.objetoTramitavel.id), parecerJuridicoBanco.analiseGeo);
 
             HistoricoTramitacao historicoTramitacao = HistoricoTramitacao.getUltimaTramitacao(parecerJuridicoBanco.analiseGeo.analise.processo.objetoTramitavel.id);
@@ -173,9 +166,7 @@ public class ParecerJuridico extends GenericModel {
         List<ParecerJuridico> pareceresJuridicos = ParecerJuridico.find("id_analise_tecnica = :analiseTecnica ")
                 .setParameter("analiseTecnica", idAnaliseTecnica).fetch();
 
-        ParecerJuridico parecerFinal = pareceresJuridicos.stream().max( Comparator.comparing(parecer -> parecer.id )).get();
-
-        return parecerFinal;
+        return pareceresJuridicos.stream().max( Comparator.comparing(parecer1 -> parecer1.id )).get();
 
     }
 }

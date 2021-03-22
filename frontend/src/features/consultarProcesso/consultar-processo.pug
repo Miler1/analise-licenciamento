@@ -9,8 +9,8 @@ div
 		is-analise-juridica="false",
 		is-analise-tecnica="false",
 		is-analise-geo="false",
-		is-gerente="false",
-		is-gerente-logado="false",
+		is-coordenador="false",
+		is-coordenador-logado="false",
 		consultar-processos="true",
 		pesquisar-todas-gerencias="false",
 		filtrar-por-usuario="false")
@@ -28,12 +28,12 @@ div
 							th.col-md-2.text-center Protocolo
 							th.col-md-3.text-center Empreendimento
 							th.col-md-2.text-center Município
-							th(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.PRESIDENTE").col-md-2.text-center Licença
-							th(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.PRESIDENTE").col-md-1.text-center Licença
-							th(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.PRESIDENTE").col-md-4.text-center Prazo análise
-							th(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.PRESIDENTE").col-md-2.text-center Prazo análise
-							th.col-md-2(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.PRESIDENTE").text-center Prazo análise GEO
-							th.col-md-2(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.PRESIDENTE").text-center Prazo análise técnica
+							th(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.SECRETARIO").col-md-2.text-center Licença
+							th(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.SECRETARIO").col-md-1.text-center Licença
+							th(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.SECRETARIO").col-md-4.text-center Prazo análise
+							th(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.SECRETARIO").col-md-2.text-center Prazo análise
+							th.col-md-2(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.SECRETARIO").text-center Prazo análise GEO
+							th.col-md-2(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.SECRETARIO").text-center Prazo análise técnica
 							th.col-md-2.text-center Ações
 					tbody
 						tr(ng-repeat="processo in consultarProcesso.processos")
@@ -41,14 +41,14 @@ div
 								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
 								span(ng-class="{'icone-solicitacao-finalizada-geo': consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao)}")
 								span(ng-class="{'icone-solicitacao-finalizada-tecnica': consultarProcesso.verificaStatusAnaliseTecnica(processo.idCondicaoTramitacao)}")
-								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.DIRETOR && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.PRESIDENTE",ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_GEO}")
-								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.DIRETOR && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.PRESIDENTE",ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_TECNICO}")
+								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.DIRETOR && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.SECRETARIO",ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_GEO}")
+								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.DIRETOR && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.SECRETARIO",ng-class="{'icone-revisao-atendida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.NOTIFICADO_PELO_ANALISTA_TECNICO}")
 								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-licenca-emitida': processo.statusCaracterizacao === consultarProcesso.statusCaracterizacao.VIGENTE}")
 								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-aguardando-pagamento-taxa': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_APROVADA && processo.statusCaracterizacao !== consultarProcesso.statusCaracterizacao.VIGENTE}")
 								span(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_TECNICO", ng-class="{'icone-solicitacao-licenca-indeferida': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.SOLICITACAO_LICENCA_NEGADA}")
 								span(ng-class="{'icone-aguardando-resposta-juridico': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_RESPOSTA_JURIDICO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO}")
 								span(ng-class="{'icone-aguardando-comunicado': processo.idCondicaoTramitacao === consultarProcesso.condicaoTramitacao.AGUARDANDO_RESPOSTA_COMUNICADO}")
-														
+
 							td(ng-attr-title="{{processo.numero}}").text-center {{processo.numero}}
 							td.text-center.break-word {{processo.denominacaoEmpreendimento}}
 							td.text-center {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
@@ -57,10 +57,10 @@ div
 							td(ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(consultarProcesso.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, consultarProcesso.PrazoAnalise.ANALISE), consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
 								| {{ consultarProcesso.dateUtil.getContaDiasRestantesData(consultarProcesso.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, consultarProcesso.PrazoAnalise.ANALISE)) }}
 
-							td(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.PRESIDENTE", ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}").text-center
+							td(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.SECRETARIO", ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseGeo, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO)}").text-center
 								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
 
-							td(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.PRESIDENTE", ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
+							td(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.ANALISTA_GEO && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.SECRETARIO", ng-class="{'error-message': consultarProcesso.dateUtil.verificaPrazoMinimoData(processo.dataVencimentoPrazoAnaliseTecnica, consultarProcesso.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
 								| {{ consultarProcesso.prazoAnaliseTecnica(processo) }}
 
 							td
@@ -75,11 +75,11 @@ div
 												a(ng-click="consultarProcesso.visualizarProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
-											li(ng-if="(consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao) || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.GERENTE")
+											li(ng-if="(consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao) || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.COORDENADOR")
 												a(ng-click="consultarProcesso.downloadPDFparecer(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar parecer GEO
-											li(ng-if="(consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao) || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.GERENTE")
+											li(ng-if="(consultarProcesso.verificaStatusAnaliseGeo(processo.idCondicaoTramitacao) || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.ANALISTA_TECNICO) && consultarProcesso.usuarioLogadoCodigoPerfil !== consultarProcesso.perfis.COORDENADOR")
 												a(ng-click="consultarProcesso.downloadPDFCartaImagem(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar carta imagem
@@ -112,7 +112,7 @@ div
 					span.col-md-4.icone-revisao-atendida.legenda-margin Notificado
 					span.col-md-4.icone-aguardando-comunicado.legenda-margin(style="margin-bottom:23px") Aguardando resposta comunicado
 
-				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.GERENTE")
+				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.COORDENADOR")
 
 					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda-margin Solicitação de Desvínculo Pendente
 					span.col-md-4.icone-solicitacao-finalizada-geo.legenda-margin Análise GEO finalizada
@@ -124,7 +124,7 @@ div
 					span.col-md-4.icone-aguardando-comunicado.legenda-margin Aguardando resposta comunicado
 					span.col-md-4.icone-aguardando-resposta-juridico.legenda-margin(style="margin-bottom:23px") Aguardando análise jurídica
 
-				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.PRESIDENTE || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.DIRETOR ")
+				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.SECRETARIO || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.DIRETOR ")
 
 					span.col-md-4.icone-licenca-emitida.legenda-margin Licença emitida
 					span.col-md-4.icone-solicitacao-licenca-indeferida.legenda-margin Solicitação de licença indeferida

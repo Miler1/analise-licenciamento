@@ -1,8 +1,9 @@
 package controllers;
 
-import models.*;
+import models.Analise;
+import models.ParecerDiretorTecnico;
+import models.UsuarioAnalise;
 import serializers.ParecerDiretorSerializer;
-import serializers.ParecerGerenteSerializer;
 import utils.Mensagem;
 
 public class PareceresDiretores extends InternalController {

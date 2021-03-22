@@ -104,7 +104,7 @@ var CxEntAnalistaGeoController = function($scope, config, $location, analiseGeoS
 
 			return processo && processo.retificacao;
 		}
-		
+
 	}
 };
 

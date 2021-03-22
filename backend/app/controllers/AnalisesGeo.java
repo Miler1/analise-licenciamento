@@ -5,9 +5,7 @@ import models.geocalculo.Geoserver;
 import models.licenciamento.Empreendimento;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
-import org.geotools.feature.SchemaException;
 import security.Acao;
-import security.cadastrounificado.CadastroUnificadoWS;
 import serializers.AnaliseGeoSerializer;
 import serializers.CamadaGeoAtividadeSerializer;
 import serializers.EmpreendimentoSerializer;
@@ -17,9 +15,7 @@ import utils.Mensagem;
 
 import javax.validation.ValidationException;
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -39,15 +35,15 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-    public static void iniciarAnaliseGerente(AnaliseGeo analise) {
+    public static void iniciarAnaliseCoordenador(AnaliseGeo analise) {
 
         AnaliseGeo analiseAlterar = AnaliseGeo.findById(analise.id);
 
         UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
-        analiseAlterar.iniciarAnaliseGerente(usuarioExecutor);
+        analiseAlterar.iniciarAnaliseCoordenador(usuarioExecutor);
 
-        renderMensagem(Mensagem.GERENTE_INICIOU_ANALISE_SUCESSO);
+        renderMensagem(Mensagem.COORDENADOR_INICIOU_ANALISE_SUCESSO);
 
     }
 
@@ -105,22 +101,22 @@ public class AnalisesGeo extends InternalController {
 
     }
 
-    public static void getRestricoesGeo(Long idAnaliseGeo) throws Exception {
+   public static void getRestricoesGeo(Long idAnaliseGeo) throws Exception {
 
-        verificarPermissao(Acao.INICIAR_PARECER_GEO);
+       verificarPermissao(Acao.INICIAR_PARECER_GEO);
 
-        AnaliseGeo analiseGeo = AnaliseGeo.findById(idAnaliseGeo);
+       AnaliseGeo analiseGeo = AnaliseGeo.findById(idAnaliseGeo);
 
-        analiseGeo.analise.processo.empreendimento.empreendimentoEU =  new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpj);
+       analiseGeo.analise.processo.empreendimento.empreendimentoEU =  new IntegracaoEntradaUnicaService().findEmpreendimentosByCpfCnpj(analiseGeo.analise.processo.empreendimento.cpfCnpj);
 
-        File file = Geoserver.verificarRestricoes(
-                GeoJsonUtils.toGeometry(analiseGeo.analise.processo.empreendimento.empreendimentoEU.localizacao.geometria),
-                analiseGeo.analise.processo.empreendimento.imovel,
-                "analise-geo-id-" + idAnaliseGeo
-        );
+       File file = Geoserver.verificarRestricoes(
+               GeoJsonUtils.toGeometry(analiseGeo.analise.processo.empreendimento.empreendimentoEU.localizacao.geometria),
+               analiseGeo.analise.processo.empreendimento.imovel,
+               "analise-geo-id-" + idAnaliseGeo
+       );
 
-        renderJSON(FileUtils.readFileToString(file, Charset.defaultCharset()));
-    }
+       renderJSON(FileUtils.readFileToString(file, Charset.defaultCharset()));
+   }
 
     public static void validarParecer(AnaliseGeo analise) {
 
@@ -135,7 +131,7 @@ public class AnalisesGeo extends InternalController {
         renderMensagem(Mensagem.VALIDACAO_PARECER_GEO_CONCLUIDA_SUCESSO);
     }
 
-    public static void validarParecerGerente(AnaliseGeo analise) {
+    public static void validarParecerCoordenador(AnaliseGeo analise) {
 
         verificarPermissao(Acao.VALIDAR_PARECER_GEO);
 
@@ -143,7 +139,7 @@ public class AnalisesGeo extends InternalController {
 
         UsuarioAnalise usuarioExecutor = getUsuarioSessao();
 
-        analiseAValidar.validaParecerGerente(analise, usuarioExecutor);
+        analiseAValidar.validaParecerCoordenador(analise, usuarioExecutor);
 
         renderMensagem(Mensagem.VALIDACAO_PARECER_GEO_CONCLUIDA_SUCESSO);
     }

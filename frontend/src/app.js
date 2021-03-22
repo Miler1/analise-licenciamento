@@ -170,7 +170,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			visivel: function(){
 
 				return [
-					app.utils.Perfis.GERENTE,
+					app.utils.Perfis.COORDENADOR,
 					app.utils.Perfis.ANALISTA_GEO,
 					app.utils.Perfis.ANALISTA_CAR,
 					app.utils.Perfis.DIRETOR,
@@ -185,8 +185,8 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_JURIDICA;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_VINCULACAO_TECNICA_PELO_COORDENADOR;
-				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
-					return app.utils.CondicaoTramitacao.CAIXA_ENTRADA_GERENTE;
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR)
+					return app.utils.CondicaoTramitacao.CAIXA_ENTRADA_COORDENADOR;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO)
@@ -216,13 +216,13 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			visivel: function(){
 
 				return [
-					app.utils.Perfis.PRESIDENTE,
+					app.utils.Perfis.SECRETARIO,
 					].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function() {
 
-				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE;
+				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO)
+					return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_SECRETARIO;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
@@ -244,7 +244,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 
 					 return '/analise-tecnica';
 
-				} 
+				}
 			},
 			countItens: true,
 			estaSelecionado: function() {
@@ -276,43 +276,43 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			icone: 'glyphicon glyphicon-edit',
 			url: function() {
 
-				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE){
+				if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR){
 
-					return '/analise-gerente';
+					return '/analise-coordenadorTecnico';
 
 				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR){
 
 					return '/analise-diretor';
 
-				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE){
+				} else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO){
 
-					return '/analise-presidente';
+					return '/analise-secretario';
 
 				}
 			},
 			countItens: true,
 			estaSelecionado: function() {
 
-				return $location.path().indexOf('/analise-gerente') > -1 ||
+				return $location.path().indexOf('/analise-coordenadorTecnico') > -1 ||
 					$location.path().indexOf('/analise-diretor') > -1 ||
-					$location.path().indexOf('/analise-presidente') > -1 ||
-					$location.path().indexOf('/analise-tecnica-gerente') > -1;
+					$location.path().indexOf('/analise-secretario') > -1 ||
+					$location.path().indexOf('/analise-tecnica-coordenadorTecnico') > -1;
 
 			},
 			visivel: function() {
 
-				return [app.utils.Perfis.GERENTE,
+				return [app.utils.Perfis.COORDENADOR,
 					app.utils.Perfis.DIRETOR,
-					app.utils.Perfis.PRESIDENTE].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+					app.utils.Perfis.SECRETARIO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
 			},
 			condicaoTramitacao: function () {
 
-				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE)
-					return app.utils.CondicaoTramitacao.MENU_EM_ANALISE_GERENTE;
+				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR)
+					return app.utils.CondicaoTramitacao.MENU_EM_ANALISE_COORDENADOR;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR;
-				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE)
-					return app.utils.CondicaoTramitacao.EM_ANALISE_PRESIDENTE;
+				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO)
+					return app.utils.CondicaoTramitacao.EM_ANALISE_SECRETARIO;
 			},
 			deveFiltrarPorUsuario: true,
 			codigoPerfilSelecionado: function(){
@@ -320,34 +320,35 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 			}
 		},
-		{
+		// {
 
-			titulo: 'Aguardando validação',
-			icone: 'glyphicon glyphicon-check',
-			url: function() {
+		// 	titulo: 'Aguardando validação',
+		// 	icone: 'glyphicon glyphicon-check',
+		// 	url: function() {
 
-				return '/aguardando-validacao';
-			},
-			countItens: true,
-			estaSelecionado: function () {
+		// 		return '/aguardando-validacao';
+		// 	},
+		// 	countItens: true,
+		// 	estaSelecionado: function () {
 
-				return $location.path().indexOf('/aguardando-validacao') > -1;
-			},
-			visivel: function() {
+		// 		return $location.path().indexOf('/aguardando-validacao') > -1;
+		// 	},
+		// 	visivel: function() {
+		// 		console.log(app.utils.Perfis.COORDENADOR);
+		// 		console.log($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo);
+		// 		return [app.utils.Perfis.COORDENADOR].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
+		// 	},
+		// 	condicaoTramitacao: function () {
 
-				return [app.utils.Perfis.GERENTE_TECNICO].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) > -1;
-			},
-			condicaoTramitacao: function () {
+		// 		if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR)
+		// 			return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR;
+		// 	},
+		// 	deveFiltrarPorUsuario: true,
+		// 	codigoPerfilSelecionado: function(){
 
-				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.GERENTE_TECNICO)
-					return app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE;
-			},
-			deveFiltrarPorUsuario: true,
-			codigoPerfilSelecionado: function(){
-
-				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
-			}
-		},
+		// 		return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
+		// 	}
+		// },
 		{
 
 			titulo: 'Aguardando assinatura',
@@ -363,12 +364,12 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			},
 			visivel: function(){
 
-				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.PRESIDENTE && LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken;
+				return $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO && LICENCIAMENTO_CONFIG.usuarioSessao.autenticadoViaToken;
 			},
 
 			condicaoTramitacao: function(){
 
-				return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_PRESIDENTE;
+				return app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_SECRETARIO;
 			},
             deveFiltrarPorUsuario: true
 		},
@@ -390,8 +391,8 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 					app.utils.Perfis.ANALISTA_CAR,
 					app.utils.Perfis.ANALISTA_TECNICO,
 					app.utils.Perfis.DIRETOR,
-					app.utils.Perfis.GERENTE,
-					app.utils.Perfis.PRESIDENTE
+					app.utils.Perfis.COORDENADOR,
+					app.utils.Perfis.SECRETARIO
 				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
 			},
 			deveFiltrarPorUsuario: true
@@ -410,8 +411,8 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			visivel: function(){
 
 				return [
-					app.utils.Perfis.GERENTE,
-					app.utils.Perfis.PRESIDENTE,
+					app.utils.Perfis.COORDENADOR,
+					app.utils.Perfis.SECRETARIO,
 					app.utils.Perfis.DIRETOR
 				].indexOf($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo) !== -1;
 			}
@@ -547,8 +548,6 @@ utils.services(licenciamento)
 	.add('analistaService', services.AnalistaService)
 	.add('analiseTecnicaService', services.AnaliseTecnicaService)
 	.add('setorService', services.SetorService)
-	.add('gerenteService', services.GerenteService)
-	.add('aprovadorService', services.AprovadorService)
 	.add('analiseService', services.AnaliseService)
 	.add('coordenadorService', services.CoordenadorService)
 	.add('licencaEmitidaService', services.LicencaEmitidaService)
@@ -569,15 +568,15 @@ utils.services(licenciamento)
 	.add('desvinculoService', services.DesvinculoService)
 	.add('wmsTileService', services.WMSTileService)
 	.add('tiposSobreposicaoService', services.TiposSobreposicaoService)
-	.add('validacaoAnaliseGerenteService', services.ValidacaoAnaliseGerenteService)
+	.add('validacaoAnaliseCoordenadorService', services.ValidacaoAnaliseCoordenadorService)
 	.add('parecerOrgaoService', services.ParecerOrgaoService)
 	.add('parecerJuridicoService', services.ParecerJuridicoService)
 	.add('parecerAnalistaGeoService', services.ParecerAnalistaGeoService)
-	.add('parecerGerenteService', services.ParecerGerenteService)
+	.add('parecerCoordenadorService', services.ParecerCoordenadorService)
 	.add('questionarioService', services.QuestionarioService)
 	.add('parecerAnalistaTecnicoService', services.ParecerAnalistaTecnicoService)
 	.add('parecerDiretorTecnicoService', services.ParecerDiretorTecnicoService)
-	.add('parecerPresidenteService', services.ParecerPresidenteService);
+	.add('parecerSecretarioService', services.ParecerSecretarioService);
 
 utils.filters(licenciamento)
 	.add('textoTruncado', filters.TextoTruncado)
@@ -604,7 +603,7 @@ licenciamento
 	.controller('desvinculoAnaliseTecnicaController', controllers.DesvinculoAnaliseTecnicaController)
 	.controller('parecerOrgaoController', controllers.ParecerOrgaoController)
 	.controller('parecerJuridicoController', controllers.ParecerJuridicoController)
-	.controller('desvinculoGerenteController', controllers.DesvinculoGerenteController)
+	.controller('desvinculoCoordenadorController', controllers.DesvinculoCoordenadorController)
 	.controller('ListagemProcessoManejoController', controllers.ListagemProcessoManejoController)
 	.controller('visualizarJustificativasController',controllers.VisualizarJustificativasController)
 	.controller('visualizarAjustesController',controllers.VisualizarAjustesController)

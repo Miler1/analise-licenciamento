@@ -72,7 +72,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, $
 					case 'HID' :
 						empreendimentoCamandaGeo.cor = '#2196F3';
 						break;
-						
+
 					case 'APP' :
 						empreendimentoCamandaGeo.cor = '#8BC34A';
 						break;
@@ -83,8 +83,8 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, $
 				}
 
 				$scope.$emit('shapefile:uploaded', {
-					geometria: JSON.parse(empreendimentoCamandaGeo.geometria), 
-					tipo: empreendimentoCamandaGeo.tipoAreaGeometria.codigo, 
+					geometria: JSON.parse(empreendimentoCamandaGeo.geometria),
+					tipo: empreendimentoCamandaGeo.tipoAreaGeometria.codigo,
 					estilo: {
 						style: {
 							fillColor: empreendimentoCamandaGeo.cor,
@@ -94,9 +94,9 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, $
 					},
 					popupText: empreendimentoCamandaGeo.tipoAreaGeometria.nome,
 					specificShape: true
-					
+
 				});
-				
+
 			});
 
 			$scope.$emit('mapa:centralizar-mapa');
@@ -130,7 +130,7 @@ var UploadShapesController = function ($injector, $scope, $timeout, $location, $
 				geometria.id = null;
 
 			}
-			
+
 			geometria.type = tipo;
 			geometria.geometry = JSON.stringify(uploadShapes.listaGeometriasMapa[tipo].item.getLayers()[0].feature.geometry);
 

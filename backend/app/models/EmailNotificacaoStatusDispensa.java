@@ -1,21 +1,13 @@
 package models;
 
 import exceptions.AppException;
-import br.ufla.lemaf.beans.Empreendimento;
 import br.ufla.lemaf.beans.pessoa.Endereco;
 import br.ufla.lemaf.beans.pessoa.Municipio;
 import br.ufla.lemaf.enums.TipoEndereco;
 import models.licenciamento.Caracterizacao;
-import models.licenciamento.TipoAnalise;
 import notifiers.Emails;
-import org.apache.commons.lang.StringUtils;
 import services.IntegracaoEntradaUnicaService;
 
-import javax.mail.util.ByteArrayDataSource;
-import java.io.File;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -52,7 +44,7 @@ public class EmailNotificacaoStatusDispensa extends EmailNotificacao {
 
         } catch (InterruptedException | ExecutionException | AppException e) {
 
-            ReenvioEmail reenvioEmail = new ReenvioEmail(this.caracterizacao.id, ReenvioEmail.TipoEmail.NOTIFICACAO_PRESIDENTE_DISPENSA, e.getMessage(), this.emailsDestinatarios);
+            ReenvioEmail reenvioEmail = new ReenvioEmail(this.caracterizacao.id, ReenvioEmail.TipoEmail.NOTIFICACAO_SECRETARIO_DISPENSA, e.getMessage(), this.emailsDestinatarios);
             reenvioEmail.save();
 
             e.printStackTrace();

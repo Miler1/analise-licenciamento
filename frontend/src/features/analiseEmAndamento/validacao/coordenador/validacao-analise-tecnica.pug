@@ -1,0 +1,48 @@
+include ../../../../layout/components/panel
+include ../../../../features/resumoProcesso/resumo-processo
+include ../../../../layout/components/inputErrors
+
++resumo-processo('validacaoAnaliseTecnicaCoordenador.analiseTecnica.analise.processo','validacaoAnaliseTecnicaCoordenador.exibirDadosProcesso()','validacaoAnaliseTecnicaCoordenador.titulo')
+
+section.margin-bottom-md
+
+	.row
+		div(style="padding:15px;")
+			div.modal-body
+
+			ul.nav.nav-tabs(role="tablist")
+				li#localizacaoGeografica.active.aba-clicavel(role="presentation", ng-click="validacaoAnaliseTecnicaCoordenador.validacaoAbaVoltar()")
+					a(data-toggle="tab", data-target="#tabAnaliseTecnica") Análise Técnica
+
+				li#conclusao.aba-clicavel(role="tab", ng-click="validacaoAnaliseTecnicaCoordenador.validacaoAbaAvancar()")
+					a(data-toggle="tab", data-target="#tabValidacaoDaAnalise") Validação da Análise
+
+			.tab-content
+				#tabAnaliseTecnica.tab-pane.fade.in.active
+					include tab-analise-tecnica-coordenador
+
+				#tabValidacaoDaAnalise.tab-pane
+					include tab-validacao-analise-tecnica
+
+section(style="padding-top:20px;")
+
+	button.btn.btn-default.pull-left.posicao-cancelar-coordenador(title='Cancelar análise',
+			ng-bootbox-title='Confirmação',
+			ng-bootbox-confirm='Deseja realmente cancelar a análise ?',
+			ng-bootbox-confirm-action="validacaoAnaliseTecnicaCoordenador.cancelar()")
+		i.glyphicon.glyphicon-ban-circle.glyphicon--with-right-margin
+		| Cancelar
+
+	button.btn.btn-success.posicao-avancar-concluir-coordenador(ng-click="validacaoAnaliseTecnicaCoordenador.concluir()",
+			ng-if="validacaoAnaliseTecnicaCoordenador.controleVisualizacao === 'ETAPA_VALIDACAO_ANALISE_TECNICA'")
+		i.glyphicon.glyphicon-check.glyphicon--with-right-margin
+		| Concluir
+
+	button.btn.btn-default.posicao-voltar-coordenador(ng-click="validacaoAnaliseTecnicaCoordenador.voltarEtapaAnterior()",
+			ng-if="validacaoAnaliseTecnicaCoordenador.controleVisualizacao === 'ETAPA_VALIDACAO_ANALISE_TECNICA'")
+		i.glyphicon.glyphicon-arrow-left
+		| Voltar
+	button.btn.btn-success.posicao-avancar-coordenador(ng-click="validacaoAnaliseTecnicaCoordenador.avancarProximaEtapa()",
+			ng-if="validacaoAnaliseTecnicaCoordenador.controleVisualizacao === 'ETAPA_ANALISE_TECNICA'")
+		i.glyphicon.glyphicon-arrow-right
+		| &nbsp;Avançar

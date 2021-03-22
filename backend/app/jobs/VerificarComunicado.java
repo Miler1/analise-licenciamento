@@ -6,21 +6,16 @@ import models.*;
 import models.licenciamento.*;
 import models.tramitacao.AcaoTramitacao;
 import models.tramitacao.HistoricoTramitacao;
-import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import play.Logger;
 import play.jobs.On;
 import security.cadastrounificado.CadastroUnificadoWS;
-import services.IntegracaoEntradaUnicaService;
-import utils.Helper;
-import utils.WebService;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.LongStream;
 
 @On("cron.verificarComunicado")
 public class VerificarComunicado extends GenericJob {
@@ -134,12 +129,12 @@ public class VerificarComunicado extends GenericJob {
 
 				AnalistaGeo analistaGeo = AnalistaGeo.findByAnaliseGeo(analiseGeo.id);
 
-				Gerente gerente = Gerente.distribuicaoAutomaticaGerente(analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor, analiseGeo);
+				Coordenador coordenador = Coordenador.distribuicaoAutomaticaCoordenador(analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor, analiseGeo);
 
-				analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.RESOLVER_COMUNICADO, analistaGeo.usuario, gerente.usuario);
+				analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.RESOLVER_COMUNICADO, analistaGeo.usuario, coordenador.usuario);
 				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), analiseGeo);
 
-				gerente.save();
+				coordenador.save();
 
 			}
 				
