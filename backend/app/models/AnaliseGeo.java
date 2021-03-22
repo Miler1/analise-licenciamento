@@ -234,7 +234,7 @@ public class AnaliseGeo extends Analisavel {
         return analisesGeo.stream().sorted(Comparator.comparing(AnaliseGeo::getDataParecer).reversed()).collect(Collectors.toList());
 
     }
-    
+
     private void iniciarLicencas() {
 
         List<LicencaAnalise> novasLicencasAnalise = new ArrayList<>();
@@ -955,7 +955,7 @@ public class AnaliseGeo extends Analisavel {
                     .addParam("enderecoCompleto", enderecoCompleto)
                     .addParam("analista", finalAnalistaVO)
                     .addParam("localizacoes", localizacoes)
-                    .addParam("contatoPrincipal", contatoCadastrante.valor)
+                    .addParam("contatoCadastrante", contatoCadastrante.valor)
                     .addParam("dataDoParecer", Helper.getDataPorExtenso(new Date()))
                     .addParam("categoriaInconsistencia", categoriaInconsistencia)
                     .addParam("itemRestricao", itemRestricao)
@@ -977,7 +977,7 @@ public class AnaliseGeo extends Analisavel {
         IntegracaoEntradaUnicaService integracaoEntradaUnica = new IntegracaoEntradaUnicaService();
         Municipio municipio = null;
         String distancia = null;
-        
+
         if(comunicado.analiseGeo.analise.processo.caracterizacao.origemSobreposicao.equals(Caracterizacao.OrigemSobreposicao.EMPREENDIMENTO)) {
 
             distancia = comunicado.getDistancia(comunicado.sobreposicaoCaracterizacaoEmpreendimento.distancia, comunicado.sobreposicaoCaracterizacaoEmpreendimento.geometria, comunicado.sobreposicaoCaracterizacaoEmpreendimento.caracterizacao);
