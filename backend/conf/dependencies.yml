@@ -30,7 +30,6 @@ require:
     - br.com.caelum.stella -> caelum-stella-bean-validation 2.0.4
     - br.ufla.lemaf -> cadastro-unificado-oauth-client 2.1.8
     - com.github.junrar -> junrar 0.7
-    - org.apache.maven.plugins -> maven-shade-plugin 3.2.4
     - br.ufla -> tmsmap 0.1.6:
           exclude:
               - org.geotools -> gt-api
