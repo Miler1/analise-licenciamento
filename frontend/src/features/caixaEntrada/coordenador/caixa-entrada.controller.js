@@ -176,7 +176,7 @@ var CxEntCoordenadorController = function($scope, config, analistaService,analis
 
 		return processo.idCondicaoTramitacao === cxEntCoordenador.legendaDesvinculo ||
 			processo.idCondicaoTramitacao === app.utils.CondicaoTramitacao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA ||
-			processo.idCondicaoTramitacao !== cxEntCoordenador.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_GERENTE;
+			processo.idCondicaoTramitacao !== cxEntCoordenador.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR;
 
 	};
 
