@@ -1,7 +1,7 @@
 # --- !Ups
 
 UPDATE portal_seguranca.perfil SET nome = 'Presidente' WHERE nome = 'Diretor PRESIDENTE';
-UPDATE portal_seguranca.perfil SET nome = 'Gerente' WHERE nome = 'gerente TÉCNICO';
+UPDATE portal_seguranca.perfil SET nome = 'Gerente' WHERE nome = 'Gerente TÉCNICO';
 
 UPDATE portal_seguranca.permissao
 SET codigo = 'ANL_INICIAR_PARECER_SECRETARIO',
