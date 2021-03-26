@@ -1,5 +1,5 @@
 var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routeParams, $scope,
-	mensagem, $location, processoService, $uibModal, analiseService, analiseJuridicaService, 
+	mensagem, $location, processoService, $uibModal, analiseService, analiseJuridicaService,
 	analiseTecnicaService, documentoAnaliseService, documentoLicenciamentoService, licencaService) {
 
 	var validacaoAnaliseAprovador = this;
@@ -22,7 +22,7 @@ var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routePa
 		analiseService.getAnalise($routeParams.idAnalise)
 			.then(function (response) {
 
-				validacaoAnaliseAprovador.analise = response.data;			   
+				validacaoAnaliseAprovador.analise = response.data;
 				validacaoAnaliseAprovador.analise.processo.empreendimento.municipio =
 					validacaoAnaliseAprovador.analise.processo.empreendimento.endereco.municipio;
 					validacaoAnaliseAprovador.imovel = validacaoAnaliseAprovador.analise.processo.empreendimento.imovel;
@@ -30,10 +30,10 @@ var ValidacaoAnaliseAprovadorController = function ($rootScope, $route, $routePa
 				carregarDadosAnaliseTecnica();
 				carregarDadosAnaliseGeo();
 			});
-	
+
 		analiseTecnicaService.getAnaliseTecnica($routeParams.idAnalise)
 			.then(function(response){
-				validacaoAnaliseAprovador.analiseTecnica = response.data;				
+				validacaoAnaliseAprovador.analiseTecnica = response.data;
 			});
 	}
 
