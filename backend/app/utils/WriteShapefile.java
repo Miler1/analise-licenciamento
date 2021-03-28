@@ -35,7 +35,7 @@ public class WriteShapefile {
         SimpleFeatureTypeBuilder typeBuilder = new SimpleFeatureTypeBuilder();
         typeBuilder.setName("MyFeatureType");
         typeBuilder.setCRS(DefaultGeographicCRS.WGS84);
-        typeBuilder.srid(4674);
+//        typeBuilder.srid(4674);
         return typeBuilder;
 
     }
