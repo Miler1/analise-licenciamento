@@ -1,8 +1,9 @@
 doctype html
 |%{
-|	caracterizacao = analiseTecnica.analise.processo.caracterizacao;	
+|	caracterizacao = analiseTecnica.analise.processo.caracterizacao;
 |	numeroProcesso = caracterizacao.processoLicenciamento.numero;
 |	numeroProtocolo = analiseTecnica.analise.processo.numero;
+|   numero = enderecoEmpreendimento.numero != null ? enderecoEmpreendimento.numero : "S/N";
 |	siglaLicenca = caracterizacao.tipoLicenca.sigla;
 |	cpfCnpj = empreendimento.pessoa.cpf != null ? empreendimento.pessoa.cpf : empreendimento.pessoa.cnpj;
 |	inscricaoEstadual = empreendimento.pessoa.inscricaoEstadual != null ? empreendimento.pessoa.inscricaoEstadual : "-";
@@ -55,11 +56,11 @@ html(lang='en')
 
 			tr
 				td(colspan='10')
-					span Endereço do empreendimento: ${enderecoEmpreendimento.logradouro}, Nº ${enderecoEmpreendimento.numero}, ${enderecoEmpreendimento.bairro}
+					span Endereço do empreendimento: ${enderecoEmpreendimento.logradouro}, ${numero}, ${enderecoEmpreendimento.bairro}
 
 			tr
 				td(colspan='10')
-					span Endereço para correspondência: ${enderecoCorrespondencia.logradouro}, Nº ${enderecoCorrespondencia.numero}, ${enderecoCorrespondencia.bairro}
+					span Endereço para correspondência: ${enderecoCorrespondencia.logradouro}, ${numero}, ${enderecoCorrespondencia.bairro}
 
 			tr
 				td(colspan='4')
@@ -93,7 +94,7 @@ html(lang='en')
 								th(colspan='1') Ponto
 								th(colspan='2') Latitude
 								th(colspan='2') Longitude
-							
+
 							|\#{list items:0..geometriaAtividade.geometria.getCoordinates().length -2, as: 'coordenadas'}
 							|\#{if coordenadas % 2 == 0}
 							tr
@@ -131,7 +132,7 @@ html(lang='en')
 								th(colspan='1') Ponto
 								th(colspan='2') Latitude
 								th(colspan='2') Longitude
-							
+
 							|\#{list items:0..geometriaComplexo.geometria.getCoordinates().length -2, as:'coordenadas'}
 							|\#{if coordenadas % 2 == 0}
 							tr
@@ -150,7 +151,7 @@ html(lang='en')
 
 			tr
 				td(colspan='10')
-					span Finalidade: 
+					span Finalidade:
 						|\#{verbatim}${parecer.finalidadeAtividade}\#{/verbatim}
 
 			tr
@@ -165,15 +166,15 @@ html(lang='en')
 
 		div
 			h3(style="text-align:center; margin-top:30px;") RESTRIÇÕES E/OU CONDIÇÕES DE VALIDADE DESTA LICENÇA - ${siglaLicenca} Nº ${numeroProtocolo}
-		
+
 		|\#{if siglaLicenca == 'LP'}
 		div
 			ol.lista-conteudo
 				li.titulo-item
 					.conteudo-item
-						span  O recebimento da presente Licença Prévia deverá ser publicado no Diário Oficial do Estado, 
-							|em periódico local e meio digital oficial, conforme preconiza a Lei Complementar Estadual Nº. 005/94. 
-							|A comprovação do atendimento desta condicionante deverá ser protocolada nesta Secretaria de Estado do Meio Ambiente- SEMA 
+						span  O recebimento da presente Licença Prévia deverá ser publicado no Diário Oficial do Estado,
+							|em periódico local e meio digital oficial, conforme preconiza a Lei Complementar Estadual Nº. 005/94.
+							|A comprovação do atendimento desta condicionante deverá ser protocolada nesta Secretaria de Estado do Meio Ambiente- SEMA
 							|no prazo máximo de 30 (trinta) dias a contar da data de expedição desta licença;
 				li.titulo-item
 					.conteudo-item
@@ -183,20 +184,20 @@ html(lang='en')
 						span Quaisquer alterações nas especificações do projeto apresentado somente poderão ser realizadas se precedidas de anuência da SEMA;
 				li.titulo-item
 					.conteudo-item
-						span A SEMA, mediante decisão motivada e embasada, poderá modificar prazos das condicionantes, assim como medidas de controle das mesmas, 
-							|podendo suspender ou cancelar esta licença, quando ocorrer: a) violação ou inadequação de quaisquer condicionantes ou normais legais; 
-							|b) omissão ou falsa descrição de informações relevantes que subsidiaram a expedição da licença; 
+						span A SEMA, mediante decisão motivada e embasada, poderá modificar prazos das condicionantes, assim como medidas de controle das mesmas,
+							|podendo suspender ou cancelar esta licença, quando ocorrer: a) violação ou inadequação de quaisquer condicionantes ou normais legais;
+							|b) omissão ou falsa descrição de informações relevantes que subsidiaram a expedição da licença;
 							|c) superveniência de graves riscos ambientais e de saúde animal ou humana;
 		|\#{/if}
-		
+
 		|\#{if siglaLicenca == "LI" || siglaLicenca == "RLI"}
 		div
 			ol.lista-conteudo
 				li.titulo-item
 					.conteudo-item
-						span  O recebimento da presente Licença de Instalação deverá ser publicado no Diário Oficial do Estado, 
-							|em periódico local e meio digital oficial, conforme preconiza a Lei Complementar Estadual Nº. 005/94. 
-							|A comprovação do atendimento desta condicionante deverá ser protocolada nesta Secretaria de Estado do Meio Ambiente- SEMA 
+						span  O recebimento da presente Licença de Instalação deverá ser publicado no Diário Oficial do Estado,
+							|em periódico local e meio digital oficial, conforme preconiza a Lei Complementar Estadual Nº. 005/94.
+							|A comprovação do atendimento desta condicionante deverá ser protocolada nesta Secretaria de Estado do Meio Ambiente- SEMA
 							|no prazo máximo de 30 (trinta) dias a contar da data de expedição desta licença;
 				li.titulo-item
 					.conteudo-item
@@ -206,7 +207,7 @@ html(lang='en')
 						span Quaisquer alterações nas especificações do projeto apresentado somente poderão ser realizadas se precedidas de anuência da SEMA;
 				li.titulo-item
 					.conteudo-item
-						span O empreendedor deverá confeccionar e fixar placa informativa do licenciamento conforme modelo apresentado pela 
+						span O empreendedor deverá confeccionar e fixar placa informativa do licenciamento conforme modelo apresentado pela
 							|SEMA, devendo comprovar o cumprimento desta condicionante mediante registo fotográfico
 							|no prazo de 30 (trinta) dias a contar da data de expedição desta Licença;
 				li.titulo-item
@@ -218,7 +219,7 @@ html(lang='en')
 							|Ambiente no prazo máximo de 30 (trinta) dias, a Contar do vencimento para o pagamento da taxa;
 				li.titulo-item
 					.conteudo-item
-						span A SEMA, mediante decisão motivada e embasada, poderá modificar prazos das condicionantes, assim como medidas 
+						span A SEMA, mediante decisão motivada e embasada, poderá modificar prazos das condicionantes, assim como medidas
 							|de controle das mesmas, podendo suspender ou cancelar esta licença, quando ocorrer a
 							|violação ou inadequação de quaisquer condicionantes ou normais legais; b) omissão ou falsa descrição de
 							|informações relevantes que subsidiaram a expedição da licença; c) superveniência de graves riscos ambientais
@@ -227,50 +228,50 @@ html(lang='en')
 					.conteudo-item
 						span Esta licença deverá ser fixada em local visível no empreendimento.
 		|\#{/if}
-		
+
 		|\#{if siglaLicenca == "LO" || siglaLicenca == "RLO"}
 		div
 			ol.lista-conteudo
 				li.titulo-item
 					.conteudo-item
 						span  O recebimento da presente Licença de Operação (LO) deverá ser publicado no Diário Oficial do Estado, em periódico local e meio digital oficial,
-							|conforme preconiza a Lei Complementar No. 070/2012, sendo que as cópias das publicações deverão ser encaminhadas ao IMAP 
+							|conforme preconiza a Lei Complementar No. 070/2012, sendo que as cópias das publicações deverão ser encaminhadas ao IMAP
 							|no prazo de 30 (trinta) dias.
 				li.titulo-item
 					.conteudo-item
-						span O empreendedor deve requerer a renovação da presente licença no prazo de 120 (cento e vinte) dias antes da expiração da mesma, 
+						span O empreendedor deve requerer a renovação da presente licença no prazo de 120 (cento e vinte) dias antes da expiração da mesma,
 							|devendo ainda requerer a “Taxa Anual de Renovação de Licenciamento” instituída pela Lei Complementar no 70/2012, durante o mês de janeiro de cada ano.
-							|O vencimento para o pagamento da conforme o §1o, do art. 1o, da Lei Complementar no. 070/2012. O vencimento para o pagamento da 
-							|“Taxa Anual de Renovação de Licenciamento” será sempre no dia 31 de janeiro de cada ano, conforme o art. 1o, da LC No. 070/2012, a cópia do 
-							|comprovante de pagamento deverá ser protocolada no IMAP até o dia 28 de fevereiro de cada ano. 
+							|O vencimento para o pagamento da conforme o §1o, do art. 1o, da Lei Complementar no. 070/2012. O vencimento para o pagamento da
+							|“Taxa Anual de Renovação de Licenciamento” será sempre no dia 31 de janeiro de cada ano, conforme o art. 1o, da LC No. 070/2012, a cópia do
+							|comprovante de pagamento deverá ser protocolada no IMAP até o dia 28 de fevereiro de cada ano.
 				li.titulo-item
 					.conteudo-item
-						span O IMAP, mediante decisão motivada e embasada, poderá modificar prazos das condicionantes, assim como medidas de controle das mesmas, 
-							|podendo suspender ou cancelar esta licença, quando ocorrer prioritariamente: a) violação ou inadequação de quaisquer condicionantes ou normais legais; 
-							|b) omissão ou falsa descrição de informações relevantes que subsidiaram a expedição da licença; 
+						span O IMAP, mediante decisão motivada e embasada, poderá modificar prazos das condicionantes, assim como medidas de controle das mesmas,
+							|podendo suspender ou cancelar esta licença, quando ocorrer prioritariamente: a) violação ou inadequação de quaisquer condicionantes ou normais legais;
+							|b) omissão ou falsa descrição de informações relevantes que subsidiaram a expedição da licença;
 							|c) superveniência de graves riscos ambientais e de saúde animal ou humana;
 				li.titulo-item
 					.conteudo-item
 						span Quaisquer alterações nas especificações do projeto apresentado somente poderão ser realizadas se precedidas de anuência do IMAP;
 				li.titulo-item
 					.conteudo-item
-						span A empresa deverá confeccionar e fixar placa informativa do licenciamento conforme modelo apresentado pelo IMAP, bem como mantê-las atualizadas a cada renovação, 
+						span A empresa deverá confeccionar e fixar placa informativa do licenciamento conforme modelo apresentado pelo IMAP, bem como mantê-las atualizadas a cada renovação,
 							|no prazo de 15 (quinze) dias.
 				li.titulo-item
 					.conteudo-item
 						span Esta licença deverá ser fixada em local visível no empreendimento.
-		|\#{/if}		
-		
+		|\#{/if}
+
 		| \#{if parecer != null && ((parecer.condicionantes!= null && !parecer.condicionantes.isEmpty()) || (parecer != null && parecer.restricoes != null && !parecer.restricoes.isEmpty()))}
 		div
 			h3(style="text-align:center; margin-top:30px;") RESTRIÇÕES E/OU CONDIÇÕES ESPECÍFICAS DESTA LICENÇA - ${siglaLicenca} Nº ${numeroProtocolo}
-		div 
+		div
 			ol.lista-conteudo
 				|\#{if !parecer.condicionantes.isEmpty()}
 				|\#{list items:parecer.condicionantes, as:'condicionante'}
 				li.titulo-item
 					.conteudo-item
-						span ${condicionante.texto} 
+						span ${condicionante.texto}
 						br
 						span Prazo para atendimento de ${condicionante.prazo} dia(s).
 				|\#{/list}
