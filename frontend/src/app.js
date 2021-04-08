@@ -296,7 +296,8 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				return $location.path().indexOf('/analise-coordenadorTecnico') > -1 ||
 					$location.path().indexOf('/analise-diretor') > -1 ||
 					$location.path().indexOf('/analise-secretario') > -1 ||
-					$location.path().indexOf('/analise-tecnica-coordenadorTecnico') > -1;
+					$location.path().indexOf('/analise-coordenador') > -1 ||
+					$location.path().indexOf('/analise-tecnica-coordenador') > -1;
 
 			},
 			visivel: function() {
