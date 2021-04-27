@@ -250,6 +250,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 			estaSelecionado: function() {
 
 				return $location.path().indexOf('/analise-geo') > -1 ||
+					$location.path().indexOf('/shape-upload') > -1 ||
 					$location.path().indexOf('/analise-tecnica') > -1;
 			},
 			visivel: function() {
