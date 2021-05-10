@@ -179,6 +179,7 @@ public class ParecerAnalistaTecnico extends ParecerAnalista {
         parecerAntigo.parecer = this.parecer;
         parecerAntigo.validadePermitida = this.validadePermitida;
         parecerAntigo.finalidadeAtividade = this.finalidadeAtividade;
+        parecerAntigo.tipoResultadoAnalise = this.tipoResultadoAnalise;
 
         if (this.documentos != null && !this.documentos.isEmpty()) {
             parecerAntigo.documentos = parecerAntigo.updateDocumentos(this.documentos);
