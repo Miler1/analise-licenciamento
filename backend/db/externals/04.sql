@@ -1,11 +1,15 @@
 # --- !Ups
 
 UPDATE tramitacao.acao SET tx_descricao = 'Notificar pelo analista geo' WHERE id_acao = 3;
+UPDATE tramitacao.acao SET tx_descricao = 'Deferir análise técnica' WHERE id_acao = 12;
+UPDATE tramitacao.acao SET tx_descricao = 'Indeferir análise técnica' WHERE id_acao = 13; 
 UPDATE tramitacao.acao SET tx_descricao = 'Invalidar parecer técnico pelo coordenador' WHERE id_acao = 14;
 UPDATE tramitacao.acao SET tx_descricao = 'Solicitar ajustes do parecer técnico pelo coordenador' WHERE id_acao = 15;
 UPDATE tramitacao.acao SET tx_descricao = 'Validar deferimento técnico pelo coordenador' WHERE id_acao = 16;
 UPDATE tramitacao.acao SET tx_descricao = 'Validar indeferimento técnico pelo coordenador' WHERE id_acao = 17;
 UPDATE tramitacao.acao SET tx_descricao = 'Vincular coordenador' WHERE id_acao = 19;
+UPDATE tramitacao.acao SET tx_descricao = 'Invalidar parecer técnico pelo coordenador encaminhando para outro analista' WHERE id_acao = 24; 
+UPDATE tramitacao.acao SET tx_descricao = 'Solicitar ajustes do parecer técnico pelo coordenador para o analista' WHERE id_acao = 27; 
 UPDATE tramitacao.acao SET tx_descricao = 'Deferir análise geo' WHERE id_acao = 49;
 UPDATE tramitacao.acao SET tx_descricao = 'Indeferir análise geo' WHERE id_acao = 50;
 UPDATE tramitacao.acao SET tx_descricao = 'Iniciar análise geo' WHERE id_acao = 51;
@@ -29,7 +33,7 @@ UPDATE tramitacao.condicao SET nm_condicao = 'Notificado pelo analista geo' WHER
 UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando vinculação técnica pelo coordenador' WHERE id_condicao = 7;
 UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando validação técnica pelo coordenador' WHERE id_condicao = 10;
 UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando assinatura do secretário' WHERE id_condicao = 11;
-UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando vinculação GEO pelo coordenador' WHERE id_condicao = 24;
+UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando vinculação geo pelo coordenador' WHERE id_condicao = 24;
 UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando análise geo' WHERE id_condicao = 25;
 UPDATE tramitacao.condicao SET nm_condicao = 'Em análise geo' WHERE id_condicao = 26;
 UPDATE tramitacao.condicao SET nm_condicao = 'Aguardando validação geo do coordenador' WHERE id_condicao = 27;
