@@ -23,13 +23,17 @@
 					"nome": "Coordenador",
 					"codigo": "COORDENADOR"
 				},
-                                {
+                {
 					"nome": "Diretor",
 					"codigo": "DIRETOR"
 				},
 				{
 					"nome": "Secretario",
 					"codigo": "SECRETARIO"
+				},
+				{
+					"nome": "Coordenador GEO",
+					"codigo": "COORDENADOR_GEO"
 				}
 			]lE
 		},
@@ -40,6 +44,10 @@
 				{
 					"nome": "Coordenador",
 					"codigo": "COORDENADOR"
+				},
+				{
+					"nome": "Coordenador GEO",
+					"codigo": "COORDENADOR_GEO"
 				}
 			]
 		},
@@ -55,9 +63,13 @@
 					"nome": "Analista GEO",
 					"codigo": "ANALISTA_GEO"
 				},
-                                {
+                {
 					"nome": "Analista TÉCNICO",
 					"codigo": "ANALISTA_TECNICO"
+				},
+				{
+					"nome": "Coordenador GEO",
+					"codigo": "COORDENADOR_GEO"
 				}
 			]
 		},
@@ -69,7 +81,7 @@
 					"nome": "Analista GEO",
 					"codigo": "ANALISTA_GEO"
 				},
-                                {
+                {
 					"nome": "Analista TÉCNICO",
 					"codigo": "ANALISTA_TECNICO"
 				},
@@ -77,13 +89,17 @@
 					"nome": "Coordenador",
 					"codigo": "COORDENADOR"
 				},
-                                {
+                {
 					"nome": "Diretor",
 					"codigo": "DIRETOR"
 				},
 				{
 					"nome": "Secretario",
 					"codigo": "SECRETARIO"
+				},
+				{
+					"nome": "Coordenador GEO",
+					"codigo": "COORDENADOR_GEO"
 				}
 			]
 		},
@@ -102,8 +118,8 @@
 			"codigo": "ANL_VALIDAR_PARECER_GEO",
 			"perfis": [
 				{
-					"nome": "Coordenador",
-					"codigo": "COORDENADOR"
+					"nome": "Coordenador GEO",
+					"codigo": "COORDENADOR_GEO"
 				}
 			]
 		},
@@ -173,7 +189,11 @@
 					"nome": "Coordenador",
 					"codigo": "COORDENADOR"
 				},
-                                {
+				{
+					"nome": "Coordenador GEO",
+					"codigo": "COORDENADOR_GEO"
+				}
+                {
 					"nome": "Diretor",
 					"codigo": "DIRETOR"
 				},
