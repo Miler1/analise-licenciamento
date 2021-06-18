@@ -1,0 +1,72 @@
+div.modal-header
+
+    button.close(type='button', ng-click="desvinculoCoordenadorCtrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Atender Solicitação de Desvínculo
+    div(growl inline="true" reference='5')
+  
+
+div.modal-body
+
+    .dados-processo
+        .info-dados-processo
+            label.label-dados-processo Protocolo: 
+            span.span-dados-processo {{desvinculoCoordenadorCtrl.processo.numero}}
+
+        .info-dados-processo
+            label.label-dados-processo CPF/CNPJ: 
+            span.span-dados-processo {{desvinculoCoordenadorCtrl.processo.cpfEmpreendimento ? desvinculoCoordenadorCtrl.processo.cpfEmpreendimento : desvinculoCoordenadorCtrl.processo.cnpjEmpreendimento | brCpfCnpj}}
+
+        .info-dados-processo
+            label.label-dados-processo Empreendimento: 
+            span.span-dados-processo {{desvinculoCoordenadorCtrl.processo.denominacaoEmpreendimento}}
+
+        .info-dados-processo
+            label.label-dados-processo Município/UF: 
+            span.span-dados-processo {{desvinculoCoordenadorCtrl.processo.municipioEmpreendimento}}/{{desvinculoCoordenadorCtrl.processo.siglaEstadoEmpreendimento}}
+
+        .info-dados-solicitante
+            label.label-dados-solicitante Solicitação de desvínculo pelo analista: 
+            span.span-dados-solicitante(ng-if="desvinculoCoordenadorCtrl.tipoDesvinculo === true") {{desvinculoCoordenadorCtrl.desvinculo.analistaGeo.pessoa.nome}}
+            span.span-dados-solicitante(ng-if="desvinculoCoordenadorCtrl.tipoDesvinculo === false") {{desvinculoCoordenadorCtrl.desvinculo.analistaTecnico.pessoa.nome}}
+
+    div#justificativa-desvinculo
+        label.label-justificativa Justificativa do desvínculo:
+        br
+        textarea.text-justificativa(name="justificativa-desvinculo", ng-model="desvinculoCoordenadorCtrl.desvinculo.justificativa", disabled)
+
+    .confirmacao-desvinculo
+        label.label-desvinculo-aceito.obrigatorio Aceita o desvínculo?
+
+        label(for="radio_desvinculo_aceito")
+            input#radio_desvinculo_aceito(type="radio", name="desvinculoAceito", ng-value="true", ng-model="desvinculoCoordenadorCtrl.desvinculoAceito", ng-required="desvinculoCoordenadorCtrl.desvinculoAceito === undefined" )
+            |  Sim
+        label(for="radio_desvinculo_nao_aceito")
+            input#radio_desvinculo_nao_aceito(type="radio", name="desvinculoAceito", ng-value="false", ng-model="desvinculoCoordenadorCtrl.desvinculoAceito", ng-required="desvinculoCoordenadorCtrl.desvinculoAceito === undefined")
+            |  Não
+
+    .selecao-analista(ng-if="desvinculoCoordenadorCtrl.desvinculoAceito === undefined || desvinculoCoordenadorCtrl.desvinculoAceito")
+        label.label-selecao-analista.obrigatorio Selecionar analista:
+        select.form-control(
+                            ng-model="desvinculoCoordenadorCtrl.analistaDestino.id", name="selectAnalista",
+                                    ng-options="analista.id as analista.pessoa.nome for analista in desvinculoCoordenadorCtrl.analistas | orderBy:'pessoa.nome' track by analista.id")
+                    option(value="") Selecione o analista
+
+    div#resposta-coordenador
+        label.label-resposta-coordenador.obrigatorio Justificativa:
+        br
+        textarea.text-justificativa(name="resposta-coordenador", ng-model="desvinculoCoordenadorCtrl.respostaCoordenador", ng-required="desvinculoCoordenadorCtrl.respostaCoordenador === undefined")
+
+
+div.modal-footer
+
+    button.btn.btn-default.pull-left(ng-click="desvinculoCoordenadorCtrl.fechar()")
+        i.glyphicon.glyphicon-remove
+        |  Cancelar
+    
+    button.btn.btn-success.pull-right(ng-click="desvinculoCoordenadorCtrl.concluir()", ng-disabled="!desvinculoCoordenadorCtrl.validarModalParaConcluir()",
+        ng-attr-title="{{!desvinculoCoordenadorCtrl.validarModalParaConcluir() ? 'Preencha todos os campos obrigatórios para atender a solicitação de desvínculo.' : ''}}")
+        i.glyphicon.glyphicon-ok
+        |  Confirmar

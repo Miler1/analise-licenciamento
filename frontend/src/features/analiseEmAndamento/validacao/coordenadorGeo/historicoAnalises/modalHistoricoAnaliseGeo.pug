@@ -1,0 +1,65 @@
+div.modal-header
+
+    button.close(type='button', ng-click="historicoAnaliseGeoCtrl.fechar()")
+        span(aria-hidden='true') ×
+        span.sr-only Fechar
+
+    h4.modal-title Histórico de documentos da análise
+    div(growl inline="true" reference='5')
+  
+div.modal-body
+
+    .dados-processo
+        .info-dados-processo
+            label.label-dados-processo Processo: 
+            span.span-dados-processo {{historicoAnaliseGeoCtrl.processo.caracterizacao.processoLicenciamento.numero}}
+
+        .info-dados-processo
+            label.label-dados-processo Protocolo: 
+            span.span-dados-processo {{historicoAnaliseGeoCtrl.processo.numero}}
+
+        .info-dados-processo
+            label.label-dados-processo Analista: 
+            span.span-dados-processo {{historicoAnaliseGeoCtrl.parecer.usuario.pessoa.nome}}
+
+        .info-dados-processo
+            label.label-dados-processo Situação: 
+            span.span-dados-processo {{historicoAnaliseGeoCtrl.parecer.tipoResultadoAnalise.nome}}
+
+        .info-dados-solicitante
+            label Documentos gerados na análise:
+            table.table.table-condensed(ng-if="historicoAnaliseGeoCtrl.parecer.documentos.length > 0 || historicoAnaliseGeoCtrl.documentos.length > 0")
+
+                thead
+
+                    tr
+                        th.col-md-10 Nome de documento
+                        th.col-md-2.text-right Ação
+
+                tbody
+
+                    tr(ng-repeat="documento in historicoAnaliseGeoCtrl.parecer.documentos", ng-if= "documento.tipo.id === historicoAnaliseGeoCtrl.enumDocumentos.DOCUMENTO_ANALISE_TEMPORAL")
+                        td.col-md-10 {{ documento.nomeDoArquivo }}
+                        td.col-md-2.text-right
+                            .d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseGeoCtrl.baixarDocumento(documento)")
+                                i.glyphicon.glyphicon-eye-open
+                    
+                    tr(ng-repeat="documento in historicoAnaliseGeoCtrl.documentos")
+                        td.col-md-10 {{ documento.nomeDoArquivo }}
+                        td.col-md-2.text-right
+                            .d-inline.margin-right-xs.aba-clicavel(style='cursor: pointer;',title="Visualizar anexo", ng-click="historicoAnaliseGeoCtrl.downloadDocumentos(documento.id)")
+                                i.glyphicon.glyphicon-eye-open
+            
+            div.info-sem-dados-para-exibir(ng-if="historicoAnaliseGeoCtrl.parecer.documentos.length == 0 && historicoAnaliseGeoCtrl.documentos.length == 0")
+                i Não foi gerado nenhum documento.	     
+    div#justificativa-desvinculo
+        label.label-justificativa Justificativa do analista:
+        br
+        p.justificativa-historico-analise(ng-bind-html="historicoAnaliseGeoCtrl.parecer.parecer", disabled)
+
+div.modal-footer
+
+    button.btn.btn-default.pull-right(ng-click="historicoAnaliseGeoCtrl.fechar()")
+        i.glyphicon.glyphicon-remove
+        |  Fechar
+    
