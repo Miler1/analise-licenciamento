@@ -27,6 +27,11 @@ analiseEmAndamento.config(['$routeProvider', function($routeProvider){
 			controller: controllers.AnaliseEmAndamentoListagemController,
 			controllerAs: 'analiseEmAndamentoListagem'
 		})
+		.when('/analise-coordenadorGeo', {
+			templateUrl: 'features/analiseEmAndamento/listagem/analise-em-andamento-listagem.html',
+			controller: controllers.AnaliseEmAndamentoListagemController,
+			controllerAs: 'analiseEmAndamentoListagem'
+		})
 		.when('/analise-diretor', {
 			templateUrl: 'features/analiseEmAndamento/listagem/analise-em-andamento-listagem.html',
 			controller: controllers.AnaliseEmAndamentoListagemController,
@@ -69,6 +74,7 @@ analiseEmAndamento
 	.controller('analiseEmAndamentoTecnicaListController', controllers.AnaliseEmAndamentoTecnicaListController)
 	.controller('analiseEmAndamentoGeoListController', controllers.AnaliseEmAndamentoGeoListController)
 	.controller('analiseEmAndamentoCoordenadorListController', controllers.AnaliseEmAndamentoCoordenadorListController)
+	.controller('analiseEmAndamentoCoordenadorGeoListController', controllers.AnaliseEmAndamentoCoordenadorGeoListController)
 	.controller('validacaoAnaliseGeoCoordenadorController', controllers.ValidacaoAnaliseGeoCoordenadorController)
 	.controller('validacaoAnaliseDiretorController', controllers.ValidacaoAnaliseDiretorController)
 	.controller('validacaoAnaliseSecretarioController', controllers.ValidacaoAnaliseSecretarioController)

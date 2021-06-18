@@ -49,6 +49,8 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 	private static final String DESVINCULO_ANALISTA_TECNICO_DESTINO_ALIAS = "datd";
 	private static final String DESVINCULO_ANALISTA_GEO_SOLICITANTE_ALIAS = "dags";
 	private static final String DESVINCULO_ANALISTA_TECNICO_SOLICITANTE_ALIAS = "dats";
+	private static final String PORTE_EMPREENDIMENTO_ALIAS = "pe";
+	private static final String POTENCIAL_POLUIDOR_ALIAS = "pp";
 
 	public ProcessoBuilder addEmpreendimentoAlias() {
 
@@ -366,6 +368,24 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		addAtividadeCnaeAlias();
 
 		addAlias(ATIVIDADE_CNAE_ALIAS + ".tiposCaracterizacaoAtividades", TIPO_CARACTERIZACAO_ATIVIDADE_ALIAS);
+
+		return this;
+	}
+
+	public ProcessoBuilder addPorteEmpreendimentoAlias() {
+
+		addAtividadeCaracterizacaoAlias();
+
+		addAlias(ATIVIDADE_CARACTERIZACAO_ALIAS +".porteEmpreendimento", PORTE_EMPREENDIMENTO_ALIAS);
+
+		return this;
+	}
+
+	public ProcessoBuilder addPotencialPoluidorAlias() {
+
+		addAtividadeAlias();
+
+		addAlias(ATIVIDADE_ALIAS +".potencialPoluidor", POTENCIAL_POLUIDOR_ALIAS);
 
 		return this;
 	}
@@ -1196,6 +1216,26 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		return this;
 	}
 
+	public ProcessoBuilder groupByPorte() {
+
+		addPorteEmpreendimentoAlias();
+
+		addProjection(Projections.groupProperty(PORTE_EMPREENDIMENTO_ALIAS+".nome")
+				.as("porteEmpreendimento"));
+
+		return this;
+	}
+
+	public ProcessoBuilder groupByPotencialPoluidor() {
+
+		addPotencialPoluidorAlias();
+
+		addProjection(Projections.groupProperty(POTENCIAL_POLUIDOR_ALIAS+".nome")
+				.as("potencialPoluidorAtividade"));
+
+		return this;
+	}
+
 	public static class FiltroProcesso {
 
 		public String numeroProcesso;
@@ -1218,6 +1258,7 @@ public class ProcessoBuilder extends CriteriaBuilder<Processo> {
 		public Boolean isAnaliseGeo = false;
 		public Boolean isAnaliseGeoOpcional = false;
 		public Boolean isCoordenador = false;
+		public Boolean isCoordenadorGeo = false;
 		public boolean isDiretor;
 		public boolean isSecretario;
 		public Long idAnalistaGeo;

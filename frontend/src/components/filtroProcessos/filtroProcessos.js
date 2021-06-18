@@ -217,6 +217,7 @@ var FiltroProcessos = {
 			ctrl.filtro.isAnaliseGeo = !!ctrl.isAnaliseGeo;
 			ctrl.filtro.isAnaliseGeoOpcional = !!ctrl.isAnaliseGeoOpcional;
 			ctrl.filtro.isCoordenador = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.COORDENADOR;
+			ctrl.filtro.isCoordenadorGeo = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.COORDENADOR_GEO;
 			ctrl.filtro.isDiretor = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.DIRETOR;
 			ctrl.filtro.isSecretario = ctrl.usuarioLogadoCodigoPerfil === app.utils.Perfis.SECRETARIO;
 			ctrl.filtro.isConsultarProcessos = !!ctrl.consultarProcessos;
