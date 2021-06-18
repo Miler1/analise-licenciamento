@@ -22,6 +22,10 @@ div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaE
     ng-controller='cxEntCoordenadorController as cxEntCoordenador')
     include coordenador/caixa-entrada
 
+div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.COORDENADOR_GEO",
+    ng-controller='cxEntCoordenadorGeoController as cxEntCoordenador')
+    include coordenadorGeo/caixa-entrada
+
 div(ng-if="usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === caixaEntrada.perfis.DIRETOR",
     ng-controller='cxEntDiretorController as cxEntDiretor')
     include diretorTecnico/caixa-entrada

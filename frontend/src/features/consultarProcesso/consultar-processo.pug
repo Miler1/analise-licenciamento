@@ -124,6 +124,18 @@ div
 					span.col-md-4.icone-aguardando-comunicado.legenda-margin Aguardando resposta comunicado
 					span.col-md-4.icone-aguardando-resposta-juridico.legenda-margin(style="margin-bottom:23px") Aguardando análise jurídica
 
+				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.COORDENADOR_GEO")
+
+					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda-margin Solicitação de Desvínculo Pendente
+					span.col-md-4.icone-solicitacao-finalizada-geo.legenda-margin Análise GEO finalizada
+					span.col-md-4.icone-revisao-atendida.legenda-margin Notificado
+					span.col-md-4.icone-solicitacao-finalizada-tecnica.legenda-margin Análise técnica finalizada
+					span.col-md-4.icone-licenca-emitida.legenda-margin Licença emitida
+					span.col-md-4.icone-aguardando-pagamento-taxa.legenda-margin Análise Aprovada
+					span.col-md-4.icone-solicitacao-licenca-indeferida.legenda-margin Solicitação de licença indeferida
+					span.col-md-4.icone-aguardando-comunicado.legenda-margin Aguardando resposta comunicado
+					span.col-md-4.icone-aguardando-resposta-juridico.legenda-margin(style="margin-bottom:23px") Aguardando análise jurídica
+
 				.legenda(ng-if="consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.SECRETARIO || consultarProcesso.usuarioLogadoCodigoPerfil === consultarProcesso.perfis.DIRETOR ")
 
 					span.col-md-4.icone-licenca-emitida.legenda-margin Licença emitida

@@ -71,6 +71,7 @@ var MenuPrincipal = {
 				filtro.isAnaliseTecnica = isAnaliseTecnica(codigoPerfilSelecionado);
 				filtro.isAnaliseGeo = isAnaliseGeo(codigoPerfilSelecionado);
 				filtro.isCoordenador = isCoordenador(codigoPerfilSelecionado);
+				filtro.isCoordenadorGeo = isCoordenadorGeo(codigoPerfilSelecionado);
 				filtro.isDiretor = isDiretor(codigoPerfilSelecionado);
 				filtro.isDiretor = isSecretario(codigoPerfilSelecionado);
 			}
@@ -107,6 +108,12 @@ var MenuPrincipal = {
 		function isCoordenador(codigoPerfilSelecionado) {
 
 			return codigoPerfilSelecionado === app.utils.Perfis.COORDENADOR;
+
+		}
+
+		function isCoordenadorGeo(codigoPerfilSelecionado) {
+
+			return codigoPerfilSelecionado === app.utils.Perfis.COORDENADOR_GEO;
 
 		}
 
