@@ -39,6 +39,25 @@ public class Condicoes extends InternalController {
                         ))
                         .fetch();
                 break;
+            case CodigoPerfil.COORDENADOR_GEO:
+
+                condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
+                        .setParameter("idsCondicoes", Arrays.asList(Condicao.NOTIFICADO_PELO_ANALISTA_GEO,
+                                Condicao.AGUARDANDO_ANALISE_GEO,
+                                Condicao.AGUARDANDO_ANALISE_TECNICA,
+                                Condicao.EM_ANALISE_GEO,
+                                Condicao.EM_ANALISE_TECNICA,
+                                Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO,
+                                Condicao.AGUARDANDO_RESPOSTA_COMUNICADO,
+                                Condicao.AGUARDANDO_VALIDACAO_GEO_PELO_COORDENADOR,
+                                Condicao.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR,
+                                Condicao.ARQUIVADO,
+                                Condicao.AGUARDANDO_RESPOSTA_JURIDICA,
+                                Condicao.NOTIFICADO_PELO_ANALISTA_TECNICO,
+                                Condicao.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA
+                        ))
+                        .fetch();
+                break;
             case CodigoPerfil.ANALISTA_GEO:
 
                 condicoesVisiveis = Condicao.find("idCondicao in (:idsCondicoes)")
