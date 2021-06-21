@@ -64,7 +64,7 @@ div(uib-accordion class="accordion")
                     option(value="") Selecione o analista GEO
 
         //- .row.form-group(ng-if="!$ctrl.isDisabledFields($ctrl.disabledFilterFields.ANALISTA_TECNICO) ")
-        .row.form-group(ng-if="$ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.ANALISTA_GEO && $ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.ANALISTA_TECNICO")
+        .row.form-group(ng-if="$ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.ANALISTA_GEO && $ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.ANALISTA_TECNICO && $ctrl.usuarioLogadoCodigoPerfil !== $ctrl.perfis.COORDENADOR_GEO")
             .col-md-12
                 label.control-label Analista técnico:
                 select.form-control(ng-model="$ctrl.filtro.idAnalistaTecnico", name="selectAnalista",
