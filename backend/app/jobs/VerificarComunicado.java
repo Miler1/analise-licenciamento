@@ -129,7 +129,7 @@ public class VerificarComunicado extends GenericJob {
 
 				AnalistaGeo analistaGeo = AnalistaGeo.findByAnaliseGeo(analiseGeo.id);
 
-				Coordenador coordenador = Coordenador.distribuicaoAutomaticaCoordenador(analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor, analiseGeo);
+				CoordenadorGeo coordenador = CoordenadorGeo.distribuicaoAutomaticaCoordenador(analiseGeo.analise.processo.caracterizacao.atividadesCaracterizacao.get(0).atividade.siglaSetor, analiseGeo);
 
 				analiseGeo.analise.processo.tramitacao.tramitar(analiseGeo.analise.processo, AcaoTramitacao.RESOLVER_COMUNICADO, analistaGeo.usuario, coordenador.usuario);
 				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeo.analise.processo.objetoTramitavel.id), analiseGeo);

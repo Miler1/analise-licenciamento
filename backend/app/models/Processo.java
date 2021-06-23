@@ -404,12 +404,6 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
-		if (filtro.idAnalistaTecnico != null) {
-
-			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
-
-		}
-
 		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
 
 	}
@@ -709,8 +703,7 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
-		processoBuilder.groupByIdAnaliseGeo(true)
-				.groupByIdAnaliseTecnica(true)
+		processoBuilder.groupByIdAnaliseTecnica(true)
 				.groupByPrazoAnaliseCoordenador()
 				.orderByPrazoAnaliseCoordenador();
 

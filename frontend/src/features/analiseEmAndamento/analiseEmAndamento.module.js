@@ -52,7 +52,7 @@ analiseEmAndamento.config(['$routeProvider', function($routeProvider){
 			controller: controllers.AnaliseEmAndamentoListagemController,
 			controllerAs: 'analiseEmAndamentoListagem'
 		})
-		.when('/analise-coordenador/:idAnalise', {
+		.when('/analise-coordenadorGeo/:idAnalise', {
 			templateUrl: 'features/analiseEmAndamento/validacao/validacao-analise.html',
 			controller: controllers.ValidacaoAnaliseController,
 			controllerAs: 'validacaoAnalise'

@@ -78,7 +78,7 @@ public class AnaliseGeo extends Analisavel {
     public String justificativaCoordenador;
 
     @OneToMany(mappedBy = "analiseGeo", cascade = CascadeType.ALL)
-    public List<Coordenador> coordenadores;
+    public List<CoordenadorGeo> coordenadores;
 
     @Required
     @Column(name = "data_cadastro")
@@ -658,9 +658,9 @@ public class AnaliseGeo extends Analisavel {
 
         copia.coordenadores = new ArrayList<>();
 
-        for (Coordenador coordenador : this.coordenadores) {
+        for (CoordenadorGeo coordenador : this.coordenadores) {
 
-            Coordenador copiaCoordenadorGeo = coordenador.gerarCopia();
+            CoordenadorGeo copiaCoordenadorGeo = coordenador.gerarCopia();
 
             copiaCoordenadorGeo.analiseGeo = copia;
             copia.coordenadores.add(copiaCoordenadorGeo);
@@ -703,7 +703,7 @@ public class AnaliseGeo extends Analisavel {
         return this.coordenadores != null && this.coordenadores.size() > 0;
     }
 
-    public Coordenador getCoordenador() {
+    public CoordenadorGeo getCoordenador() {
 
         return this.coordenadores.get(0);
     }

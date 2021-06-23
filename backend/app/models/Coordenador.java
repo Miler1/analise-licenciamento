@@ -66,14 +66,14 @@ public class Coordenador extends GenericModel {
 
     }
 
-    public Coordenador(AnaliseGeo analiseGeo, UsuarioAnalise usuario) {
-
-        super();
-        this.analiseGeo = analiseGeo;
-        this.usuario = usuario;
-        this.dataVinculacao = new Date();
-
-    }
+//    public Coordenador(AnaliseGeo analiseGeo, UsuarioAnalise usuario) {
+//
+//        super();
+//        this.analiseGeo = analiseGeo;
+//        this.usuario = usuario;
+//        this.dataVinculacao = new Date();
+//
+//    }
 
     public static void vincularAnalise(UsuarioAnalise usuario, UsuarioAnalise usuarioExecutor, AnaliseTecnica analiseTecnica) {
 
@@ -87,17 +87,17 @@ public class Coordenador extends GenericModel {
         analiseTecnica._save();
     }
 
-    public static void vincularAnaliseGeo(UsuarioAnalise usuario, UsuarioAnalise usuarioExecutor, AnaliseGeo analiseGeo) {
-
-        if (!usuario.hasPerfil(CodigoPerfil.COORDENADOR))
-            throw new PermissaoNegadaException(Mensagem.COORDENADOR_DIFERENTE_DE_COORDENADOR_TECNICO);
-
-        Coordenador coordenador = new Coordenador(analiseGeo, usuario);
-        coordenador.save();
-
-        analiseGeo.usuarioValidacao = usuarioExecutor;
-        analiseGeo._save();
-    }
+//    public static void vincularAnaliseGeo(UsuarioAnalise usuario, UsuarioAnalise usuarioExecutor, AnaliseGeo analiseGeo) {
+//
+//        if (!usuario.hasPerfil(CodigoPerfil.COORDENADOR))
+//            throw new PermissaoNegadaException(Mensagem.COORDENADOR_DIFERENTE_DE_COORDENADOR_TECNICO);
+//
+//        Coordenador coordenador = new Coordenador(analiseGeo, usuario);
+//        coordenador.save();
+//
+//        analiseGeo.usuarioValidacao = usuarioExecutor;
+//        analiseGeo._save();
+//    }
 
     public Coordenador gerarCopia() {
 
@@ -109,36 +109,36 @@ public class Coordenador extends GenericModel {
         return copia;
     }
 
-    public static Coordenador distribuicaoAutomaticaCoordenador(String setorAtividade, AnaliseGeo analiseGeo) {
-
-        UsuarioAnalise.atualizaUsuariosAnalise();
-
-        List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.COORDENADOR, setorAtividade);
-
-        if (usuariosAnalise == null || usuariosAnalise.isEmpty())
-            throw new WebServiceException(Mensagem.NENHUM_COORDENADOR_ENCONTRADO.getTexto());
-
-        List<Long> idsCoordenadores = usuariosAnalise.stream()
-                .map(ang -> ang.id)
-                .collect(Collectors.toList());
-
-        String parameter = "ARRAY[" + getParameterLongAsStringDBArray(idsCoordenadores) + "]";
-
-        String sql = "WITH t1 AS (SELECT 0 as count, id_usuario, now() as dt_vinculacao FROM unnest(" + parameter + ") as id_usuario ORDER BY id_usuario), " +
-                "     t2 AS (SELECT * FROM t1 WHERE t1.id_usuario NOT IN (SELECT id_usuario FROM analise.coordenador ge) LIMIT 1), " +
-                "     t3 AS (SELECT count(id), id_usuario, min(data_vinculacao) as dt_vinculacao FROM analise.coordenador " +
-                "        WHERE id_usuario in (" + getParameterLongAsStringDBArray(idsCoordenadores) + ") " +
-                "        GROUP BY id_usuario " +
-                "        ORDER BY 1, dt_vinculacao OFFSET 0 LIMIT 1) " +
-                "SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
-
-        Query consulta = JPA.em().createNativeQuery(sql, DistribuicaoProcessoVO.class);
-
-        DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
-
-        return new Coordenador(analiseGeo, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
-
-    }
+//    public static Coordenador distribuicaoAutomaticaCoordenador(String setorAtividade, AnaliseGeo analiseGeo) {
+//
+//        UsuarioAnalise.atualizaUsuariosAnalise();
+//
+//        List<UsuarioAnalise> usuariosAnalise = UsuarioAnalise.findUsuariosByPerfilAndSetor(CodigoPerfil.COORDENADOR_GEO, setorAtividade);
+//
+//        if (usuariosAnalise == null || usuariosAnalise.isEmpty())
+//            throw new WebServiceException(Mensagem.NENHUM_COORDENADOR_ENCONTRADO.getTexto());
+//
+//        List<Long> idsCoordenadores = usuariosAnalise.stream()
+//                .map(ang -> ang.id)
+//                .collect(Collectors.toList());
+//
+//        String parameter = "ARRAY[" + getParameterLongAsStringDBArray(idsCoordenadores) + "]";
+//
+//        String sql = "WITH t1 AS (SELECT 0 as count, id_usuario, now() as dt_vinculacao FROM unnest(" + parameter + ") as id_usuario ORDER BY id_usuario), " +
+//                "     t2 AS (SELECT * FROM t1 WHERE t1.id_usuario NOT IN (SELECT id_usuario FROM analise.coordenador ge) LIMIT 1), " +
+//                "     t3 AS (SELECT count(id), id_usuario, min(data_vinculacao) as dt_vinculacao FROM analise.coordenador " +
+//                "        WHERE id_usuario in (" + getParameterLongAsStringDBArray(idsCoordenadores) + ") " +
+//                "        GROUP BY id_usuario " +
+//                "        ORDER BY 1, dt_vinculacao OFFSET 0 LIMIT 1) " +
+//                "SELECT * FROM (SELECT * FROM t2 UNION ALL SELECT * FROM t3) AS t ORDER BY t.count LIMIT 1;";
+//
+//        Query consulta = JPA.em().createNativeQuery(sql, DistribuicaoProcessoVO.class);
+//
+//        DistribuicaoProcessoVO distribuicaoProcessoVO = (DistribuicaoProcessoVO) consulta.getSingleResult();
+//
+//        return new Coordenador(analiseGeo, UsuarioAnalise.findById(distribuicaoProcessoVO.id));
+//
+//    }
 
     public static Coordenador distribuicaoAutomaticaCoordenadorAnaliseTecnica(String setorAtividade, AnaliseTecnica analiseTecnica) {
 

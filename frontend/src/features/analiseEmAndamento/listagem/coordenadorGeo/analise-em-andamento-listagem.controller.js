@@ -13,7 +13,7 @@ var AnaliseEmAndamentoCoordenadorGeoListController = function($scope, config, $l
 	listagem.usuarioLogadoCodigoPerfil = $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo;
 	listagem.processos = [];
 	listagem.condicoesEmAnalise = app.utils.CondicaoTramitacao;
-	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.MENU_EM_ANALISE_COORDENADOR;
+	listagem.condicaoTramitacao = app.utils.CondicaoTramitacao.MENU_EM_ANALISE_COORDENADOR_GEO;
 	listagem.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	listagem.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	listagem.PrazoAnalise = app.utils.PrazoAnalise;
@@ -49,7 +49,7 @@ var AnaliseEmAndamentoCoordenadorGeoListController = function($scope, config, $l
 
 		$rootScope.$broadcast('atualizarContagemProcessos');
 
-		$location.path('/analise-coordenador/' + idAnalise.toString());
+		$location.path('/analise-coordenadorGeo/' + idAnalise.toString());
 	}
 	
 	function exibirDadosProcesso(processo) {

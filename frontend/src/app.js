@@ -189,7 +189,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR)
 					return app.utils.CondicaoTramitacao.CAIXA_ENTRADA_COORDENADOR;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_GEO)
-					return app.utils.CondicaoTramitacao.CAIXA_ENTRADA_COORDENADOR;
+					return app.utils.CondicaoTramitacao.CAIXA_ENTRADA_COORDENADOR_GEO;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_TECNICO)
 					return app.utils.CondicaoTramitacao.AGUARDANDO_ANALISE_TECNICA;
 				else if ($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.ANALISTA_GEO)
@@ -321,7 +321,7 @@ licenciamento.controller("AppController", ["$injector", "$scope", "$rootScope", 
 				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR)
 					return app.utils.CondicaoTramitacao.MENU_EM_ANALISE_COORDENADOR;
 				if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.COORDENADOR_GEO)
-					return app.utils.CondicaoTramitacao.MENU_EM_ANALISE_COORDENADOR;
+					return app.utils.CondicaoTramitacao.MENU_EM_ANALISE_COORDENADOR_GEO;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR)
 					return app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR;
 				else if($rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO)
