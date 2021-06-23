@@ -14,7 +14,7 @@ var CxEntCoordenadorGeoController = function($scope, config, analistaService,ana
 	cxEntCoordenador.visualizarProcesso = visualizarProcesso;
 	cxEntCoordenador.processos = [];
 	cxEntCoordenador.legendas = app.utils.CondicaoTramitacao;
-	cxEntCoordenador.condicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_COORDENADOR;
+	cxEntCoordenador.condicaoTramitacao = app.utils.CondicaoTramitacao.CAIXA_ENTRADA_COORDENADOR_GEO;
 	cxEntCoordenador.paginacao = new app.utils.Paginacao(config.QTDE_ITENS_POR_PAGINA);
 	cxEntCoordenador.PrazoMinimoAvisoAnalise = app.utils.PrazoMinimoAvisoAnalise;
 	cxEntCoordenador.PrazoAnalise = app.utils.PrazoAnalise;
@@ -187,35 +187,18 @@ var CxEntCoordenadorGeoController = function($scope, config, analistaService,ana
 
 	};
 
-	cxEntCoordenador.iniciarAnaliseCoordenador = function(idAnalise, idAnaliseGeo, idAnaliseTecnica) {
+	cxEntCoordenador.iniciarAnaliseCoordenador = function(idAnalise, idAnaliseGeo) {
 
-		if(idAnaliseTecnica === null){
+		analiseGeoService.iniciarAnaliseCoordenador({ id : idAnaliseGeo })
+		.then(function(response){
 
-			analiseGeoService.iniciarAnaliseCoordenador({ id : idAnaliseGeo })
-			.then(function(response){
+			$rootScope.$broadcast('atualizarContagemProcessos');
+			$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO COORDENADOR GEO';
+			$location.path('/analise-coordenadorGeo/' + idAnalise.toString());
 
-				$rootScope.$broadcast('atualizarContagemProcessos');
-				$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO COORDENADOR';
-				$location.path('/analise-coordenador/' + idAnalise.toString());
-
-			}, function(error){
-				mensagem.error(error.data.texto);
-			});
-
-		}else if (idAnaliseGeo === null){
-
-			analiseTecnicaService.iniciarAnaliseTecnicaCoordenador({ id : idAnaliseTecnica })
-			.then(function(response){
-
-				$rootScope.tituloPagina = 'EM VALIDAÇÃO PELO COORDENADOR';
-				$location.path('/analise-tecnica-coordenador/' + idAnalise.toString());
-				$rootScope.$broadcast('atualizarContagemProcessos');
-
-			}, function(error){
-				mensagem.error(error.data.texto);
-			});
-		}
-
+		}, function(error){
+			mensagem.error(error.data.texto);
+		});
 
 	};
 

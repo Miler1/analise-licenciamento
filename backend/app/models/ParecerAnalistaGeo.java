@@ -156,7 +156,7 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 
 		if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.DEFERIDO)) {
 
-			Coordenador coordenador = Coordenador.distribuicaoAutomaticaCoordenador(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeoBanco);
+			CoordenadorGeo coordenador = CoordenadorGeo.distribuicaoAutomaticaCoordenador(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeoBanco);
 
 			if(analiseGeoBanco.analise.processo.caracterizacao.origemSobreposicao.equals(EMPREENDIMENTO)){
 
@@ -240,17 +240,17 @@ public class ParecerAnalistaGeo extends ParecerAnalista {
 
 				coordenador.save();
 
-				analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_COORDENADOR, usuarioExecutor, UsuarioAnalise.findByCoordenador(coordenador));
+				analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.DEFERIR_ANALISE_GEO_VIA_COORDENADOR, usuarioExecutor, UsuarioAnalise.findByCoordenadorGeo(coordenador));
 				HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 			}
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.INDEFERIDO)) {
 
-			Coordenador coordenador = Coordenador.distribuicaoAutomaticaCoordenador(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeoBanco);
+			CoordenadorGeo coordenador = CoordenadorGeo.distribuicaoAutomaticaCoordenador(usuarioExecutor.usuarioEntradaUnica.setorSelecionado.sigla, analiseGeoBanco);
 
 			coordenador.save();
-			analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_COORDENADOR, usuarioExecutor, UsuarioAnalise.findByCoordenador(coordenador));
+			analiseGeoBanco.analise.processo.tramitacao.tramitar(analiseGeoBanco.analise.processo, AcaoTramitacao.INDEFERIR_ANALISE_GEO_VIA_COORDENADOR, usuarioExecutor, UsuarioAnalise.findByCoordenadorGeo(coordenador));
 			HistoricoTramitacao.setSetor(HistoricoTramitacao.getUltimaTramitacao(analiseGeoBanco.analise.processo.objetoTramitavel.id), usuarioExecutor);
 
 		} else if (this.tipoResultadoAnalise.id.equals(TipoResultadoAnalise.EMITIR_NOTIFICACAO)) {
