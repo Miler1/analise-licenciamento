@@ -88,7 +88,33 @@ var FiltroProcessos = {
 				ctrl.filtro.listaIdCondicaoTramitacao = app.utils.CondicaoTramitacao.MENU_EM_ANALISE_COORDENADOR_GEO;
 				ctrl.filtro.idCondicaoTramitacao = null;
 
-			}else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_TECNICA_FINALIZADA') {
+			}else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_GEO_FINALIZADA') {
+
+				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseGeoFinalizada();
+				analiseGeoFinalizada = true;
+				ctrl.filtro.idCondicaoTramitacao = null;
+
+			} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
+
+				ctrl.filtro.listaIdCondicaoTramitacao = [];
+				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_VALIDACAO_DIRETORIA;
+
+			}  else if(emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.DIRETOR) {
+
+				ctrl.filtro.listaIdCondicaoTramitacao = [];
+				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_DIRETOR;
+
+			} else if(caixaEntrada && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO) {
+
+				ctrl.filtro.listaIdCondicaoTramitacao = [];
+				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.AGUARDANDO_ASSINATURA_SECRETARIO;
+
+			} else if(emAnalise && $rootScope.usuarioSessao.usuarioEntradaUnica.perfilSelecionado.codigo === app.utils.Perfis.SECRETARIO) {
+
+				ctrl.filtro.listaIdCondicaoTramitacao = [];
+				ctrl.filtro.idCondicaoTramitacao = app.utils.CondicaoTramitacao.EM_ANALISE_SECRETARIO;
+
+			} else if(ctrl.filtro.idCondicaoTramitacao === 'ANALISE_TECNICA_FINALIZADA') {
 
 				ctrl.filtro.listaIdCondicaoTramitacao = getCondicoesAnaliseTecnicaFinalizada();
 
