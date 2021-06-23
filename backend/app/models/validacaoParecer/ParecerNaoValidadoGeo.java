@@ -59,7 +59,7 @@ public class ParecerNaoValidadoGeo extends TipoResultadoAnaliseChain<AnaliseGeo>
         AnaliseGeo novaAnalise = new AnaliseGeo();
 
         novaAnalise.coordenadores = new ArrayList<>();
-        Coordenador coordenadorGeo = new Coordenador(novaAnalise, usuarioCoordenador);
+        CoordenadorGeo coordenadorGeo = new CoordenadorGeo(novaAnalise, usuarioCoordenador);
         novaAnalise.coordenadores.add(coordenadorGeo);
 
         salvarNovaAnalise(novaAnalise, analiseGeo, usuarioValidacao);

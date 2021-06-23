@@ -54,7 +54,7 @@ div
 										ul.dropdown-menu.dropdown-menu-right(aria-labelledby='dropdownMenu1')
 											li
 
-												a(ng-click="cxEntCoordenador.verificarStatusGeo(processo) ? '' : cxEntCoordenador.iniciarAnaliseCoordenador(processo.idAnalise, processo.idAnaliseGeo, null)",
+												a(ng-click="cxEntCoordenador.verificarStatusGeo(processo) ? '' : cxEntCoordenador.iniciarAnaliseCoordenador(processo.idAnalise, processo.idAnaliseGeo)",
 														ng-class="{'disable-acoes': cxEntCoordenador.verificarStatusGeo(processo)}")
 													i.glyphicon.glyphicon-ok-circle
 													span Validar análise geo

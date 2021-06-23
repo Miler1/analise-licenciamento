@@ -87,11 +87,11 @@ public class DesvinculoAnaliseGeo extends GenericModel {
 
         String siglaSetor = usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla;
 
-        Coordenador coordenador = Coordenador.distribuicaoAutomaticaCoordenador(siglaSetor, this.analiseGeo);
+        CoordenadorGeo coordenador = CoordenadorGeo.distribuicaoAutomaticaCoordenador(siglaSetor, this.analiseGeo);
 
         coordenador.save();
 
-        this.coordenador = UsuarioAnalise.findByCoordenador(coordenador);
+        this.coordenador = UsuarioAnalise.findByCoordenadorGeo(coordenador);
         this.analistaGeo =  usuarioSessao;
 
         this.save();
