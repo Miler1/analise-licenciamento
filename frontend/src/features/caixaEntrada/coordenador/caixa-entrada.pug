@@ -25,14 +25,12 @@ div
 							th.col-md-2 Município
 							th.col-md-1 Licença
 							th.col-md-1 Prazo análise
-							th.col-md-1 Prazo análise GEO
 							th.col-md-1 Prazo análise técnica
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in cxEntCoordenador.processos")
 							td
 								span(ng-class="{'icone-solicitacao-desvinculo-pendente': processo.idCondicaoTramitacao === cxEntCoordenador.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_GEO || processo.idCondicaoTramitacao === cxEntCoordenador.legendas.SOLICITACAO_DESVINCULO_PENDENTE_ANALISE_TECNICA}")
-								span(ng-class="{'icone-analise-geo': processo.idCondicaoTramitacao === cxEntCoordenador.legendas.AGUARDANDO_VALIDACAO_GEO_PELO_COORDENADOR }")
 								span(ng-class="{'icone-analise-tecnica': processo.idCondicaoTramitacao === cxEntCoordenador.legendas.AGUARDANDO_VALIDACAO_TECNICA_PELO_COORDENADOR }")
 							td(ng-attr-title="{{processo.numero}}") {{processo.numero }}
 							td {{processo.cpfEmpreendimento ? processo.cpfEmpreendimento : processo.cnpjEmpreendimento | brCpfCnpj}}
@@ -41,10 +39,6 @@ div
 							td {{processo.licencas}}
 							td(ng-class="{'error-message': cxEntCoordenador.dateUtil.verificaPrazoMinimoData(cxEntCoordenador.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntCoordenador.PrazoAnalise.ANALISE), cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
 								| {{ cxEntCoordenador.dateUtil.getContaDiasRestantesData(cxEntCoordenador.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, cxEntCoordenador.PrazoAnalise.ANALISE)) }}
-
-							td(ng-class="{'error-message': processo.diasAnaliseGeo > cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE_GEO}")
-								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
-
 							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
 								| {{ processo.dataConclusaoAnaliseTecnica ? 'Concluída' : cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
 							td
@@ -79,7 +73,6 @@ div
 													span Visualizar protocolo
 				.legenda
 					span.col-md-4.icone-solicitacao-desvinculo-pendente.legenda-margin Solicitação Desvínculo Pendente
-					span.col-md-4.icone-analise-geo.legenda-margin Análise Geo
 					span.col-md-4.icone-analise-tecnica.legenda-margin(style="margin-bottom:23px") Análise Técnica
 
 				+paginacao('cxEntCoordenador.paginacao', 'cxEntCoordenador.onPaginaAlterada')
