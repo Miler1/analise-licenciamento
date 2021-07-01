@@ -8,8 +8,8 @@ div
 		atualizar-paginacao="listagem.atualizarPaginacao",
 		condicao-tramitacao="listagem.condicaoTramitacao",
 		pesquisar-ao-inicializar="true",
-		is-coordenador="usuarioLogadoCodigoPerfil === app.utils.Perfis.COORDENADOR",
-		is-coordenador-logado="usuarioLogadoCodigoPerfil === app.utils.Perfis.COORDENADOR")
+		is-coordenador-geo="usuarioLogadoCodigoPerfil === app.utils.Perfis.COORDENADOR_GEO",
+		is-coordenador-logado="usuarioLogadoCodigoPerfil === app.utils.Perfis.COORDENADOR_GEO")
 
 	h4 Lista de protocolo
 
@@ -26,8 +26,9 @@ div
 							th.col-md-3 Empreendimento
 							th.col-md-2 Município
 							th.col-md-1 Licença
-							th.col-md-1 Prazo análise
-							th.col-md-1 Prazo análise técnica
+							th.col-md-1 Prazo análise GEO
+							th.col-md-1 Porte
+							th.col-md-1 PPD
 							th.col-md-1.text-right Ações
 					tbody
 						tr(ng-repeat="processo in listagem.processos")
@@ -37,10 +38,11 @@ div
 							td.break-word {{processo.denominacaoEmpreendimento}}
 							td {{processo.municipioEmpreendimento}}/{{processo.siglaEstadoEmpreendimento}}
 							td {{processo.licencas}}
-							td(ng-class="{'error-message': listagem.dateUtil.verificaPrazoMinimoData(listagem.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, listagem.PrazoAnalise.ANALISE), listagem.PrazoMinimoAvisoAnalise.ANALISE)}").text-center
-								| {{ listagem.dateUtil.getContaDiasRestantesData(listagem.dateUtil.somaPrazoEmDias(processo.dataCadastroAnalise, listagem.PrazoAnalise.ANALISE)) }}
-							td(ng-class="{'error-message': (processo.diasAnaliseTecnica && processo.diasAnaliseTecnica > listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA)}")
-								| {{ processo.dataConclusaoAnaliseTecnica ? 'Concluída' : listagem.PrazoMinimoAvisoAnalise.ANALISE_TECNICA - processo.diasAnaliseTecnica }}
+							td(ng-class="{'error-message': processo.diasAnaliseGeo > cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE_GEO}")
+								| {{ processo.dataConclusaoAnaliseGeo ? 'Concluída' : cxEntCoordenador.PrazoMinimoAvisoAnalise.ANALISE_GEO - processo.diasAnaliseGeo }}
+							td.text-center {{processo.porteEmpreendimento.charAt(0)}}
+							td.text-center {{processo.potencialPoluidorAtividade.charAt(0)}}
+
 							td
 								span.pull-right
 
@@ -53,16 +55,11 @@ div
 												a(ng-click="listagem.continuarAnaliseGeo(processo.idAnalise)")
 													i.glyphicon.glyphicon-play-circle
 													span Continuar validação geo
-											li(ng-if="processo.idCondicaoTramitacao === listagem.condicoesEmAnalise.EM_ANALISE_TECNICA_COORDENADOR")
-												a(ng-click="listagem.continuarAnaliseTecnica(processo.idAnalise)")
-													i.glyphicon.glyphicon-play-circle
-													span Continuar validação técnica
 											li
 												a(ng-click="listagem.exibirDadosProcesso(processo)")
 													i.glyphicon.glyphicon-eye-open
 													span Visualizar protocolo
-				div
-					
+				
 				+paginacao('listagem.paginacao', 'listagem.onPaginaAlterada')
 
 		.row(ng-show="!listagem.processos || listagem.processos.length == 0")

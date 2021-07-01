@@ -13,10 +13,10 @@ import java.util.*;
 import static security.Auth.getUsuarioSessao;
 
 @Entity
-@Table(schema = "analise", name = "parecer_coordenador_analise_geo")
+@Table(schema = "analise", name = "parecer_coordenador_geo_analise_geo")
 public class ParecerCoordenadorAnaliseGeo extends GenericModel {
 
-	public static final String SEQ = "analise.parecer_coordenador_analise_geo_id_seq";
+	public static final String SEQ = "analise.parecer_coordenador_geo_analise_geo_id_seq";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQ)
@@ -40,7 +40,7 @@ public class ParecerCoordenadorAnaliseGeo extends GenericModel {
 	public Date dataParecer;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_usuario_coordenador", referencedColumnName = "id")
+	@JoinColumn(name = "id_usuario_coordenador_geo", referencedColumnName = "id")
 	public UsuarioAnalise usuario;
 
 	@Column(name = "id_historico_tramitacao")

@@ -135,7 +135,7 @@ var FiltroLicencasEmitidas = {
 
 			setFiltrosPadrao();
 
-			municipioService.getMunicipiosByUf('AM').then(
+			municipioService.getMunicipiosByUf('AP').then(
 				function(response){
 
 					ctrl.municipios = response.data;

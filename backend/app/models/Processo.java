@@ -175,6 +175,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		commonFilterProcessoCoordenador(processoBuilder, filtro, usuarioSessao);
 
+		commonFilterProcessoCoordenadorGeo(processoBuilder, filtro, usuarioSessao);
+
 		commonFilterProcessoDiretor(processoBuilder, filtro, usuarioSessao);
 
 		commonFilterProcessoSecretario(processoBuilder, filtro, usuarioSessao);
@@ -362,6 +364,43 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		if (filtro.idAnalistaTecnico != null) {
 
 			processoBuilder.filtrarPorIdAnalistaTecnico(filtro.idAnalistaTecnico, false);
+
+		}
+
+		processoBuilder.filtrarPorSiglaSetor(usuarioSessao.usuarioEntradaUnica.setorSelecionado.sigla);
+
+	}
+
+	private static void commonFilterProcessoCoordenadorGeo(ProcessoBuilder processoBuilder, FiltroProcesso filtro,
+														UsuarioAnalise usuarioSessao) {
+
+		if (!filtro.isCoordenadorGeo) {
+
+			return;
+
+		}
+
+		if (usuarioSessao.usuarioEntradaUnica.setorSelecionado == null) {
+
+			throw new ValidacaoException(Mensagem.ANALISE_GEO_USUARIO_SEM_SETOR);
+
+		}
+
+		if (filtro.listaIdCondicaoTramitacao != null && !filtro.listaIdCondicaoTramitacao.isEmpty()) {
+
+			processoBuilder.filtrarPorListaIdCondicao(filtro.listaIdCondicaoTramitacao);
+
+		}
+
+		if (filtro.filtrarPorUsuario) {
+
+			processoBuilder.filtrarIdCoordenador(usuarioSessao.id);
+
+		}
+
+		if (filtro.idAnalistaGeo != null) {
+
+			processoBuilder.filtrarPorIdAnalistaGeo(filtro.idAnalistaGeo, false);
 
 		}
 
@@ -611,6 +650,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 				.groupByRenovacao()
 				.groupByRetificacao()
 				.groupByCaracterizacao()
+				.groupByPorte()
+				.groupByPotencialPoluidor()
 				.groupByIdOrigemNotificacao()
 				.groupByDiasAnaliseGeo()
 				.groupByDiasAnaliseTecnica()
@@ -630,6 +671,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 		listWithFilterSecretario(processoBuilder, filtro);
 
 		listWithFilterCoordenador(processoBuilder, filtro);
+
+		listWithFilterCoordenadorGeo(processoBuilder, filtro);
 
 		listWithFilterConsultaProcessos(processoBuilder, filtro);
 
@@ -660,8 +703,20 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 			return;
 		}
 
+		processoBuilder.groupByIdAnaliseTecnica(true)
+				.groupByPrazoAnaliseCoordenador()
+				.orderByPrazoAnaliseCoordenador();
+
+	}
+
+	private static void listWithFilterCoordenadorGeo(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isCoordenadorGeo) {
+
+			return;
+		}
+
 		processoBuilder.groupByIdAnaliseGeo(true)
-				.groupByIdAnaliseTecnica(true)
 				.groupByPrazoAnaliseCoordenador()
 				.orderByPrazoAnaliseCoordenador();
 
@@ -773,6 +828,8 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		countWithFilterCoordenador(processoBuilder, filtro);
 
+		countWithFilterCoordenadorGeo(processoBuilder, filtro);
+
 		countWithFilterDiretor(processoBuilder, filtro);
 
 		countWithFilterSecretario(processoBuilder, filtro);
@@ -811,6 +868,15 @@ public class Processo extends GenericModel implements InterfaceTramitavel{
 
 		}
 
+	}
+
+	private static void countWithFilterCoordenadorGeo(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {
+
+		if (!filtro.isCoordenadorGeo) {
+
+			return;
+
+		}
 	}
 
 	private static void countWithFilterDiretor(ProcessoBuilder processoBuilder, FiltroProcesso filtro) {

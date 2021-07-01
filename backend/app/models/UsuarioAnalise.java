@@ -136,6 +136,12 @@ public class UsuarioAnalise extends GenericModel  {
 				.setParameter("id_coordenador", coordenador.usuario.id).first();
 	}
 
+	public static UsuarioAnalise findByCoordenadorGeo(CoordenadorGeo coordenador) {
+
+		return UsuarioAnalise.find("id = :id_coordenador")
+				.setParameter("id_coordenador", coordenador.usuario.id).first();
+	}
+
 	public static UsuarioAnalise findByAnalistaTecnico(AnalistaTecnico analistaTecnico) {
 
 		return UsuarioAnalise.find("id = :id_analista_tecnico")
