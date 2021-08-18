@@ -9,4 +9,3 @@ UPDATE tramitacao.condicao SET id_etapa = 8 WHERE id_condicao = 43;
 
 DELETE FROM tramitacao.etapa WHERE id_etapa = 8 AND id_fluxo = 1;
 
-UPDATE tramitacao.condicao SET id_etapa = 8 WHERE id_condicao = 43;
