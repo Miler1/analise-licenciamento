@@ -91,6 +91,10 @@ licenciamento.config(["$routeProvider", function($routeProvider) {
 	growlProvider.globalDisableCountDown(false)
 		.globalTimeToLive(10000);
 
+}]).config(['$locationProvider', function($locationProvider) {
+
+	$locationProvider.html5Mode(false).hashPrefix('');
+
 }]).config(function($provide){
 
 	$provide.decorator('taOptions',['taRegisterTool','$delegate', function(taRegisterTool, taOptions){
