@@ -2,19 +2,19 @@ var ApplicationService = function(request, config) {
 
 	this.findInfo = function(successCallback) {
 
-		request.get("http://localhost:9011" + "aplicacao/info").then(successCallback);
+		request.get("https://www.sema.ap.gov.br/" + "aplicacao/info").then(successCallback);
 
 	};
 
 	this.login = function(successCallback) {
 
-		request.get("http://localhost:9011" + "/authenticate").then(successCallback);
+		request.get("https://www.sema.ap.gov.br" + "/authenticate").then(successCallback);
 
 	};
 
 	this.auth = function(successCallback) {
 
-		request.get("http://localhost:9011" + "login/getAuthenticatedUser").then(successCallback);
+		request.get("https://www.sema.ap.gov.br/" + "login/getAuthenticatedUser").then(successCallback);
 
 	};
 

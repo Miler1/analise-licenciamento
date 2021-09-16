@@ -11,7 +11,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 			$scope.comunicado = response.data;
 			
 			if (!comunicado.valido) {
-				$window.location.href="http://www.sema.ap.gov.br/";
+				$window.location.href="https://www.sema.ap.gov.br/";
 			}
 
 		}).catch(function(response){
@@ -73,7 +73,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 	$scope.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
 	
 	$scope.cancelar = function () {
-		$window.location.href="http://www.sema.ap.gov.br/";
+		$window.location.href="https://www.sema.ap.gov.br/";
 	};
 
 	$scope.enviar = function () {
@@ -99,7 +99,7 @@ var ParecerOrgaoController = function(mensagem, $scope, parecerOrgaoService, $wi
 
 					if(response.data ==true){
 
-						$window.location.href="http://www.sema.ap.gov.br/";
+						$window.location.href="https://www.sema.ap.gov.br/";
 
 					}else{
 

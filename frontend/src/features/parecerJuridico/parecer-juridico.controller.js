@@ -50,7 +50,7 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 			$scope.setDocumentos();
 			
 			if (!$scope.parecerJuridico.ativo) {
-				$window.location.href="http://www.sema.ap.gov.br/";
+				$window.location.href="https://www.sema.ap.gov.br/";
 			}
 
 		}).catch(function(response){
@@ -123,7 +123,7 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 	$scope.TAMANHO_MAXIMO_ARQUIVO_MB = tamanhoMaximoArquivoAnaliseMB;
 	
 	$scope.cancelar = function () {
-		$window.location.href="http://www.sema.ap.gov.br/";
+		$window.location.href="https://www.sema.ap.gov.br/";
 	};
 
 	$scope.enviar = function () {
@@ -153,7 +153,7 @@ var ParecerJuridicoController = function(mensagem, $scope, parecerJuridicoServic
 			parecerJuridicoService.enviar(params)
 				.then(function (response) {
 
-					$window.location.href="http://www.sema.ap.gov.br/";
+					$window.location.href="https://www.sema.ap.gov.br/";
 					
 			}, function(error){
 				mensagem.error(error.data.texto);
