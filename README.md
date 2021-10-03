@@ -172,7 +172,7 @@ Execute as externals para criar a estrutura da tramitação (na pasta db/externa
 
 Faça o download do WAR no link abaixo:
 
-[TramitacaoLicenciamento.war](/uploads/816542b1962c9558818b4026951867e3/TramitacaoLicenciamento.war)
+[TramitacaoLicenciamento.war](https://github.com/Miler1/licensing_analysis/blob/master/Tramitacao.war)
 
 Execute os comandos abaixo no terminal:
 
