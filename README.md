@@ -170,7 +170,7 @@ Execute as externals para criar a estrutura da tramitação (na pasta db/externa
 
 ##### 4.3 - Deploy da aplicação
 
-Add WAR file: [Tramitacao.war]
+Add WAR file: [Tramitacao.war]()
 
 Execute os comandos abaixo no terminal:
 
